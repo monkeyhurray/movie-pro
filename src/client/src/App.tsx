@@ -1,0 +1,175 @@
+/* eslint-disable */
+import React, { lazy, useState, Suspense } from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  useNavigate,
+  Outlet,
+} from "react-router-dom";
+
+import "bootstrap/dist/css/bootstrap.css";
+
+import {
+  Button,
+  Container,
+  Form,
+  Nav,
+  Navbar,
+  NavDropdown,
+  Carousel,
+  Spinner,
+  Placeholder,
+  Card,
+} from "react-bootstrap";
+import "./App.css";
+
+const Movie = lazy(() => import("./routes/Movie"));
+const MovieInfo = lazy(() => import("./routes/MovieInfo"));
+const Login = lazy(() => import("./routes/Login"));
+
+function App() {
+  return (
+    <div className="App">
+      <NavScrollExample />
+
+      <Suspense fallback={<BorderExample />}>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <CarouselFadeExample
+                movieTrailer="Trailer"
+                movieInfo="MovieInfo"
+              />
+            }
+          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/movie" element={<Movie />} />
+          <Route path="/movieInfo" element={<MovieInfo />} />
+        </Routes>
+      </Suspense>
+    </div>
+  );
+}
+
+function About(): JSX.Element {
+  return (
+    <div>
+      <h4>영화정보</h4>
+      <Outlet></Outlet>
+    </div>
+  );
+}
+
+function BorderExample() {
+  return <Spinner animation="border" />;
+}
+
+function NavScrollExample(): JSX.Element {
+  const navigate = useNavigate();
+  return (
+    <Navbar bg="light" expand="lg">
+      <Container fluid>
+        <Navbar.Brand href="#">MoviePro</Navbar.Brand>
+        <Navbar.Toggle aria-controls="navbarScroll" />
+        <Navbar.Collapse id="navbarScroll">
+          <Nav
+            className="me-auto my-2 my-lg-0"
+            style={{ maxHeight: "100px" }}
+            navbarScroll
+          >
+            <Nav.Link
+              onClick={(): void => {
+                navigate("/");
+              }}
+              href="/"
+            >
+              Home
+            </Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                navigate("/movie");
+              }}
+            >
+              Movie
+            </Nav.Link>
+            <NavDropdown title="MovieInfo" id="navbarScrollingDropdown">
+              <NavDropdown.Item href="LatestMovie">
+                Latest Movie
+              </NavDropdown.Item>
+              <NavDropdown.Item href="Masterpiece">
+                Masterpiece
+              </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="Search">
+                Something else here
+              </NavDropdown.Item>
+            </NavDropdown>
+            <Nav.Link href="#" disabled>
+              Link
+            </Nav.Link>
+          </Nav>
+
+          <Form className="d-flex">
+            <Form.Control
+              type="search"
+              placeholder="Search"
+              className="me-2"
+              aria-label="Search"
+            />
+            <Button variant="outline-success">Search</Button>
+          </Form>
+          <Nav>
+            <Nav.Link
+              href="Login"
+              onClick={() => {
+                navigate("/login");
+              }}
+              className="LoginButton"
+            >
+              Login
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
+}
+
+function CarouselFadeExample(props: {
+  movieTrailer: string;
+  movieInfo: string;
+}): JSX.Element {
+  let navigate = useNavigate();
+  return (
+    <Carousel fade>
+      <Carousel.Item>
+        <img
+          className="d-blockw-100"
+          src="img/assets/Apes.png"
+          onClick={() => {
+            navigate("/movie");
+          }}
+        />
+      </Carousel.Item>
+      <Carousel.Item>
+        <img
+          className="d-block w-100"
+          src="holder.js/800x400?text=Second slide&bg=282c34"
+          alt={props.movieTrailer}
+        />
+      </Carousel.Item>
+      <Carousel.Item>
+        <img
+          className="d-block w-100"
+          src="holder.js/800x400?text=Third slide&bg=20232a"
+          alt={props.movieInfo}
+        />
+      </Carousel.Item>
+    </Carousel>
+  );
+}
+
+export default App;
