@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React, { lazy, useState, Suspense } from "react";
+
 import {
   BrowserRouter,
   Routes,
@@ -26,8 +27,9 @@ import {
 import "./App.css";
 
 const Movie = lazy(() => import("./routes/Movie"));
-const MovieInfo = lazy(() => import("./routes/MovieInfo"));
 const Login = lazy(() => import("./routes/Login"));
+const LatestMovie = lazy(() => import("./routes/LatestMovie"));
+const MasterPiece = lazy(() => import("./routes/MasterPiece"));
 
 function App() {
   return (
@@ -47,18 +49,22 @@ function App() {
           />
           <Route path="/login" element={<Login />} />
           <Route path="/movie" element={<Movie />} />
-          <Route path="/movieInfo" element={<MovieInfo />} />
+          <Route path="/LatestMovie" element={<LatestMovie />} />
+          <Route path="/MaterPiece" element={<MasterPiece />} />
+
+          <Route
+            path="*"
+            element={
+              <div>
+                <img
+                  style={{ maxHeight: 600, maxWidth: 1400 }}
+                  src="img/assets/404.jpg"
+                />
+              </div>
+            }
+          />
         </Routes>
       </Suspense>
-    </div>
-  );
-}
-
-function About(): JSX.Element {
-  return (
-    <div>
-      <h4>영화정보</h4>
-      <Outlet></Outlet>
     </div>
   );
 }
@@ -99,13 +105,11 @@ function NavScrollExample(): JSX.Element {
               <NavDropdown.Item href="LatestMovie">
                 Latest Movie
               </NavDropdown.Item>
-              <NavDropdown.Item href="Masterpiece">
-                Masterpiece
+              <NavDropdown.Item href="MasterPiece">
+                Master Piece
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="Search">
-                Something else here
-              </NavDropdown.Item>
+              <NavDropdown.Item href="Community">Community</NavDropdown.Item>
             </NavDropdown>
             <Nav.Link href="#" disabled>
               Link

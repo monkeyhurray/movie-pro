@@ -1,6 +1,10 @@
 /* eslint-disable */
+import { useMemo, useRef, useState } from "react";
 import "./Movie.css";
 import { Card, Button, Placeholder } from "react-bootstrap";
+
+import content from "../content";
+
 function Movie(): JSX.Element {
   return (
     <div>
@@ -11,6 +15,8 @@ function Movie(): JSX.Element {
 }
 
 function CardExample() {
+  const [coco] = useState(content);
+
   return (
     <div className="d-flex justify-content-around">
       <Card style={{ width: "30rem" }}>
@@ -18,13 +24,16 @@ function CardExample() {
         <Card.Body>
           <Card.Title>Planet of the Apes</Card.Title>
           <Card.Text className="hideText">
-            내용담기 귀찮으니 다음에 만들것
+            <h4>내용</h4>
           </Card.Text>
           <Button variant="primary">Go somewhere</Button>
         </Card.Body>
       </Card>
 
       <Card style={{ width: "30rem" }}>
+        <div>
+          <h3>출연진</h3>
+        </div>
         <table>
           <tr>
             <td>
@@ -34,9 +43,7 @@ function CardExample() {
                 src="img/assets/Andy.png"
               />
             </td>
-            <td>
-              <h4>안녕</h4>
-            </td>
+            <td>Andy</td>
           </tr>
           <tr>
             <td>
