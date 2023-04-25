@@ -28,6 +28,7 @@ import "./App.css";
 
 const Movie = lazy(() => import("./routes/Movie"));
 const Login = lazy(() => import("./routes/Login"));
+const SignUp = lazy(() => import("./routes/SignUp"));
 const LatestMovie = lazy(() => import("./routes/LatestMovie"));
 const MasterPiece = lazy(() => import("./routes/MasterPiece"));
 
@@ -50,8 +51,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/movie" element={<Movie />} />
           <Route path="/LatestMovie" element={<LatestMovie />} />
-          <Route path="/MaterPiece" element={<MasterPiece />} />
-
+          <Route path="/MasterPiece" element={<MasterPiece />} />
+          <Route path="/SignUp" element={<SignUp />} />
           <Route
             path="*"
             element={
@@ -78,7 +79,7 @@ function NavScrollExample(): JSX.Element {
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
-        <Navbar.Brand href="#">MoviePro</Navbar.Brand>
+        <Navbar.Brand href="/">MoviePro</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -134,6 +135,17 @@ function NavScrollExample(): JSX.Element {
               className="LoginButton"
             >
               Login
+            </Nav.Link>
+          </Nav>
+          <Nav>
+            <Nav.Link
+              href="SignUp"
+              onClick={() => {
+                navigate("/SignUp");
+              }}
+              className="SignUpButton"
+            >
+              SignUp
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
