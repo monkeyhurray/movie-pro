@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { useMemo, useRef, useState } from "react";
-import "./Movie.css";
+import "./Movie.scss";
 import { Card, Button, Placeholder, Modal } from "react-bootstrap";
 
 function Movie(): JSX.Element {

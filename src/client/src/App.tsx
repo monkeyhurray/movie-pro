@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, { lazy, useState, Suspense } from "react";
-
+import { wiseSaying, num } from "./wiseSaying";
+import trailer from "./trailer";
 import {
   BrowserRouter,
   Routes,
@@ -24,7 +25,7 @@ import {
   Placeholder,
   Card,
 } from "react-bootstrap";
-import "./App.css";
+import "./App.scss";
 
 const Movie = lazy(() => import("./routes/Movie"));
 const Login = lazy(() => import("./routes/Login"));
@@ -66,6 +67,10 @@ function App() {
           />
         </Routes>
       </Suspense>
+      <div className="say">
+        <h5>{wiseSaying[num].content}</h5>
+        <h6>-{wiseSaying[num].actor}-</h6>
+      </div>
     </div>
   );
 }
@@ -161,7 +166,7 @@ function CarouselFadeExample(props: {
   let navigate = useNavigate();
   return (
     <Carousel fade>
-      <Carousel.Item>
+      <Carousel.Item className="poster">
         <img
           className="d-blockw-100"
           src="img/assets/Apes.png"

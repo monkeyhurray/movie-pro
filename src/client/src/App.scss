@@ -1,7 +1,13 @@
 .App {
   text-align: center;
 }
-
+.say {
+  width: 80%;
+  box-shadow: 5px 5px 10px;
+  margin: 0 auto;
+  margin-top: 25px;
+  padding: 24px;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -23,7 +29,9 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
+.poster {
+  cursor: pointer;
+}
 .App-link {
   color: #61dafb;
 }

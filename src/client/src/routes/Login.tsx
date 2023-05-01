@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import "./Login.scss";
 
 function Login(): JSX.Element {
   return (
@@ -32,8 +33,8 @@ function OutlineTypesExample(): JSX.Element {
 function FormGroupExample(): JSX.Element {
   return (
     <div className="id">
-      <div className="formId">
-        <Form>
+      <>
+        <Form className="formId">
           <Form.Group className="mb-3" controlId="formGroupEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control type="email" placeholder="Enter email" />
@@ -43,7 +44,7 @@ function FormGroupExample(): JSX.Element {
             <Form.Control type="password" placeholder="Password" />
           </Form.Group>
         </Form>
-      </div>
+      </>
       <OutlineTypesExample />
     </div>
   );
