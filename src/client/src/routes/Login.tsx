@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import "./Login.scss";
+import "../scss/Login.scss";
 
 function Login(): JSX.Element {
   return (

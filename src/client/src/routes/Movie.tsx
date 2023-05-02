@@ -1,12 +1,11 @@
 /* eslint-disable */
 import { useMemo, useRef, useState } from "react";
-import "./Movie.scss";
+import "../scss/Movie.scss";
 import { Card, Button, Placeholder, Modal } from "react-bootstrap";
 
 function Movie(): JSX.Element {
   return (
     <div>
-      <h4>Movie페이지</h4>
       <CardExample />
     </div>
   );

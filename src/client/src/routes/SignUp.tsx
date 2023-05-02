@@ -1,18 +1,19 @@
 /* eslint-disable */
 import { FloatingLabel, Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import "../scss/SignUp.scss";
 
 function SignUp() {
   return (
-    <>
+    <div className="frame">
       <FormFloatingBasicExample /> <SizesExample />
-    </>
+    </div>
   );
 }
 
 function FormFloatingBasicExample(): JSX.Element {
   return (
-    <>
+    <div className="box">
       <tr>
         <td>
           <FloatingLabel
@@ -27,6 +28,7 @@ function FormFloatingBasicExample(): JSX.Element {
           <button className="btn">Confirm Email</button>
         </td>
       </tr>
+
       <FloatingLabel
         controlId="floatingInput"
         label="Nick Name"
@@ -49,7 +51,7 @@ function FormFloatingBasicExample(): JSX.Element {
       >
         <Form.Control type="password" placeholder="Password Confirm" />
       </FloatingLabel>
-    </>
+    </div>
   );
 }
 
@@ -57,7 +59,7 @@ function SizesExample() {
   let navigate = useNavigate();
   return (
     <>
-      <div>
+      <div className="signBtn">
         <Button variant="primary" size="sm">
           Sign Up
         </Button>{" "}

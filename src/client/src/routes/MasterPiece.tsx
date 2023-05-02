@@ -1,9 +1,9 @@
 /* eslint-disable */
 import { Table } from "react-bootstrap";
+import "../scss/MasterPiece.scss";
 function MasterPiece(): JSX.Element {
   return (
-    <div>
-      <h4>명작 리스트</h4>
+    <div className="masterMovieFrame">
       <BasicExample />
     </div>
   );
@@ -29,14 +29,27 @@ function BasicExample(): JSX.Element {
         </tr>
         <tr>
           <td>2</td>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
+          <td>그 시절, 우리가 좋아했던 소녀</td>
+          <td>멜로/로맨스, 드라마</td>
+          <td>가진동, 천옌시, 오견, 만만, 언승우</td>
         </tr>
         <tr>
           <td>3</td>
-          <td colSpan={2}>Larry the Bird</td>
-          <td>@twitter</td>
+          <td>실버라이닝 플레이북</td>
+          <td>로맨틱 코미디</td>
+          <td>브래들리 쿠퍼, 제니퍼 로렌스, 로버트 드 니로</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>플립</td>
+          <td>맬로/로맨스, 드라마</td>
+          <td>매들린 캐롤, 캘런 맥오리피, 존 마호니</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>그 여자 작사 그 남자 작곡</td>
+          <td>맬로/로맨스</td>
+          <td>드류 베리모어, 휴 그랜트, 브래드 거렛, 헤일리 베넷</td>
         </tr>
       </tbody>
     </Table>
