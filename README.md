@@ -18,4 +18,4 @@ using NodeJS, Express, react, TypeScript and Es6
 
 ### 구성
 
-최신영화, 명작영화
+홈, 로그인, 로그아웃, 최신영화, 명작영화, 커뮤니티 페이지

@@ -1,6 +1,8 @@
 /* eslint-disable */
 import { Table } from "react-bootstrap";
 import "../scss/MasterPiece.scss";
+import path from "path";
+import { useNavigate } from "react-router-dom";
 function MasterPiece(): JSX.Element {
   return (
     <div className="masterMovieFrame">
@@ -10,6 +12,7 @@ function MasterPiece(): JSX.Element {
 }
 
 function BasicExample(): JSX.Element {
+  const navigate = useNavigate();
   return (
     <Table striped bordered hover>
       <thead>
@@ -21,7 +24,11 @@ function BasicExample(): JSX.Element {
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr
+          onClick={() => {
+            navigate("/movie");
+          }}
+        >
           <td>1</td>
           <td>혹성탈출</td>
           <td>SF, 액션</td>

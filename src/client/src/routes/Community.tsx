@@ -1,21 +1,54 @@
-import Form from "react-bootstrap/Form";
+import { Table, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+
+import "../scss/Community.scss";
 
 function Community() {
   return (
     <>
-      <FormFileExample />
+      <div className="communityTable">
+        <OutlineTypesExample />
+        <ResponsiveExample />
+      </div>
     </>
   );
 }
 
-function FormFileExample() {
+function ResponsiveExample() {
   return (
-    <>
-      <Form.Group controlId="formFile" className="mb-3">
-        <Form.Label>Default file input example</Form.Label>
-        <Form.Control type="file" />
-      </Form.Group>
-    </>
+    <Table responsive>
+      <thead>
+        <tr>
+          <th>#</th>
+          <td>번호</td>
+          <td>제목</td>
+          <td>작성자</td>
+          <td>작성날짜</td>
+          <td>조회수</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          {Array.from({ length: 5 }).map((_, index) => (
+            <td key={index}>Table cell {index}</td>
+          ))}
+        </tr>
+      </tbody>
+    </Table>
+  );
+}
+function OutlineTypesExample() {
+  let navigate = useNavigate();
+  return (
+    <Button
+      variant="outline-primary"
+      onClick={() => {
+        navigate("./Wirting");
+      }}
+    >
+      글쓰기
+    </Button>
   );
 }
 
