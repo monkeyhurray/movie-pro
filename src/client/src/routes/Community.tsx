@@ -44,7 +44,7 @@ function OutlineTypesExample() {
     <Button
       variant="outline-primary"
       onClick={() => {
-        navigate("./Wirting");
+        navigate("/Wirting");
       }}
     >
       글쓰기

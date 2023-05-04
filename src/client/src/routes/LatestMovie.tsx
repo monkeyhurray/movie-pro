@@ -35,9 +35,9 @@ function BasicExample(): JSX.Element {
         </tr>
         <tr>
           <td>3</td>
-          <td>실버라이닝 플레이북</td>
-          <td>로맨틱 코미디</td>
-          <td>브래들리 쿠퍼, 제니퍼 로렌스, 로버트 드 니로</td>
+          <td>리바운드</td>
+          <td>드라마</td>
+          <td>안재홍, 이신영, 정진운, 김택, 정건주, 김민</td>
         </tr>
         <tr>
           <td>4</td>

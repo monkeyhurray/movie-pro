@@ -1,14 +1,14 @@
 import express, { Express, Request, Response } from "express";
 
-import app from "./server/server";
-
+import app from "./server";
+import "./db";
+const PORT: number = 5000;
 const path = require("path");
 
-const PORT: number = 5000;
-
-app.listen(PORT, () => {
+const handleListening = () => {
   console.log(`[server]: Server is running at http://localhost:${PORT}`);
-});
+};
+app.listen(PORT, handleListening);
 
 app.use(express.static(path.join(__dirname, "client/build")));
 
