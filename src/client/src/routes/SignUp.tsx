@@ -1,5 +1,11 @@
 /* eslint-disable */
-import { FloatingLabel, Form, Button } from "react-bootstrap";
+import {
+  FloatingLabel,
+  Form,
+  Button,
+  DropdownButton,
+  Dropdown,
+} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "../scss/SignUp.scss";
 
@@ -16,6 +22,17 @@ function FormFloatingBasicExample(): JSX.Element {
     <div className="box">
       <tr>
         <td>
+          <FloatingLabel controlId="floatingInput" label="Id" className="mb1">
+            <Form.Control type="Id" placeholder="Id" />
+          </FloatingLabel>
+        </td>
+        <td>
+          <button className="cbtn">Confirm Id</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
           <FloatingLabel
             controlId="floatingInput"
             label="Email address"
@@ -25,14 +42,18 @@ function FormFloatingBasicExample(): JSX.Element {
           </FloatingLabel>
         </td>
         <td>
-          <button className="btn">Confirm Email</button>
+          <button className="cbtn">Confirm Email</button>
         </td>
       </tr>
+
+      <FloatingLabel controlId="floatingInput" label="Name" className="mb3">
+        <Form.Control type="Name" placeholder="name" />
+      </FloatingLabel>
 
       <FloatingLabel
         controlId="floatingInput"
         label="Nick Name"
-        className="mb-3"
+        className="mb4"
       >
         <Form.Control type="nick Name" placeholder="nick name" />
       </FloatingLabel>
@@ -48,9 +69,24 @@ function FormFloatingBasicExample(): JSX.Element {
       <FloatingLabel
         controlId="floatingPasswordConfirm"
         label="Password Confirm"
+        className="pass2"
       >
         <Form.Control type="password" placeholder="Password Confirm" />
       </FloatingLabel>
+      <tr>
+        <td>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="gender"
+            className="mb2"
+          >
+            <Form.Control type="gender" placeholder="gender" />
+          </FloatingLabel>
+        </td>
+        <td>
+          <BasicButtonExample />
+        </td>
+      </tr>
     </div>
   );
 }
@@ -76,4 +112,13 @@ function SizesExample() {
     </>
   );
 }
+function BasicButtonExample() {
+  return (
+    <DropdownButton id="dropdown-basic-button" title="Gender">
+      <Dropdown.Item href="#/action-1">male</Dropdown.Item>
+      <Dropdown.Item href="#/action-2">female</Dropdown.Item>
+    </DropdownButton>
+  );
+}
+
 export default SignUp;

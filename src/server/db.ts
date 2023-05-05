@@ -1,9 +1,15 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-dotenv.config();
+require("dotenv").config();
+
+const mongoUrl = process.env.MONGO_URL;
+
+if (!mongoUrl) {
+  console.error("MONGO_URL not set in environment variables");
+  process.exit(1);
+}
 
 mongoose
-  .connect(process.env.MONGO_URL)
+  .connect(mongoUrl)
   .then(() => console.log(`mongoDB connected`))
   .catch((err) => console.error(err));
 
