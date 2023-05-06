@@ -1,14 +1,15 @@
 .loginPage {
   width: 85%;
   margin: 0 auto;
-
+  margin-top: 25px;
   border: 1px solid rgb(44, 114, 55);
-  padding: 10px;
+  padding: 30px;
   border-radius: 5px;
-}
-.formId {
-  margin-left: 10;
 
-  justify-content: center;
-  align-items: center;
+  .formId {
+    margin-left: 10;
+
+    justify-content: center;
+    align-items: center;
+  }
 }
