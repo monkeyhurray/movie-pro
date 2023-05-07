@@ -115,8 +115,8 @@ function SizesExample() {
 function BasicButtonExample() {
   return (
     <DropdownButton id="dropdown-basic-button" title="Gender">
-      <Dropdown.Item href="#/action-1">male</Dropdown.Item>
-      <Dropdown.Item href="#/action-2">female</Dropdown.Item>
+      <Dropdown.Item href="male">male</Dropdown.Item>
+      <Dropdown.Item href="female">female</Dropdown.Item>
     </DropdownButton>
   );
 }

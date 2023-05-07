@@ -36,8 +36,8 @@ function FormGroupExample(): JSX.Element {
       <>
         <Form className="formId">
           <Form.Group className="mb-3" controlId="formGroupEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
+            <Form.Label>ID</Form.Label>
+            <Form.Control type="id" placeholder="id" />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formGroupPassword">
             <Form.Label>Password</Form.Label>

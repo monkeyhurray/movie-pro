@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import User from "../models/User";
+import bcrypt from "bcrypt";
 
 export const getJoin: RequestHandler = (req, res) => res.render("SignUp");
 
@@ -9,3 +10,22 @@ export const postSignUp: RequestHandler = async (req, res) => {
     return res.status(400).render("SignUp");
   }
 };
+
+export const Login: RequestHandler = async (req, res) => {
+  const { id, password } = req.body;
+  const user = await User.findOne({ id, socialOnly: false });
+  if (!user) {
+    return res.status(400).render("Login", {
+      errorMessage: "Does not exist",
+    });
+  }
+  const confirm = await bcrypt.compare(password, user.password);
+  if (!confirm) {
+    return res.status(400).render("Login", {
+      errorMessage: "Wrong password",
+    });
+  }
+
+  return res.redirect("/");
+};
+//가입, 로그인 만들기
