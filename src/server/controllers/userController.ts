@@ -2,11 +2,29 @@ import { RequestHandler } from "express";
 import User from "../models/User";
 import bcrypt from "bcrypt";
 
-export const getJoin: RequestHandler = (req, res) => res.render("SignUp");
+export const getSignUp: RequestHandler = (req, res) => res.render("SignUp");
 
 export const postSignUp: RequestHandler = async (req, res) => {
   const { id, email, name, userName, password, password2, gender } = req.body;
   if (password !== password2) {
+    return res.status(400).render("SignUp");
+  }
+  const exists = await User.exists({ $or: [{ id }, { email }, { userName }] });
+  if (exists) {
+    return res.status(400).render("SignUp");
+  }
+  try {
+    await User.create({
+      id,
+      email,
+      name,
+      userName,
+      password,
+      password2,
+      gender,
+    });
+    return res.redirect("/Login");
+  } catch (error) {
     return res.status(400).render("SignUp");
   }
 };

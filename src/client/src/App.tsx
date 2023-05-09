@@ -31,6 +31,7 @@ const Movie = lazy(() => import("./routes/Movie"));
 const Login = lazy(() => import("./routes/Login"));
 const SignUp = lazy(() => import("./routes/SignUp"));
 const Community = lazy(() => import("./routes/Community"));
+const Wirting = lazy(() => import("./routes/Wirting"));
 const LatestMovie = lazy(() => import("./routes/LatestMovie"));
 const MasterPiece = lazy(() => import("./routes/MasterPiece"));
 
@@ -56,6 +57,7 @@ function App() {
           <Route path="/MasterPiece" element={<MasterPiece />} />
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/Community" element={<Community />} />
+          <Route path="/Wirting" element={<Wirting />} />
           <Route
             path="*"
             element={

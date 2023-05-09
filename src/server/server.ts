@@ -2,7 +2,9 @@ import express, { Express, Request, Response } from "express";
 import rootRouter from "./routes/rootRouter";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import { postSignUp } from "./controllers/userController";
 require("dotenv").config();
+const path = require("path");
 
 const mongoUrl = process.env.MONGO_URL;
 const sessionId = process.env.SESSION_ID;
@@ -19,6 +21,12 @@ if (!sessionId) {
 
 const app: Express = express();
 
+app.use(express.static(path.join(__dirname, "../client/build")));
+
+app.get("/", (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"));
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -32,6 +40,9 @@ app.use(
 );
 
 app.use("/", rootRouter);
+app.post("/SignUp", postSignUp, (req: Request, res: Response) => {
+  res.redirect("/Login");
+});
 //수정하기
 
 export default app;

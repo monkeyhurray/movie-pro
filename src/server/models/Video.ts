@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+
 interface DBVideo {
   title: string;
   fileUrl: string;

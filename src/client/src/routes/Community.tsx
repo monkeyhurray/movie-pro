@@ -7,8 +7,8 @@ function Community() {
   return (
     <>
       <div className="communityTable">
-        <OutlineTypesExample />
         <ResponsiveExample />
+        <OutlineTypesExample />
       </div>
     </>
   );
@@ -20,7 +20,6 @@ function ResponsiveExample() {
       <thead>
         <tr>
           <th>#</th>
-          <td>번호</td>
           <td>제목</td>
           <td>작성자</td>
           <td>작성날짜</td>
@@ -30,7 +29,7 @@ function ResponsiveExample() {
       <tbody>
         <tr>
           <td>1</td>
-          {Array.from({ length: 5 }).map((_, index) => (
+          {Array.from({ length: 4 }).map((_, index) => (
             <td key={index}>Table cell {index}</td>
           ))}
         </tr>

@@ -11,9 +11,14 @@ import "../scss/SignUp.scss";
 
 function SignUp() {
   return (
-    <div className="frame">
+    <form
+      className="frame"
+      name="signUpForm"
+      action="http://localhost:5000/SignUp"
+      method="post"
+    >
       <FormFloatingBasicExample /> <SizesExample />
-    </div>
+    </form>
   );
 }
 
@@ -96,7 +101,7 @@ function SizesExample() {
   return (
     <>
       <div className="signBtn">
-        <Button variant="primary" size="sm">
+        <Button variant="primary" size="sm" type="submit">
           Sign Up
         </Button>{" "}
         <Button

@@ -11,7 +11,7 @@ interface DBUser {
 }
 
 const userSchema = new mongoose.Schema<DBUser>({
-  id: { type: String, required: true, unique: true },
+  id: { type: String, required: true, trim: true, unique: true },
   email: { type: String, required: true, unique: true },
   name: { type: String, required: true },
   username: { type: String, required: true },

@@ -5,9 +5,9 @@ import "../scss/Login.scss";
 
 function Login(): JSX.Element {
   return (
-    <div className="loginPage">
+    <form className="loginPage" action="/Login" method="post">
       <FormGroupExample />
-    </div>
+    </form>
   );
 }
 
@@ -15,9 +15,10 @@ function OutlineTypesExample(): JSX.Element {
   let navigate = useNavigate();
   return (
     <>
-      <Button variant="outline-primary">Login</Button>{" "}
+      <Button variant="outline-primary" type="submit">
+        Login
+      </Button>{" "}
       <Button
-        type="button"
         onClick={() => {
           navigate("/SignUp");
         }}
@@ -25,7 +26,7 @@ function OutlineTypesExample(): JSX.Element {
       >
         Sign Up
       </Button>{" "}
-      <Button variant="outline-success">Log in as GitHub</Button>{" "}
+      <Button variant="outline-success">Login as GitHub</Button>{" "}
     </>
   );
 }
