@@ -14,12 +14,13 @@ export const postSignUp: RequestHandler = async (req, res) => {
     return res.status(400).render("SignUp");
   }
   try {
+    const hashPassword = await bcrypt.hash(password, 10);
     await User.create({
       id,
       email,
       name,
       userName,
-      password,
+      password: hashPassword,
       password2,
       gender,
     });

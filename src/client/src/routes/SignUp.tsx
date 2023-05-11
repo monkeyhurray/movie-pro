@@ -1,4 +1,7 @@
 /* eslint-disable */
+import { connect, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import bcrypt from "bcrypt";
 import {
   FloatingLabel,
   Form,
@@ -7,22 +10,93 @@ import {
   Dropdown,
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import User from "../../../server/models/User";
+
 import "../scss/SignUp.scss";
 
+interface SignUpRequestBody {
+  id: string;
+  email: string;
+  name: string;
+  userName: string;
+  password: string;
+  password2: string;
+  gender: string;
+}
+
+interface FormFloatingBasicExampleProps {
+  values: {
+    id: string;
+    email: string;
+    name: string;
+    userName: string;
+    password: string;
+    password2: string;
+    gender: string;
+  };
+}
+
 function SignUp() {
+  let [user, setUser] = useState(User);
+  let [values, setValues] = useState({
+    id: "",
+    email: "",
+    name: "",
+    userName: "",
+    password: "",
+    password2: "",
+    gender: "",
+  });
+
+  const handleSignUpSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const requestBody: SignUpRequestBody = {
+      id: form.id.value,
+      email: form.email.value,
+      name: form.name.value,
+      userName: form.userName.value,
+      password: form.password.value,
+      password2: form.password2.value,
+      gender: form.gender.value,
+    };
+
+    //고치기
+    try {
+      const response = await fetch("http://localhost:5000/SignUp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+      if (response.ok) {
+        window.location.href = "/Login";
+      } else {
+        throw new Error("Failed to sign up.");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <form
       className="frame"
       name="signUpForm"
-      action="http://localhost:5000/SignUp"
       method="post"
+      onSubmit={handleSignUpSubmit}
     >
-      <FormFloatingBasicExample /> <SizesExample />
+      <FormFloatingBasicExample values={values} /> <SizesExample />
     </form>
   );
 }
 
-function FormFloatingBasicExample(): JSX.Element {
+function FormFloatingBasicExample(
+  props: FormFloatingBasicExampleProps
+): JSX.Element {
   return (
     <div className="box">
       <tr>
@@ -52,7 +126,11 @@ function FormFloatingBasicExample(): JSX.Element {
       </tr>
 
       <FloatingLabel controlId="floatingInput" label="Name" className="mb3">
-        <Form.Control type="Name" placeholder="name" />
+        <Form.Control
+          type="Name"
+          placeholder="name"
+          value={props.values.name}
+        />
       </FloatingLabel>
 
       <FloatingLabel
@@ -60,7 +138,11 @@ function FormFloatingBasicExample(): JSX.Element {
         label="Nick Name"
         className="mb4"
       >
-        <Form.Control type="nick Name" placeholder="nick name" />
+        <Form.Control
+          type="nick Name"
+          placeholder="nick name"
+          value={props.values.userName}
+        />
       </FloatingLabel>
 
       <FloatingLabel
@@ -68,7 +150,11 @@ function FormFloatingBasicExample(): JSX.Element {
         label="Password"
         className="pass1"
       >
-        <Form.Control type="password" placeholder="Password" />
+        <Form.Control
+          type="password"
+          placeholder="Password"
+          value={props.values.password}
+        />
       </FloatingLabel>
 
       <FloatingLabel
@@ -76,7 +162,11 @@ function FormFloatingBasicExample(): JSX.Element {
         label="Password Confirm"
         className="pass2"
       >
-        <Form.Control type="password" placeholder="Password Confirm" />
+        <Form.Control
+          type="password"
+          placeholder="Password Confirm"
+          value={props.values.password2}
+        />
       </FloatingLabel>
       <tr>
         <td>
@@ -85,7 +175,11 @@ function FormFloatingBasicExample(): JSX.Element {
             label="gender"
             className="mb2"
           >
-            <Form.Control type="gender" placeholder="gender" />
+            <Form.Control
+              type="gender"
+              placeholder="gender"
+              value={props.values.gender}
+            />
           </FloatingLabel>
         </td>
         <td>
@@ -93,6 +187,15 @@ function FormFloatingBasicExample(): JSX.Element {
         </td>
       </tr>
     </div>
+  );
+}
+
+function BasicButtonExample() {
+  return (
+    <DropdownButton id="dropdown-basic-button" title="Gender">
+      <Dropdown.Item eventKey="male">male</Dropdown.Item>
+      <Dropdown.Item eventKey="female">female</Dropdown.Item>
+    </DropdownButton>
   );
 }
 
@@ -106,6 +209,7 @@ function SizesExample() {
         </Button>{" "}
         <Button
           variant="secondary"
+          type="button"
           onClick={() => {
             navigate("/");
           }}
@@ -117,13 +221,4 @@ function SizesExample() {
     </>
   );
 }
-function BasicButtonExample() {
-  return (
-    <DropdownButton id="dropdown-basic-button" title="Gender">
-      <Dropdown.Item href="male">male</Dropdown.Item>
-      <Dropdown.Item href="female">female</Dropdown.Item>
-    </DropdownButton>
-  );
-}
-
 export default SignUp;

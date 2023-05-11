@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "rootDir": "src",
+    "baseUrl": ".",
+    "rootDir": "../../src",
     "outDir": "dist",
     "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -16,7 +17,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "paths": {
+      "@server/*": ["../server/*"]
+    }
   },
 
   "include": ["src/**/*"],
