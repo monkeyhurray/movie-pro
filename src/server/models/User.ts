@@ -4,10 +4,9 @@ import mongoose from "mongoose";
 interface DBUser {
   id: string;
   email: string;
-  password: string;
   name: string;
   username: string;
-  gender: string;
+  password: string;
 }
 
 const userSchema = new mongoose.Schema<DBUser>({
@@ -16,7 +15,6 @@ const userSchema = new mongoose.Schema<DBUser>({
   name: { type: String, required: true },
   username: { type: String, required: true },
   password: { type: String, required: true },
-  gender: { type: String, required: true },
 });
 
 userSchema.pre("save", async function () {

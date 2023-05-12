@@ -1,12 +1,22 @@
 import { RequestHandler } from "express";
 import User from "../models/User";
 import bcrypt from "bcrypt";
-
+interface SignUpData {
+  id: string;
+  email: string;
+  name: string;
+  userName: string;
+  password: string;
+  password2: string;
+}
 export const getSignUp: RequestHandler = (req, res) => res.render("SignUp");
 
-export const postSignUp: RequestHandler = async (req, res) => {
-  const { id, email, name, userName, password, password2, gender } = req.body;
-  if (password !== password2) {
+export const postSignUp: RequestHandler<{}, {}, SignUpData> = async (
+  req,
+  res
+) => {
+  const { id, email, name, userName, password, password2 } = req.body;
+  if (!password2 || password !== password2) {
     return res.status(400).render("SignUp");
   }
   const exists = await User.exists({ $or: [{ id }, { email }, { userName }] });
@@ -21,12 +31,10 @@ export const postSignUp: RequestHandler = async (req, res) => {
       name,
       userName,
       password: hashPassword,
-      password2,
-      gender,
     });
     return res.redirect("/Login");
   } catch (error) {
-    return res.status(400).render("SignUp");
+    return res.status(400).render("SignUp", { error: "Fail to create User" });
   }
 };
 

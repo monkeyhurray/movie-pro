@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from "express";
 import rootRouter from "./routes/rootRouter";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import User from "./models/User";
 import { postSignUp } from "./controllers/userController";
 require("dotenv").config();
 const path = require("path");
@@ -40,8 +41,20 @@ app.use(
 );
 
 app.use("/", rootRouter);
-app.post("/SignUp", postSignUp, (req: Request, res: Response) => {
-  res.redirect("/Login");
+app.post("/SignUp", postSignUp, (req: Request, res: Response): void => {
+  const user = new User(req.body);
+  user
+    .save()
+    .then(() => {
+      res.status(200).json({
+        sucess: true,
+      });
+      res.redirect("/Login");
+    })
+    .catch((error: Error) => {
+      console.error(error);
+      res.redirect("/SignUp");
+    });
 });
 //수정하기
 
