@@ -2,6 +2,7 @@
 import { connect, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import bcrypt from "bcrypt";
+import axios from "axios";
 import { FloatingLabel, Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "../scss/SignUp.scss";
@@ -21,9 +22,10 @@ type FormProps = {
   onPassword2Change: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-function SignUp() {
+function SignUp(props: FormProps) {
   let navigate = useNavigate();
   let dispatch = useDispatch();
+
   let [values, setValues] = useState<FormProps>({
     id: "",
     email: "",
@@ -68,11 +70,12 @@ function SignUp() {
       password: values.password,
       password2: values.password2,
     };
-    dispatch(registerUser(body)).then((response) => {
-      if (response.payload.success) {
+    dispatch(registerUser(body)).then((res) => {
+      if (res.payload.success) {
+        alert("SignUp is Completed");
         navigate("/login");
       } else {
-        alert("Failed to sign up");
+        alert("Failed to SignUp");
       }
     });
   };
@@ -167,7 +170,7 @@ function FormFloatingBasicExample(props: FormProps): JSX.Element {
           type="password"
           placeholder="Password Confirm"
           value={props.password2}
-          onChange={props.onPasswordChange}
+          onChange={props.onPassword2Change}
         />
       </FloatingLabel>
     </div>
