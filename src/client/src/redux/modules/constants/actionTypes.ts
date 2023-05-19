@@ -1,3 +1,5 @@
-export const LOGIN_USER = "LOGIN_USER";
-export const REGISTER_USER = "REGISTER_USER";
-export const AUTH_USER = "AUTH_USER";
+export enum UserActionTypes {
+  SIGN_UP_USER = "signUpUser/SIGN_UP_USER",
+  DELETE_USER = "signUpUser/DELETE_USER",
+  UPDATE_USER = "signUpUser/UPDATE_USER",
+}

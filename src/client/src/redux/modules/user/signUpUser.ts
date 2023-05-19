@@ -1,4 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
+import type { AppThunk } from "../../../redux/store;
+import { UserActionTypes } from "../constants/actionTypes";
 
 interface UserState {
   id: string;
@@ -51,5 +54,19 @@ export const {
   setPassword,
   setPassword2,
 } = signUpUserSlice.actions;
+
+export const signUpUser =
+  (dataToSubmit: any): AppThunk =>
+  async (dispatch) => {
+    try {
+      const response = await axios.post("/SignUp", dataToSubmit);
+      dispatch({
+        type: UserActionTypes.SIGN_UP_USER,
+        payload: response.data,
+      });
+    } catch (error) {
+      // 에러 처리
+    }
+  };
 
 export default signUpUserSlice.reducer;

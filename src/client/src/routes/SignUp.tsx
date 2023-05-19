@@ -1,105 +1,32 @@
 /* eslint-disable */
-import { connect, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import bcrypt from "bcrypt";
 import axios from "axios";
 import { FloatingLabel, Form, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+
+import { signUpUser } from "../redux/modules/user/index";
 import "../scss/SignUp.scss";
 
-type FormProps = {
-  id: string;
-  email: string;
-  name: string;
-  userName: string;
-  password: string;
-  password2: string;
-  onIdChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onEmailChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onNameChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onUserNameChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onPasswordChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onPassword2Change: (event: React.ChangeEvent<HTMLInputElement>) => void;
-};
-
-function SignUp(props: FormProps) {
-  let navigate = useNavigate();
-  let dispatch = useDispatch();
-
-  let [values, setValues] = useState<FormProps>({
-    id: "",
-    email: "",
-    name: "",
-    userName: "",
-    password: "",
-    password2: "",
-    onIdChange: handleChange("id"),
-    onEmailChange: handleChange("email"),
-    onNameChange: handleChange("name"),
-    onUserNameChange: handleChange("userName"),
-    onPasswordChange: handleChange("password"),
-    onPassword2Change: handleChange("password2"),
-  });
-
-  function handleChange(key: keyof FormProps) {
-    return (e: React.ChangeEvent<HTMLInputElement>) => {
-      setValues((prevValues) => ({
-        ...prevValues,
-        [key]: e.currentTarget.value,
-      }));
-    };
-  }
-
-  function registerUser(dataTosubmit) {
-    const request = axios.post("/Login", dataTosubmit).then((res) => res.data);
-    return {
-      type: { register: action.payload },
-      payload: request,
-    };
-  }
-  const onSubmitHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    if (values.password !== values.password2) {
-      return alert("비밀번호와 비밀번호확인은 같아야 합니다.");
-    }
-    let body = {
-      id: values.id,
-      email: values.email,
-      name: values.name,
-      userName: values.userName,
-      password: values.password,
-      password2: values.password2,
-    };
-    dispatch(registerUser(body)).then((res) => {
-      if (res.payload.success) {
-        alert("SignUp is Completed");
-        navigate("/login");
-      } else {
-        alert("Failed to SignUp");
-      }
-    });
-  };
-  //onSubmitHandler와 registerUser손보기
-
+function SignUp() {
   return (
     <form className="frame" name="signUpForm" method="post">
-      <FormFloatingBasicExample {...values} /> <SizesExample />
+      <FormFloatingBasicExample /> <SizesExample />
     </form>
   );
 }
 
-function FormFloatingBasicExample(props: FormProps): JSX.Element {
+function FormFloatingBasicExample(): JSX.Element {
+  const dispatch = useDispatch();
+  const selector = useSelector((state) => {});
   return (
     <div className="box">
       <tr>
         <td>
           <FloatingLabel controlId="floatingInput" label="Id" className="mb1">
-            <Form.Control
-              type="Id"
-              placeholder="Id"
-              value={props.id}
-              onChange={props.onIdChange}
-            />
+            <Form.Control type="Id" placeholder="Id" value={} onChange={} />
           </FloatingLabel>
         </td>
         <td>
@@ -117,7 +44,7 @@ function FormFloatingBasicExample(props: FormProps): JSX.Element {
             <Form.Control
               type="email"
               placeholder="name@example.com"
-              onChange={props.onEmailChange}
+              onChange={}
             />
           </FloatingLabel>
         </td>
@@ -127,12 +54,7 @@ function FormFloatingBasicExample(props: FormProps): JSX.Element {
       </tr>
 
       <FloatingLabel controlId="floatingInput" label="Name" className="mb3">
-        <Form.Control
-          type="Name"
-          placeholder="name"
-          value={props.name}
-          onChange={props.onNameChange}
-        />
+        <Form.Control type="Name" placeholder="name" value={} onChange={} />
       </FloatingLabel>
 
       <FloatingLabel
@@ -143,8 +65,8 @@ function FormFloatingBasicExample(props: FormProps): JSX.Element {
         <Form.Control
           type="nick Name"
           placeholder="nick name"
-          value={props.userName}
-          onChange={props.onUserNameChange}
+          value={}
+          onChange={}
         />
       </FloatingLabel>
 
@@ -156,8 +78,8 @@ function FormFloatingBasicExample(props: FormProps): JSX.Element {
         <Form.Control
           type="password"
           placeholder="Password"
-          value={props.password}
-          onChange={props.onPasswordChange}
+          value={}
+          onChange={}
         />
       </FloatingLabel>
 
@@ -169,8 +91,8 @@ function FormFloatingBasicExample(props: FormProps): JSX.Element {
         <Form.Control
           type="password"
           placeholder="Password Confirm"
-          value={props.password2}
-          onChange={props.onPassword2Change}
+          value={}
+          onChange={}
         />
       </FloatingLabel>
     </div>
