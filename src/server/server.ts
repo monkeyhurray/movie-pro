@@ -4,6 +4,7 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import User from "./models/User";
 import { postSignUp } from "./controllers/userController";
+
 require("dotenv").config();
 const path = require("path");
 
@@ -23,14 +24,10 @@ if (!sessionId) {
 const app: Express = express();
 
 app.use(express.static(path.join(__dirname, "../client/build")));
-
-app.get("/", (req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, "../client/build/index.html"));
-});
+app.use("/", rootRouter);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(
   session({
     secret: sessionId,
@@ -39,8 +36,6 @@ app.use(
     store: MongoStore.create({ mongoUrl: mongoUrl }),
   })
 );
-
-app.use("/", rootRouter);
 app.post("/SignUp", postSignUp, (req: Request, res: Response): void => {
   const user = new User(req.body);
   user
@@ -49,7 +44,7 @@ app.post("/SignUp", postSignUp, (req: Request, res: Response): void => {
       res.status(200).json({
         sucess: true,
       });
-      res.redirect("/Login");
+      res.redirect("/");
     })
     .catch((error: Error) => {
       console.error(error);

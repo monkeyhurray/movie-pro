@@ -1,9 +1,8 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, Dispatch } from "@reduxjs/toolkit";
 import axios from "axios";
-import { AnyAction } from "redux";
-import { ThunkAction } from "redux-thunk";
 import { RootState } from "../../store";
 import { UserActionTypes } from "../constants/actionTypes";
+import { Action } from "redux";
 
 interface UserState {
   id: string;
@@ -58,15 +57,8 @@ export const {
 } = signUpUserSlice.actions;
 
 export const signUpUser =
-  (dataToSubmit: {
-    id: string;
-    email: string;
-    name: string;
-    username: string;
-    password: string;
-    password2: string;
-  }): ThunkAction<void, RootState, unknown, AnyAction> =>
-  async (dispatch, getState) => {
+  (dataToSubmit: UserState) =>
+  async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     try {
       const response = await axios.post("/SignUp", dataToSubmit);
       dispatch({

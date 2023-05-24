@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 
-interface DBUser {
+export interface DBUser extends Document {
   id: string;
   email: string;
   name: string;
@@ -23,5 +23,5 @@ userSchema.pre("save", async function () {
   }
 });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model<DBUser>("User", userSchema);
 export default User;

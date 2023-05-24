@@ -20,17 +20,16 @@ import {
 import "../scss/SignUp.scss";
 
 function SignUp() {
-  const dispatch = useDispatch();
-
   return (
     <form className="frame" name="signUpForm" method="post">
-      <FormFloatingBasicExample /> <SizesExample />
+      <FormFloatingBasicExample />
+      <SizesExample />
     </form>
   );
 }
 
 function FormFloatingBasicExample(): JSX.Element {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<ThunkDispatch<RootState, unknown, AnyAction>>();
   const selector = useSelector((state) => {});
 
   const id = useSelector((state: RootState) => state.user.id);
@@ -63,7 +62,14 @@ function FormFloatingBasicExample(): JSX.Element {
       <tr>
         <td>
           <FloatingLabel controlId="floatingInput" label="Id" className="mb1">
-            <Form.Control type="Id" placeholder="Id" value={} onChange={} />
+            <Form.Control
+              type="Id"
+              placeholder="Id"
+              value={id}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                dispatch(setId(e.target.value))
+              }
+            />
           </FloatingLabel>
         </td>
         <td>
@@ -81,7 +87,10 @@ function FormFloatingBasicExample(): JSX.Element {
             <Form.Control
               type="email"
               placeholder="name@example.com"
-              onChange={}
+              value={email}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                dispatch(setEmail(e.target.value))
+              }
             />
           </FloatingLabel>
         </td>
@@ -91,7 +100,14 @@ function FormFloatingBasicExample(): JSX.Element {
       </tr>
 
       <FloatingLabel controlId="floatingInput" label="Name" className="mb3">
-        <Form.Control type="Name" placeholder="name" value={} onChange={} />
+        <Form.Control
+          type="Name"
+          placeholder="name"
+          value={name}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            dispatch(setName(e.target.value))
+          }
+        />
       </FloatingLabel>
 
       <FloatingLabel
@@ -102,8 +118,10 @@ function FormFloatingBasicExample(): JSX.Element {
         <Form.Control
           type="nick Name"
           placeholder="nick name"
-          value={}
-          onChange={}
+          value={username}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            dispatch(setUsername(e.target.value))
+          }
         />
       </FloatingLabel>
 
@@ -115,8 +133,10 @@ function FormFloatingBasicExample(): JSX.Element {
         <Form.Control
           type="password"
           placeholder="Password"
-          value={}
-          onChange={}
+          value={password}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            dispatch(setPassword(e.target.value))
+          }
         />
       </FloatingLabel>
 
@@ -128,8 +148,10 @@ function FormFloatingBasicExample(): JSX.Element {
         <Form.Control
           type="password"
           placeholder="Password Confirm"
-          value={}
-          onChange={}
+          value={password2}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            dispatch(setPassword2(e.target.value))
+          }
         />
       </FloatingLabel>
     </div>

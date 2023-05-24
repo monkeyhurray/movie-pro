@@ -1,16 +1,8 @@
 /* eslint-disable */
-import React, { lazy, useState, Suspense } from "react";
+import React, { lazy, Suspense } from "react";
 import { wiseSaying, num } from "./wiseSaying";
-import trailer from "./trailer";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Link,
-  useNavigate,
-  Outlet,
-} from "react-router-dom";
-
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { signUpUser } from "./redux/modules/user/signUpUser";
 import "bootstrap/dist/css/bootstrap.css";
 
 import {
@@ -26,6 +18,7 @@ import {
   Card,
 } from "react-bootstrap";
 import "./scss/App.scss";
+import session from "express-session";
 
 const Movie = lazy(() => import("./routes/Movie"));
 const Login = lazy(() => import("./routes/Login"));
@@ -34,6 +27,7 @@ const Community = lazy(() => import("./routes/Community"));
 const Wirting = lazy(() => import("./routes/Wirting"));
 const LatestMovie = lazy(() => import("./routes/LatestMovie"));
 const MasterPiece = lazy(() => import("./routes/MasterPiece"));
+const MyPage = lazy(() => import("./routes/MyPage"));
 
 function App() {
   return (
@@ -51,13 +45,16 @@ function App() {
               />
             }
           />
+
+          <Route path="/Community" element={<Community />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/SignUp" element={<SignUp />} />
           <Route path="/movie" element={<Movie />} />
           <Route path="/LatestMovie" element={<LatestMovie />} />
           <Route path="/MasterPiece" element={<MasterPiece />} />
-          <Route path="/SignUp" element={<SignUp />} />
-          <Route path="/Community" element={<Community />} />
+
           <Route path="/Wirting" element={<Wirting />} />
+          <Route path="/MyPage" element={<MyPage />} />
           <Route
             path="*"
             element={
@@ -71,6 +68,7 @@ function App() {
           />
         </Routes>
       </Suspense>
+
       <div className="say">
         <h5>{wiseSaying[num].content}</h5>
         <h6>-{wiseSaying[num].actor}-</h6>
@@ -88,7 +86,9 @@ function NavScrollExample(): JSX.Element {
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
-        <Navbar.Brand href="/">MoviePro</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/">
+          MoviePro
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -115,11 +115,13 @@ function NavScrollExample(): JSX.Element {
               <NavDropdown.Item href="LatestMovie">
                 Latest Movie
               </NavDropdown.Item>
-              <NavDropdown.Item href="MasterPiece">
+              <NavDropdown.Item as={Link} to="/MasterPiece">
                 Master Piece
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="Community">Community</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/Community">
+                Community
+              </NavDropdown.Item>
             </NavDropdown>
             <Nav.Link href="#" disabled>
               Link
@@ -137,9 +139,8 @@ function NavScrollExample(): JSX.Element {
           </Form>
           <Nav>
             <Nav.Link
-              href="Login"
               onClick={() => {
-                navigate("/login");
+                navigate("/Login");
               }}
               className="LoginButton"
             >
@@ -148,7 +149,6 @@ function NavScrollExample(): JSX.Element {
           </Nav>
           <Nav>
             <Nav.Link
-              href="SignUp"
               onClick={() => {
                 navigate("/SignUp");
               }}
