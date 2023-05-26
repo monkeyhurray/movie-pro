@@ -1,9 +1,8 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express, NextFunction, Request, Response } from "express";
 import rootRouter from "./routes/rootRouter";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import User from "./models/User";
-import { postSignUp } from "./controllers/userController";
+import { postSignUp, logOut } from "./controllers/userController";
 
 require("dotenv").config();
 const path = require("path");
@@ -36,21 +35,30 @@ app.use(
     store: MongoStore.create({ mongoUrl: mongoUrl }),
   })
 );
-app.post("/SignUp", postSignUp, (req: Request, res: Response): void => {
-  const user = new User(req.body);
-  user
-    .save()
-    .then(() => {
-      res.status(200).json({
-        sucess: true,
-      });
-      res.redirect("/");
-    })
-    .catch((error: Error) => {
-      console.error(error);
-      res.redirect("/SignUp");
+app.post(
+  "/SignUp",
+  (req: Request, res: Response, next: NextFunction) => {
+    postSignUp(req, res, next);
+  },
+  (req: Request, res: Response): void => {
+    res.status(200).json({
+      success: true,
     });
-});
+    res.redirect("/");
+  }
+);
+
+app.post(
+  "/",
+  (req: Request, res: Response, next: NextFunction) => {
+    logOut(req, res, next);
+  },
+  (req: Request, res: Response): void => {
+    res.status(200).json({
+      success: true,
+    });
+  }
+);
 //수정하기
 
 export default app;

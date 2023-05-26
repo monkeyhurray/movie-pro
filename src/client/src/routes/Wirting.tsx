@@ -57,7 +57,7 @@ function SizesExample() {
           variant="secondary"
           size="lg"
           onClick={() => {
-            navigate("/Community");
+            navigate("/community");
           }}
         >
           Cancel

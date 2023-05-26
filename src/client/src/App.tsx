@@ -46,15 +46,15 @@ function App() {
             }
           />
 
-          <Route path="/Community" element={<Community />} />
+          <Route path="/community" element={<Community />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/SignUp" element={<SignUp />} />
+          <Route path="/signUp" element={<SignUp />} />
           <Route path="/movie" element={<Movie />} />
-          <Route path="/LatestMovie" element={<LatestMovie />} />
-          <Route path="/MasterPiece" element={<MasterPiece />} />
+          <Route path="/latestMovie" element={<LatestMovie />} />
+          <Route path="/masterPiece" element={<MasterPiece />} />
 
-          <Route path="/Wirting" element={<Wirting />} />
-          <Route path="/MyPage" element={<MyPage />} />
+          <Route path="/wirting" element={<Wirting />} />
+          <Route path="/myPage" element={<MyPage />} />
           <Route
             path="*"
             element={
@@ -115,11 +115,11 @@ function NavScrollExample(): JSX.Element {
               <NavDropdown.Item href="LatestMovie">
                 Latest Movie
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/MasterPiece">
+              <NavDropdown.Item as={Link} to="/masterPiece">
                 Master Piece
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item as={Link} to="/Community">
+              <NavDropdown.Item as={Link} to="/community">
                 Community
               </NavDropdown.Item>
             </NavDropdown>
@@ -140,7 +140,7 @@ function NavScrollExample(): JSX.Element {
           <Nav>
             <Nav.Link
               onClick={() => {
-                navigate("/Login");
+                navigate("/login");
               }}
               className="LoginButton"
             >
@@ -150,7 +150,7 @@ function NavScrollExample(): JSX.Element {
           <Nav>
             <Nav.Link
               onClick={() => {
-                navigate("/SignUp");
+                navigate("/signUp");
               }}
               className="SignUpButton"
             >

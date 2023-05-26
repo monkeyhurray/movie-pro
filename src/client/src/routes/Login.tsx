@@ -5,29 +5,9 @@ import "../scss/Login.scss";
 
 function Login(): JSX.Element {
   return (
-    <form className="loginPage" action="/Login" method="post">
+    <form className="loginPage" action="/login" method="post">
       <FormGroupExample />
     </form>
-  );
-}
-
-function OutlineTypesExample(): JSX.Element {
-  let navigate = useNavigate();
-  return (
-    <>
-      <Button variant="outline-primary" type="submit">
-        Login
-      </Button>{" "}
-      <Button
-        onClick={() => {
-          navigate("/SignUp");
-        }}
-        variant="outline-secondary"
-      >
-        Sign Up
-      </Button>{" "}
-      <Button variant="outline-success">Login as GitHub</Button>{" "}
-    </>
   );
 }
 
@@ -51,4 +31,23 @@ function FormGroupExample(): JSX.Element {
   );
 }
 
+function OutlineTypesExample(): JSX.Element {
+  let navigate = useNavigate();
+  return (
+    <>
+      <Button variant="outline-primary" type="submit">
+        Login
+      </Button>{" "}
+      <Button
+        onClick={() => {
+          navigate("/signUp");
+        }}
+        variant="outline-secondary"
+      >
+        Sign Up
+      </Button>{" "}
+      <Button variant="outline-success">Login as GitHub</Button>{" "}
+    </>
+  );
+}
 export default Login;

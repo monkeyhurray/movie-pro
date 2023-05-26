@@ -23,14 +23,12 @@ function SignUp() {
   return (
     <form className="frame" name="signUpForm" method="post">
       <FormFloatingBasicExample />
-      <SizesExample />
     </form>
   );
 }
 
 function FormFloatingBasicExample(): JSX.Element {
   const dispatch = useDispatch<ThunkDispatch<RootState, unknown, AnyAction>>();
-  const selector = useSelector((state) => {});
 
   const id = useSelector((state: RootState) => state.user.id);
   const email = useSelector((state: RootState) => state.user.email);
@@ -57,6 +55,7 @@ function FormFloatingBasicExample(): JSX.Element {
       signUpUser(dataToSubmit)
     );
   };
+
   return (
     <div className="box">
       <tr>
@@ -101,7 +100,7 @@ function FormFloatingBasicExample(): JSX.Element {
 
       <FloatingLabel controlId="floatingInput" label="Name" className="mb3">
         <Form.Control
-          type="Name"
+          type="text"
           placeholder="name"
           value={name}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -116,7 +115,7 @@ function FormFloatingBasicExample(): JSX.Element {
         className="mb4"
       >
         <Form.Control
-          type="nick Name"
+          type="text"
           placeholder="nick name"
           value={username}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -154,16 +153,26 @@ function FormFloatingBasicExample(): JSX.Element {
           }
         />
       </FloatingLabel>
+      <SizesExample handleSignUp={handleSignUp} />
     </div>
   );
 }
 
-function SizesExample() {
+function SizesExample({
+  handleSignUp,
+}: {
+  handleSignUp: (e: React.FormEvent<HTMLFormElement>) => void;
+}) {
   let navigate = useNavigate();
   return (
     <>
       <div className="signBtn">
-        <Button variant="primary" size="sm" type="submit">
+        <Button
+          variant="primary"
+          size="sm"
+          type="submit"
+          onClick={() => handleSignUp}
+        >
           Sign Up
         </Button>{" "}
         <Button
