@@ -116,14 +116,26 @@ function NavScrollExample(): JSX.Element {
               Movie
             </Nav.Link>
             <NavDropdown title="MovieInfo" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="LatestMovie">
+              <NavDropdown.Item
+                onClick={() => {
+                  navigate("/latestMovie");
+                }}
+              >
                 Latest Movie
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/masterPiece">
+              <NavDropdown.Item
+                onClick={() => {
+                  navigate("/masterPiece");
+                }}
+              >
                 Master Piece
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item as={Link} to="/community">
+              <NavDropdown.Item
+                onClick={() => {
+                  navigate("/community");
+                }}
+              >
                 Community
               </NavDropdown.Item>
             </NavDropdown>

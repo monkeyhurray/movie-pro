@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction, Dispatch } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
-import { Action } from "redux";
 import axios from "axios";
+import { ThunkAction } from "@reduxjs/toolkit";
+
+type MyActionType = { type: string; payload: boolean };
 
 interface confirmUserState {
   loggedIn: boolean;
@@ -25,7 +27,8 @@ const loggedInUserSlice = createSlice({
 export const { setLoggedIn } = loggedInUserSlice.actions;
 
 export const confirmUser =
-  () => async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+  (): ThunkAction<Promise<void>, RootState, unknown, MyActionType> =>
+  async (dispatch, getState): Promise<void> => {
     try {
       const response = await axios.get("/");
       const isLoggedIn = response.data.loggedIn;

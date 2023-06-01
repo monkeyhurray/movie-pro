@@ -25,8 +25,6 @@ export const postSignUp: RequestHandler<{}, {}, SignUpData> = async (
 ) => {
   const { id, email, name, userName, password, password2 } = req.body;
   if (!password2 || password !== password2) {
-    console.log(password);
-    console.log(password2);
     return res.status(400).send("Passwords do not match");
   }
   const user = await User.findOne({ id, socialOnly: false });
@@ -66,7 +64,7 @@ export const Login: RequestHandler = async (req, res) => {
 
   const confirm = await bcrypt.compare(password, user.password);
   if (!confirm) {
-    return res.redirect("/login?error=Wrong passwordr");
+    return res.redirect("/login?error=Wrong password");
   }
 
   const sessionData = req.session as CustomSessionData;

@@ -13,16 +13,17 @@ import {
   setId,
   setEmail,
   setName,
-  setUsername,
+  setUserName,
   setPassword,
   setPassword2,
 } from "../redux/modules/user/signUpUser";
+import { confirmUser } from "../redux/modules/user/confirmUser";
 import "../scss/SignUp.scss";
 
 function SignUp() {
-  const dispatch = useDispatch<ThunkDispatch<RootState, any, AnyAction>>();
+  const dispatch = useDispatch();
 
-  const { id, email, name, username, password, password2 } = useSelector(
+  const { id, email, name, userName, password, password2 } = useSelector(
     (state: RootState) => state.user
   );
 
@@ -30,8 +31,6 @@ function SignUp() {
     e.preventDefault();
 
     if (password !== password2) {
-      console.log(password);
-      console.log(password2);
       console.log("Passwords do not match");
       return;
     }
@@ -42,7 +41,7 @@ function SignUp() {
         id,
         email,
         name,
-        username,
+        userName,
         password,
         password2,
       };
@@ -69,7 +68,7 @@ function SignUp() {
         id,
         email,
         name,
-        username,
+        userName,
         password,
         password2,
       };
@@ -88,7 +87,7 @@ function SignUp() {
       // 이후 필요한 처리
     }
   };
-
+  const isSignUpSuccess = async (params: any) => {};
   return (
     <form
       className="frame"
@@ -105,7 +104,7 @@ function SignUp() {
 function FormFloatingBasicExample(): JSX.Element {
   const dispatch = useDispatch<ThunkDispatch<RootState, any, AnyAction>>();
 
-  const { id, email, name, username, password, password2 } = useSelector(
+  const { id, email, name, userName, password, password2 } = useSelector(
     (state: RootState) => state.user
   );
 
@@ -181,9 +180,9 @@ function FormFloatingBasicExample(): JSX.Element {
                   type="text"
                   placeholder="Username"
                   name="username"
-                  value={username}
+                  value={userName}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    dispatch(setUsername(e.target.value))
+                    dispatch(setUserName(e.target.value))
                   }
                 />
               </FloatingLabel>
@@ -238,10 +237,36 @@ interface SizesExampleProps {
 }
 
 function SizesExample({ handleButtonClick }: SizesExampleProps): JSX.Element {
+  const navigate = useNavigate();
+  const dispatch = useDispatch<ThunkDispatch<RootState, unknown, AnyAction>>();
+  const handleSignUpClick = async () => {
+    await handleButtonClick(); // 회원가입 로직 실행
+
+    // 회원가입 성공한 경우 홈으로 이동
+    await dispatch(confirmUser()); // 로그인 상태를 확인하고 Redux 상태 업데이트
+
+    // 이동을 디스패치한 후에는 로그인 상태를 기다린 다음에 페이지 이동을 수행합니다.
+    const isLoggedIn = useSelector(
+      (state: RootState) => state.loggedInUser.loggedIn
+    );
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  };
   return (
-    <Button variant="primary" size="lg" onClick={handleButtonClick}>
-      Sign Up
-    </Button>
+    <div>
+      <Button variant="primary" size="lg" onClick={handleSignUpClick}>
+        Sign Up
+      </Button>
+
+      <Button
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        Close
+      </Button>
+    </div>
   );
 }
 export default SignUp;

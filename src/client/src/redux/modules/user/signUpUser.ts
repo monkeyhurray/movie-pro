@@ -7,7 +7,7 @@ interface UserState {
   id: string;
   email: string;
   name: string;
-  username: string;
+  userName: string;
   password: string;
   password2: string;
 }
@@ -16,7 +16,7 @@ const initialState: UserState = {
   id: "",
   email: "",
   name: "",
-  username: "",
+  userName: "",
   password: "",
   password2: "",
 };
@@ -34,8 +34,8 @@ const signUpUserSlice = createSlice({
     setName: (state, action: PayloadAction<string>) => {
       state.name = action.payload;
     },
-    setUsername: (state, action: PayloadAction<string>) => {
-      state.username = action.payload;
+    setUserName: (state, action: PayloadAction<string>) => {
+      state.userName = action.payload;
     },
     setPassword: (state, action: PayloadAction<string>) => {
       state.password = action.payload;
@@ -49,7 +49,7 @@ export const {
   setId,
   setEmail,
   setName,
-  setUsername,
+  setUserName,
   setPassword,
   setPassword2,
 } = signUpUserSlice.actions;
@@ -63,8 +63,10 @@ export const signUpUser =
         type: UserActionTypes.SIGN_UP_USER,
         payload: response.data,
       });
+      console.log("회원가입이 성공적으로 처리되었습니다.");
     } catch (error) {
       alert("가입 오류가 발생하였습니다.");
+      console.error("회원가입 중 오류가 발생했습니다.", error);
     }
   };
 
