@@ -2,8 +2,9 @@
 import React, { lazy, Suspense } from "react";
 import { wiseSaying, num } from "./wiseSaying";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
-import { signUpUser } from "./redux/modules/user/signUpUser";
+
 import "bootstrap/dist/css/bootstrap.css";
+import { useSelector } from "react-redux";
 
 import {
   Button,
@@ -14,11 +15,10 @@ import {
   NavDropdown,
   Carousel,
   Spinner,
-  Placeholder,
-  Card,
 } from "react-bootstrap";
 import "./scss/App.scss";
 import session from "express-session";
+import { RootState } from "./redux/store";
 
 const Movie = lazy(() => import("./routes/Movie"));
 const Login = lazy(() => import("./routes/Login"));
@@ -82,7 +82,11 @@ function BorderExample() {
 }
 
 function NavScrollExample(): JSX.Element {
+  const loggedIn = useSelector(
+    (state: RootState) => state.loggedInUser.loggedIn
+  );
   const navigate = useNavigate();
+
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
@@ -137,25 +141,30 @@ function NavScrollExample(): JSX.Element {
             />
             <Button variant="outline-success">Search</Button>
           </Form>
+
           <Nav>
-            <Nav.Link
-              onClick={() => {
-                navigate("/login");
-              }}
-              className="LoginButton"
-            >
-              Login
-            </Nav.Link>
-          </Nav>
-          <Nav>
-            <Nav.Link
-              onClick={() => {
-                navigate("/signUp");
-              }}
-              className="SignUpButton"
-            >
-              SignUp
-            </Nav.Link>
+            {loggedIn ? ( // loggedIn 상태에 따라 다른 내용 보여주기
+              <Nav.Link className="LoggedInContent">I'm User</Nav.Link>
+            ) : (
+              <>
+                <Nav.Link
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                  className="LoginButton"
+                >
+                  Login
+                </Nav.Link>
+                <Nav.Link
+                  onClick={() => {
+                    navigate("/signUp");
+                  }}
+                  className="SignUpButton"
+                >
+                  SignUp
+                </Nav.Link>
+              </>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

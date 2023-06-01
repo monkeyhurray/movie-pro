@@ -1,6 +1,7 @@
 import express, { Express, NextFunction, Request, Response } from "express";
 import rootRouter from "./routes/rootRouter";
 import session from "express-session";
+import axios from "axios";
 import MongoStore from "connect-mongo";
 import { postSignUp, logOut } from "./controllers/userController";
 
@@ -23,10 +24,10 @@ if (!sessionId) {
 const app: Express = express();
 
 app.use(express.static(path.join(__dirname, "../client/build")));
-app.use("/", rootRouter);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 app.use(
   session({
     secret: sessionId,
@@ -35,18 +36,12 @@ app.use(
     store: MongoStore.create({ mongoUrl: mongoUrl }),
   })
 );
-app.post(
-  "/SignUp",
-  (req: Request, res: Response, next: NextFunction) => {
-    postSignUp(req, res, next);
-  },
-  (req: Request, res: Response): void => {
-    res.status(200).json({
-      success: true,
-    });
+app.use("/", rootRouter);
+app.post("/signUp", (req: Request, res: Response, next: NextFunction) => {
+  postSignUp(req, res, () => {
     res.redirect("/");
-  }
-);
+  });
+});
 
 app.post(
   "/",

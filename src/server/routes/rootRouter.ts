@@ -7,22 +7,22 @@ rootRouter.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../../../client/build/index.html"));
 });
 
-rootRouter.get("/MasterPiece", (req, res) => {
+rootRouter.get("/masterPiece", (req, res) => {
   res.sendFile(path.join(__dirname + "../../../client/build/index.html"));
 });
-rootRouter.get("/LatestMovie", (req, res) => {
+rootRouter.get("/latestMovie", (req, res) => {
   res.sendFile(path.join(__dirname + "../../../client/build/index.html"));
 });
-rootRouter.get("/SignUp", (req, res) => {
+rootRouter.get("/signUp", (req, res) => {
   res.sendFile(path.join(__dirname + "../../../client/build/index.html"));
 });
-rootRouter.get("/Login", (req, res) => {
+rootRouter.get("/login", (req, res) => {
   res.sendFile(path.join(__dirname + "../../../client/build/index.html"));
 });
-rootRouter.get("/Community", requireLogin, (req, res) => {
+rootRouter.get("/community", requireLogin, (req, res) => {
   res.sendFile(path.join(__dirname + "../../../client/build/index.html"));
 });
-rootRouter.get("/MyPage", requireLogin, (req, res) => {
+rootRouter.get("/myPage", requireLogin, (req, res) => {
   res.sendFile(path.join(__dirname + "../../../client/build/index.html"));
 });
 //수정하기

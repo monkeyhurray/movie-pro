@@ -2,7 +2,6 @@ import { createSlice, PayloadAction, Dispatch } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../../store";
 import { UserActionTypes } from "../constants/actionTypes";
-import { Action } from "redux";
 
 interface UserState {
   id: string;
@@ -46,7 +45,6 @@ const signUpUserSlice = createSlice({
     },
   },
 });
-
 export const {
   setId,
   setEmail,
@@ -58,15 +56,15 @@ export const {
 
 export const signUpUser =
   (dataToSubmit: UserState) =>
-  async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+  async (dispatch: Dispatch, getState: () => RootState) => {
     try {
-      const response = await axios.post("/SignUp", dataToSubmit);
+      const response = await axios.post("/signUp", dataToSubmit);
       dispatch({
         type: UserActionTypes.SIGN_UP_USER,
         payload: response.data,
       });
     } catch (error) {
-      // 에러 처리
+      alert("가입 오류가 발생하였습니다.");
     }
   };
 
