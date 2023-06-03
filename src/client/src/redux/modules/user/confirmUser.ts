@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, Dispatch } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 import axios from "axios";
 import { ThunkAction } from "@reduxjs/toolkit";

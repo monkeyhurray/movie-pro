@@ -3,7 +3,7 @@ import rootRouter from "./routes/rootRouter";
 import session from "express-session";
 import axios from "axios";
 import MongoStore from "connect-mongo";
-import { postSignUp, logOut } from "./controllers/userController";
+import { postSignUp, logOut, postLogin } from "./controllers/userController";
 
 require("dotenv").config();
 const path = require("path");
@@ -39,6 +39,12 @@ app.use(
 app.use("/", rootRouter);
 app.post("/signUp", (req: Request, res: Response, next: NextFunction) => {
   postSignUp(req, res, () => {
+    res.redirect("/");
+  });
+});
+
+app.post("/login", (req: Request, res: Response, next: NextFunction) => {
+  postLogin(req, res, () => {
     res.redirect("/");
   });
 });

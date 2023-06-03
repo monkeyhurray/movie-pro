@@ -55,7 +55,7 @@ export const postSignUp: RequestHandler<{}, {}, SignUpData> = async (
   }
 };
 
-export const Login: RequestHandler = async (req, res) => {
+export const postLogin: RequestHandler = async (req, res) => {
   const { id, password } = req.body;
   const user = await User.findOne({ id, socialOnly: false });
   if (!user) {
