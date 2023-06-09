@@ -2,69 +2,116 @@
 import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logInUser, setId, setPassword } from "../redux/modules/user/logInUser";
+import { ThunkDispatch } from "redux-thunk";
+import {
+  MyActionType,
+  logInUser,
+  setId,
+  setPassword,
+} from "../redux/modules/user/logInUser";
 import "../scss/Login.scss";
 import { RootState } from "../../src/redux/store";
 
+interface OutlineTypesExampleProps {
+  handleSubmit: (e: React.FormEvent) => Promise<void>;
+}
+type MyDispatch = ThunkDispatch<RootState, unknown, MyActionType>;
+
 function Login(): JSX.Element {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const id = useSelector((state: RootState) => state.logInUser.id);
-  const password = useSelector((state: RootState) => state.logInUser.password);
+  const dispatch: MyDispatch = useDispatch();
+  const { id, password } = useSelector((state: RootState) => state.logInUser);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(logInUser({ id, password }));
-    // 로그인 요청 보내기
-    const response = await fetch("/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id, password }),
-    });
+    try {
+      const dataToSubmit = {
+        id,
+        password,
+      };
 
-    if (response.ok) {
-      // 로그인 성공 시 홈으로 리다이렉트
-      navigate("/");
-    } else {
-      // 로그인 실패 시 에러 처리
-      alert("로그인에 실패하셨습니다.");
-      console.error("로그인 실패");
+      await dispatch(logInUser(dataToSubmit));
+      console.log("로그인이 되었습니다.");
+    } catch (error) {
+      console.log("로그인 중 오류가 발생하였습니다.");
     }
   };
+
   return (
-    <form className="loginPage" action="/login" method="post">
-      <FormGroupExample />
+    <form className="loginPage" onSubmit={handleSubmit}>
+      <div>
+        <FormGroupExample />
+      </div>
+      <OutlineTypesExample handleSubmit={handleSubmit} />
     </form>
   );
 }
 
 function FormGroupExample(): JSX.Element {
+  const dispatch = useDispatch();
+  const { id, password } = useSelector((state: RootState) => state.logInUser);
   return (
     <div className="id">
       <>
-        <Form className="formId">
+        <div className="formId">
           <Form.Group className="mb-3" controlId="formGroupEmail">
             <Form.Label>ID</Form.Label>
-            <Form.Control type="id" placeholder="id" />
+            <Form.Control
+              type="text"
+              placeholder="id"
+              value={id}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                dispatch(setId(e.target.value))
+              }
+            />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formGroupPassword">
             <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" />
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                dispatch(setPassword(e.target.value))
+              }
+            />
           </Form.Group>
-        </Form>
+        </div>
       </>
-      <OutlineTypesExample />
     </div>
   );
 }
 
-function OutlineTypesExample(): JSX.Element {
-  let navigate = useNavigate();
+function OutlineTypesExample({
+  handleSubmit,
+}: OutlineTypesExampleProps): JSX.Element {
+  type MyDispatch = ThunkDispatch<RootState, unknown, MyActionType>;
+
+  const dispatch: MyDispatch = useDispatch();
+  const navigate = useNavigate();
+  const { id, password } = useSelector((state: RootState) => state.logInUser);
+  const handleSignUpClick = async (e: React.FormEvent) => {
+    await handleSubmit(e);
+
+    try {
+      const dataToSubmit = {
+        id,
+        password,
+      };
+
+      await dispatch(logInUser(dataToSubmit));
+      console.log("로그인이 되었습니다.");
+    } catch (error) {
+      console.log("로그인 중 오류가 발생하였습니다.");
+    }
+  };
+
   return (
-    <>
-      <Button variant="outline-primary" type="submit">
+    <div>
+      <Button
+        variant="outline-primary"
+        type="submit"
+        onClick={handleSignUpClick}
+      >
         Login
       </Button>{" "}
       <Button
@@ -76,7 +123,7 @@ function OutlineTypesExample(): JSX.Element {
         Sign Up
       </Button>{" "}
       <Button variant="outline-success">Login as GitHub</Button>{" "}
-    </>
+    </div>
   );
 }
 export default Login;

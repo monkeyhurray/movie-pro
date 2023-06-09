@@ -1,8 +1,14 @@
 import { RequestHandler } from "express";
 import User from "../models/User";
 import bcrypt from "bcrypt";
-
+import { RootState, AppDispatch } from "../../client/src/redux/store";
 import { Session } from "express-session";
+import {
+  logInUser,
+  setId,
+  setPassword,
+} from "../../client/src/redux/modules/user/logInUser";
+import { Store } from "@reduxjs/toolkit";
 
 interface SignUpData {
   id: string;
@@ -17,7 +23,7 @@ interface CustomSessionData extends Session {
   user?: string;
 }
 
-export const getSignUp: RequestHandler = (req, res) => res.render("signUp");
+export const getSignUp: RequestHandler = (req, res) => res.redirect("/signUp");
 
 export const postSignUp: RequestHandler<{}, {}, SignUpData> = async (
   req,
@@ -56,21 +62,36 @@ export const postSignUp: RequestHandler<{}, {}, SignUpData> = async (
 };
 
 export const postLogin: RequestHandler = async (req, res) => {
+  const store = req.app.get("store") as Store<RootState>;
   const { id, password } = req.body;
-  const user = await User.findOne({ id, socialOnly: false });
-  if (!user) {
-    return res.redirect("/login");
+
+  try {
+    const user = await User.findOne({ id, socialOnly: true });
+    if (!user) {
+      return res.redirect("/login");
+    }
+
+    const confirm = await bcrypt.compare(password, user.password);
+    if (!confirm) {
+      return res.redirect("/login?error=Wrong password");
+    }
+    const sessionData = req.session as CustomSessionData;
+    sessionData.user = user.id;
+
+    const dataToSubmit = {
+      id,
+      password,
+    };
+
+    store.dispatch(setId(id));
+    store.dispatch(setPassword(password));
+    await (store.dispatch as AppDispatch)(logInUser(dataToSubmit));
+
+    return res.redirect("/");
+  } catch (error) {
+    console.error("로그인 중 오류 발생");
+    return res.status(500).json({ error: "로그인 중 오류가 발생했습니다." });
   }
-
-  const confirm = await bcrypt.compare(password, user.password);
-  if (!confirm) {
-    return res.redirect("/login?error=Wrong password");
-  }
-
-  const sessionData = req.session as CustomSessionData;
-  sessionData.user = user.id;
-
-  return res.redirect("/");
 };
 
 export const logOut: RequestHandler = (req, res) => {

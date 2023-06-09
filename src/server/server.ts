@@ -1,7 +1,6 @@
 import express, { Express, NextFunction, Request, Response } from "express";
 import rootRouter from "./routes/rootRouter";
 import session from "express-session";
-import axios from "axios";
 import MongoStore from "connect-mongo";
 import { postSignUp, logOut, postLogin } from "./controllers/userController";
 

@@ -87,7 +87,7 @@ function SignUp() {
       // 이후 필요한 처리
     }
   };
-  const isSignUpSuccess = async (params: any) => {};
+
   return (
     <form
       className="frame"
@@ -95,7 +95,9 @@ function SignUp() {
       method="post"
       onSubmit={handleSignUp}
     >
-      <FormFloatingBasicExample />
+      <div className="box">
+        <FormFloatingBasicExample />
+      </div>
       <SizesExample handleButtonClick={handleButtonClick} />
     </form>
   );
@@ -109,126 +111,120 @@ function FormFloatingBasicExample(): JSX.Element {
   );
 
   return (
-    <div className="box">
-      <table>
-        <tbody>
-          <tr>
-            <td>
-              <FloatingLabel
-                controlId="floatingInput"
-                label="Id"
-                className="mb1"
-              >
-                <Form.Control
-                  type="text"
-                  placeholder="Id"
-                  name="id"
-                  value={id}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    dispatch(setId(e.target.value))
-                  }
-                />
-              </FloatingLabel>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <FloatingLabel
-                controlId="floatingInput"
-                label="Email address"
-                className="mb1"
-              >
-                <Form.Control
-                  type="email"
-                  placeholder="name@example.com"
-                  name="email"
-                  value={email}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    dispatch(setEmail(e.target.value))
-                  }
-                />
-              </FloatingLabel>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <FloatingLabel
-                controlId="floatingInput"
-                label="Name"
-                className="mb1"
-              >
-                <Form.Control
-                  type="text"
-                  placeholder="Name"
-                  name="name"
-                  value={name}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    dispatch(setName(e.target.value))
-                  }
-                />
-              </FloatingLabel>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <FloatingLabel
-                controlId="floatingInput"
-                label="Username"
-                className="mb1"
-              >
-                <Form.Control
-                  type="text"
-                  placeholder="Username"
-                  name="username"
-                  value={userName}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    dispatch(setUserName(e.target.value))
-                  }
-                />
-              </FloatingLabel>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <FloatingLabel
-                controlId="floatingPassword"
-                label="Password"
-                className="mb1"
-              >
-                <Form.Control
-                  type="password"
-                  placeholder="Password"
-                  name="password"
-                  value={password}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    dispatch(setPassword(e.target.value))
-                  }
-                />
-              </FloatingLabel>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <FloatingLabel
-                controlId="floatingPassword2"
-                label="Confirm Password"
-                className="mb1"
-              >
-                <Form.Control
-                  type="password"
-                  placeholder="Confirm Password"
-                  name="password2"
-                  value={password2}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    dispatch(setPassword2(e.target.value))
-                  }
-                />
-              </FloatingLabel>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <table>
+      <tbody>
+        <tr>
+          <td>
+            <FloatingLabel controlId="floatingInput" label="Id" className="mb1">
+              <Form.Control
+                type="text"
+                placeholder="Id"
+                name="id"
+                value={id}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  dispatch(setId(e.target.value))
+                }
+              />
+            </FloatingLabel>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <FloatingLabel
+              controlId="floatingInput"
+              label="Email address"
+              className="mb1"
+            >
+              <Form.Control
+                type="email"
+                placeholder="name@example.com"
+                name="email"
+                value={email}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  dispatch(setEmail(e.target.value))
+                }
+              />
+            </FloatingLabel>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <FloatingLabel
+              controlId="floatingInput"
+              label="Name"
+              className="mb1"
+            >
+              <Form.Control
+                type="text"
+                placeholder="Name"
+                name="name"
+                value={name}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  dispatch(setName(e.target.value))
+                }
+              />
+            </FloatingLabel>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <FloatingLabel
+              controlId="floatingInput"
+              label="Username"
+              className="mb1"
+            >
+              <Form.Control
+                type="text"
+                placeholder="Username"
+                name="username"
+                value={userName}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  dispatch(setUserName(e.target.value))
+                }
+              />
+            </FloatingLabel>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <FloatingLabel
+              controlId="floatingPassword"
+              label="Password"
+              className="mb1"
+            >
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                name="password"
+                value={password}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  dispatch(setPassword(e.target.value))
+                }
+              />
+            </FloatingLabel>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <FloatingLabel
+              controlId="floatingPassword2"
+              label="Confirm Password"
+              className="mb1"
+            >
+              <Form.Control
+                type="password"
+                placeholder="Confirm Password"
+                name="password2"
+                value={password2}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  dispatch(setPassword2(e.target.value))
+                }
+              />
+            </FloatingLabel>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   );
 }
 
@@ -255,11 +251,17 @@ function SizesExample({ handleButtonClick }: SizesExampleProps): JSX.Element {
   };
   return (
     <div>
-      <Button variant="primary" size="lg" onClick={handleSignUpClick}>
+      <Button
+        className="btn2"
+        variant="primary"
+        size="lg"
+        onClick={handleSignUpClick}
+      >
         Sign Up
       </Button>
 
       <Button
+        className="btn2"
         onClick={() => {
           navigate("/");
         }}
