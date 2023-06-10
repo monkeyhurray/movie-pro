@@ -2,13 +2,21 @@ import express, { Express, NextFunction, Request, Response } from "express";
 import rootRouter from "./routes/rootRouter";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import { postSignUp, logOut, postLogin } from "./controllers/userController";
+import { loginToken } from "../server/routes/middlewares";
+import {
+  postSignUp,
+  logOut,
+  postLogin,
+  getLogin,
+} from "./controllers/userController";
 
 require("dotenv").config();
 const path = require("path");
+const cookieParser = require("cookie-parser");
 
 const mongoUrl = process.env.MONGO_URL;
 const sessionId = process.env.SESSION_ID;
+export const secretKey: string = process.env.COOKIE_SECRET || "";
 
 if (!mongoUrl) {
   console.error("MONGO_URL not set in environment variables");
@@ -26,7 +34,7 @@ app.use(express.static(path.join(__dirname, "../client/build")));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(cookieParser());
 app.use(
   session({
     secret: sessionId,
@@ -35,6 +43,7 @@ app.use(
     store: MongoStore.create({ mongoUrl: mongoUrl }),
   })
 );
+
 app.use("/", rootRouter);
 app.post("/signUp", (req: Request, res: Response, next: NextFunction) => {
   postSignUp(req, res, () => {
@@ -42,11 +51,15 @@ app.post("/signUp", (req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-app.post("/login", (req: Request, res: Response, next: NextFunction) => {
-  postLogin(req, res, () => {
-    res.redirect("/");
-  });
-});
+app.post(
+  "/login",
+  loginToken,
+  (req: Request, res: Response, next: NextFunction) => {
+    postLogin(req, res, () => {
+      res.redirect("/");
+    });
+  }
+);
 
 app.post(
   "/",
@@ -59,6 +72,11 @@ app.post(
     });
   }
 );
+app.get("/login", (req: Request, res: Response, next: NextFunction) => {
+  getLogin(req, res, () => {
+    res.redirect("/");
+  });
+});
 //수정하기
 
 export default app;

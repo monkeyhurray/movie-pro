@@ -30,10 +30,13 @@ export const postSignUp: RequestHandler<{}, {}, SignUpData> = async (
   res
 ) => {
   const { id, email, name, userName, password, password2 } = req.body;
+
   if (!password2 || password !== password2) {
     return res.status(400).send("Passwords do not match");
   }
+
   const user = await User.findOne({ id, socialOnly: false });
+
   if (user) {
     const confirm = await bcrypt.compare(password, user.password);
     if (!confirm) {
@@ -61,23 +64,15 @@ export const postSignUp: RequestHandler<{}, {}, SignUpData> = async (
   }
 };
 
+export const getLogin: RequestHandler = (req, res) => {
+  return res.redirect("/");
+};
+
 export const postLogin: RequestHandler = async (req, res) => {
   const store = req.app.get("store") as Store<RootState>;
   const { id, password } = req.body;
 
   try {
-    const user = await User.findOne({ id, socialOnly: true });
-    if (!user) {
-      return res.redirect("/login");
-    }
-
-    const confirm = await bcrypt.compare(password, user.password);
-    if (!confirm) {
-      return res.redirect("/login?error=Wrong password");
-    }
-    const sessionData = req.session as CustomSessionData;
-    sessionData.user = user.id;
-
     const dataToSubmit = {
       id,
       password,
@@ -86,7 +81,7 @@ export const postLogin: RequestHandler = async (req, res) => {
     store.dispatch(setId(id));
     store.dispatch(setPassword(password));
     await (store.dispatch as AppDispatch)(logInUser(dataToSubmit));
-
+    console.log(logInUser(dataToSubmit));
     return res.redirect("/");
   } catch (error) {
     console.error("로그인 중 오류 발생");

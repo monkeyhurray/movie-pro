@@ -1,7 +1,6 @@
 // userSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-
 import { ThunkAction } from "redux-thunk";
 import { RootState } from "../../store";
 import { UserActionTypes } from "../constants/actionTypes";

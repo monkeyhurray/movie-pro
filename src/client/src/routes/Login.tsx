@@ -12,9 +12,6 @@ import {
 import "../scss/Login.scss";
 import { RootState } from "../../src/redux/store";
 
-interface OutlineTypesExampleProps {
-  handleSubmit: (e: React.FormEvent) => Promise<void>;
-}
 type MyDispatch = ThunkDispatch<RootState, unknown, MyActionType>;
 
 function Login(): JSX.Element {
@@ -37,7 +34,7 @@ function Login(): JSX.Element {
   };
 
   return (
-    <form className="loginPage" onSubmit={handleSubmit}>
+    <form className="loginPage" method="post" onSubmit={handleSubmit}>
       <div>
         <FormGroupExample />
       </div>
@@ -83,35 +80,14 @@ function FormGroupExample(): JSX.Element {
 
 function OutlineTypesExample({
   handleSubmit,
-}: OutlineTypesExampleProps): JSX.Element {
-  type MyDispatch = ThunkDispatch<RootState, unknown, MyActionType>;
-
-  const dispatch: MyDispatch = useDispatch();
+}: {
+  handleSubmit: (e: React.FormEvent) => Promise<void>;
+}): JSX.Element {
   const navigate = useNavigate();
-  const { id, password } = useSelector((state: RootState) => state.logInUser);
-  const handleSignUpClick = async (e: React.FormEvent) => {
-    await handleSubmit(e);
-
-    try {
-      const dataToSubmit = {
-        id,
-        password,
-      };
-
-      await dispatch(logInUser(dataToSubmit));
-      console.log("로그인이 되었습니다.");
-    } catch (error) {
-      console.log("로그인 중 오류가 발생하였습니다.");
-    }
-  };
 
   return (
     <div>
-      <Button
-        variant="outline-primary"
-        type="submit"
-        onClick={handleSignUpClick}
-      >
+      <Button variant="outline-primary" type="submit" onClick={handleSubmit}>
         Login
       </Button>{" "}
       <Button
