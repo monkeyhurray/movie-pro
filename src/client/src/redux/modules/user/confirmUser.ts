@@ -1,42 +1,41 @@
+// confirmUserSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../../store";
 import axios from "axios";
 import { ThunkAction } from "@reduxjs/toolkit";
+import { RootState } from "../../store";
 
 type MyActionType = { type: string; payload: boolean };
 
 interface confirmUserState {
-  loggedIn: boolean;
+  member: boolean;
 }
+
 const initialState: confirmUserState = {
-  loggedIn: false,
+  member: false,
 };
 
-const loggedInUserSlice = createSlice({
-  name: "loggedInUser",
+const confirmUserSlice = createSlice({
+  name: "confirmUser",
   initialState,
   reducers: {
-    setLoggedIn: (
-      state,
-      action: PayloadAction<confirmUserState["loggedIn"]>
-    ) => {
-      state.loggedIn = action.payload;
+    setMember: (state, action: PayloadAction<boolean>) => {
+      state.member = action.payload;
     },
   },
 });
-export const { setLoggedIn } = loggedInUserSlice.actions;
+export const { setMember } = confirmUserSlice.actions;
 
 export const confirmUser =
   (): ThunkAction<Promise<void>, RootState, unknown, MyActionType> =>
   async (dispatch, getState): Promise<void> => {
     try {
-      const response = await axios.get("/");
+      const response = await axios.post("/");
       const isLoggedIn = response.data.loggedIn;
 
-      dispatch(setLoggedIn(isLoggedIn));
+      dispatch(setMember(isLoggedIn));
     } catch (error) {
       alert("로그인 확인이 어렵습니다.");
     }
   };
 
-export default loggedInUserSlice.reducer;
+export default confirmUserSlice.reducer;

@@ -16,6 +16,7 @@ type MyDispatch = ThunkDispatch<RootState, unknown, MyActionType>;
 
 function Login(): JSX.Element {
   const dispatch: MyDispatch = useDispatch();
+  const navigate = useNavigate();
   const { id, password } = useSelector((state: RootState) => state.logInUser);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -25,16 +26,21 @@ function Login(): JSX.Element {
         id,
         password,
       };
-
+      if (id === "" || password === "") {
+        console.log("ID와 비밀번호를 입력해주세요.");
+        return;
+      }
       await dispatch(logInUser(dataToSubmit));
+
       console.log("로그인이 되었습니다.");
+      return navigate("/");
     } catch (error) {
       console.log("로그인 중 오류가 발생하였습니다.");
     }
   };
 
   return (
-    <form className="loginPage" method="post" onSubmit={handleSubmit}>
+    <form className="loginPage" method="post">
       <div>
         <FormGroupExample />
       </div>

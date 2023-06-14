@@ -1,4 +1,4 @@
-// userSlice.ts
+// loginUserSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { ThunkAction } from "redux-thunk";
@@ -10,6 +10,7 @@ export type MyActionType = { type: string; payload: string };
 interface UserState {
   id: string;
   password: string;
+
   // 추가적인 유저 정보를 필요에 따라 포함시킬 수 있습니다.
 }
 

@@ -2,13 +2,8 @@ import express, { Express, NextFunction, Request, Response } from "express";
 import rootRouter from "./routes/rootRouter";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import { loginToken } from "../server/routes/middlewares";
-import {
-  postSignUp,
-  logOut,
-  postLogin,
-  getLogin,
-} from "./controllers/userController";
+
+import { logOut, getLogin } from "./controllers/userController";
 
 require("dotenv").config();
 const path = require("path");
@@ -41,25 +36,13 @@ app.use(
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({ mongoUrl: mongoUrl }),
+    cookie: {
+      maxAge: 3600000,
+    },
   })
 );
 
 app.use("/", rootRouter);
-app.post("/signUp", (req: Request, res: Response, next: NextFunction) => {
-  postSignUp(req, res, () => {
-    res.redirect("/");
-  });
-});
-
-app.post(
-  "/login",
-  loginToken,
-  (req: Request, res: Response, next: NextFunction) => {
-    postLogin(req, res, () => {
-      res.redirect("/");
-    });
-  }
-);
 
 app.post(
   "/",

@@ -1,29 +1,31 @@
-import express, { Router } from "express";
+import express, { Router, Request, Response } from "express";
+import path from "path";
+
+import {
+  postSignUp,
+  logOut,
+  postLogin,
+  getLogin,
+  getSignUp,
+} from "../controllers/userController";
+
 import { requireLogin } from "./middlewares";
-const path = require("path");
+
 const rootRouter: Router = express.Router();
+const staticPath = path.join(__dirname, "../../client/build");
 
-rootRouter.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../../../client/build/index.html"));
-});
+rootRouter.use(express.static(staticPath));
 
-rootRouter.get("/masterPiece", (req, res) => {
-  res.sendFile(path.join(__dirname + "../../../client/build/index.html"));
-});
-rootRouter.get("/latestMovie", (req, res) => {
-  res.sendFile(path.join(__dirname + "../../../client/build/index.html"));
-});
-rootRouter.get("/signUp", (req, res) => {
-  res.sendFile(path.join(__dirname + "../../../client/build/index.html"));
-});
-rootRouter.get("/login", (req, res) => {
-  res.sendFile(path.join(__dirname + "../../../client/build/index.html"));
-});
-rootRouter.get("/community", requireLogin, (req, res) => {
-  res.sendFile(path.join(__dirname + "../../../client/build/index.html"));
-});
-rootRouter.get("/myPage", requireLogin, (req, res) => {
-  res.sendFile(path.join(__dirname + "../../../client/build/index.html"));
-});
+const realRoot = (req: Request, res: Response) => {
+  res.sendFile(path.join(staticPath, "index.html"));
+};
+rootRouter.get("/", realRoot);
+
+rootRouter.get("/masterPiece", realRoot);
+rootRouter.get("/latestMovie", realRoot);
+rootRouter.route("/signUp").get(realRoot).post(postSignUp);
+rootRouter.route("/login").get(realRoot).post(postLogin);
+rootRouter.get("/community", requireLogin, realRoot);
+rootRouter.get("/myPage", requireLogin, realRoot);
 //수정하기
 export default rootRouter;

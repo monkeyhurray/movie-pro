@@ -19,6 +19,7 @@ import {
 import "./scss/App.scss";
 import session from "express-session";
 import { RootState } from "./redux/store";
+import { useDispatch } from "react-redux";
 
 const Movie = lazy(() => import("./routes/Movie"));
 const Login = lazy(() => import("./routes/Login"));
@@ -82,9 +83,7 @@ function BorderExample() {
 }
 
 function NavScrollExample(): JSX.Element {
-  const loggedIn = useSelector(
-    (state: RootState) => state.loggedInUser.loggedIn
-  );
+  const login = useSelector((state: RootState) => state.confirmUser.member);
   const navigate = useNavigate();
 
   return (
@@ -155,7 +154,7 @@ function NavScrollExample(): JSX.Element {
           </Form>
 
           <Nav>
-            {loggedIn ? ( // loggedIn 상태에 따라 다른 내용 보여주기
+            {login ? ( // loggedIn 상태에 따라 다른 내용 보여주기
               <Nav.Link className="LoggedInContent">I'm User</Nav.Link>
             ) : (
               <>

@@ -8,6 +8,10 @@ import {
   setId,
   setPassword,
 } from "../../client/src/redux/modules/user/logInUser";
+import {
+  setMember,
+  confirmUser,
+} from "../../client/src/redux/modules/user/confirmUser";
 import { Store } from "@reduxjs/toolkit";
 
 interface SignUpData {
@@ -73,16 +77,24 @@ export const postLogin: RequestHandler = async (req, res) => {
   const { id, password } = req.body;
 
   try {
+    const user = await User.findOne({ $and: [{ id }, { password }] });
+
     const dataToSubmit = {
       id,
       password,
     };
 
-    store.dispatch(setId(id));
-    store.dispatch(setPassword(password));
-    await (store.dispatch as AppDispatch)(logInUser(dataToSubmit));
-    console.log(logInUser(dataToSubmit));
-    return res.redirect("/");
+    if (user && (await bcrypt.compare(password, user.password))) {
+      store.dispatch(setId(id));
+      store.dispatch(setPassword(password));
+      await (store.dispatch as AppDispatch)(logInUser(dataToSubmit));
+      store.dispatch(setMember(true));
+
+      return res.json({ redirectUrl: "/" });
+    } else {
+      console.log("아이디, 비밀번호를 확인하세요.");
+      return res.redirect("/login");
+    }
   } catch (error) {
     console.error("로그인 중 오류 발생");
     return res.status(500).json({ error: "로그인 중 오류가 발생했습니다." });

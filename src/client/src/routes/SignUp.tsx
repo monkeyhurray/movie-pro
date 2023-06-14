@@ -17,7 +17,6 @@ import {
   setPassword,
   setPassword2,
 } from "../redux/modules/user/signUpUser";
-import { confirmUser } from "../redux/modules/user/confirmUser";
 import "../scss/SignUp.scss";
 
 function SignUp() {
@@ -239,15 +238,10 @@ function SizesExample({ handleButtonClick }: SizesExampleProps): JSX.Element {
     await handleButtonClick(); // 회원가입 로직 실행
 
     // 회원가입 성공한 경우 홈으로 이동
-    await dispatch(confirmUser()); // 로그인 상태를 확인하고 Redux 상태 업데이트
 
     // 이동을 디스패치한 후에는 로그인 상태를 기다린 다음에 페이지 이동을 수행합니다.
-    const isLoggedIn = useSelector(
-      (state: RootState) => state.loggedInUser.loggedIn
-    );
-    if (isLoggedIn) {
-      navigate("/");
-    }
+
+    navigate("/");
   };
   return (
     <div>
