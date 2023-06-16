@@ -19,8 +19,8 @@ rootRouter.use(express.static(staticPath));
 const realRoot = (req: Request, res: Response) => {
   res.sendFile(path.join(staticPath, "index.html"));
 };
-rootRouter.get("/", realRoot);
 
+rootRouter.get("/", realRoot);
 rootRouter.get("/masterPiece", realRoot);
 rootRouter.get("/latestMovie", realRoot);
 rootRouter.route("/signUp").get(realRoot).post(postSignUp);

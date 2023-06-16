@@ -233,15 +233,10 @@ interface SizesExampleProps {
 
 function SizesExample({ handleButtonClick }: SizesExampleProps): JSX.Element {
   const navigate = useNavigate();
-  const dispatch = useDispatch<ThunkDispatch<RootState, unknown, AnyAction>>();
   const handleSignUpClick = async () => {
-    await handleButtonClick(); // 회원가입 로직 실행
+    await handleButtonClick();
 
-    // 회원가입 성공한 경우 홈으로 이동
-
-    // 이동을 디스패치한 후에는 로그인 상태를 기다린 다음에 페이지 이동을 수행합니다.
-
-    navigate("/");
+    navigate("/login");
   };
   return (
     <div>

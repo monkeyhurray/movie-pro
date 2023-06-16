@@ -1,8 +1,7 @@
 /* eslint-disable */
-import React, { lazy, Suspense } from "react";
+import { lazy, Suspense, useState } from "react";
 import { wiseSaying, num } from "./wiseSaying";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
-
 import "bootstrap/dist/css/bootstrap.css";
 import { useSelector } from "react-redux";
 

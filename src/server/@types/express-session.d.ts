@@ -5,5 +5,7 @@ declare module "express-session" {
     user?: {
       id: string;
     };
+
+    loggedIn?: boolean;
   }
 }

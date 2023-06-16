@@ -3,7 +3,7 @@ import rootRouter from "./routes/rootRouter";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 
-import { logOut, getLogin } from "./controllers/userController";
+import { logOut } from "./controllers/userController";
 
 require("dotenv").config();
 const path = require("path");
@@ -55,11 +55,7 @@ app.post(
     });
   }
 );
-app.get("/login", (req: Request, res: Response, next: NextFunction) => {
-  getLogin(req, res, () => {
-    res.redirect("/");
-  });
-});
+
 //수정하기
 
 export default app;

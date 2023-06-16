@@ -1,18 +1,8 @@
-import { RequestHandler } from "express";
 import User from "../models/User";
 import bcrypt from "bcrypt";
-import { RootState, AppDispatch } from "../../client/src/redux/store";
-import { Session } from "express-session";
-import {
-  logInUser,
-  setId,
-  setPassword,
-} from "../../client/src/redux/modules/user/logInUser";
-import {
-  setMember,
-  confirmUser,
-} from "../../client/src/redux/modules/user/confirmUser";
-import { Store } from "@reduxjs/toolkit";
+import axios from "axios";
+import { RequestHandler } from "express";
+import { Session, SessionData } from "express-session";
 
 interface SignUpData {
   id: string;
@@ -27,12 +17,13 @@ interface CustomSessionData extends Session {
   user?: string;
 }
 
+interface CustomLoginSessionData extends SessionData {
+  loggedIn: boolean;
+}
+
 export const getSignUp: RequestHandler = (req, res) => res.redirect("/signUp");
 
-export const postSignUp: RequestHandler<{}, {}, SignUpData> = async (
-  req,
-  res
-) => {
+export const postSignUp: RequestHandler<SignUpData> = async (req, res) => {
   const { id, email, name, userName, password, password2 } = req.body;
 
   if (!password2 || password !== password2) {
@@ -72,32 +63,29 @@ export const getLogin: RequestHandler = (req, res) => {
   return res.redirect("/");
 };
 
-export const postLogin: RequestHandler = async (req, res) => {
-  const store = req.app.get("store") as Store<RootState>;
+export const postLogin: RequestHandler<CustomLoginSessionData> = async (
+  req,
+  res
+) => {
   const { id, password } = req.body;
-
   try {
-    const user = await User.findOne({ $and: [{ id }, { password }] });
-
-    const dataToSubmit = {
-      id,
-      password,
-    };
-
-    if (user && (await bcrypt.compare(password, user.password))) {
-      store.dispatch(setId(id));
-      store.dispatch(setPassword(password));
-      await (store.dispatch as AppDispatch)(logInUser(dataToSubmit));
-      store.dispatch(setMember(true));
-
-      return res.json({ redirectUrl: "/" });
-    } else {
-      console.log("아이디, 비밀번호를 확인하세요.");
-      return res.redirect("/login");
+    const user = await User.findOne(id);
+    if (!user) {
+      return res.status(400).send({ errorMsg: "User not found." });
     }
-  } catch (error) {
-    console.error("로그인 중 오류 발생");
-    return res.status(500).json({ error: "로그인 중 오류가 발생했습니다." });
+    const passwordOk = bcrypt.compare(password, user.password);
+    if (!passwordOk) {
+      return res.status(400).send({ errorMsg: "User not found." });
+    }
+    req.session.loggedIn = true;
+    req.session.user = user;
+
+    return res.json({ success: true });
+  } catch {
+    console.log("로그인 중 오류가 발생했습니다.");
+    return res
+      .status(500)
+      .json({ error: "catch2로그인 중 오류가 발생했습니다." });
   }
 };
 
