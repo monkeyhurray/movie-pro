@@ -11,7 +11,7 @@ export interface DBUser extends Document {
 
 const userSchema = new mongoose.Schema<DBUser>({
   id: { type: String, required: true, trim: true, unique: true },
-  email: { type: String, required: true, unique: true },
+  email: { type: String, required: true },
   name: { type: String, required: true },
   userName: { type: String, required: true },
   password: { type: String, required: true },

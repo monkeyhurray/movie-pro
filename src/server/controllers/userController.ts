@@ -1,9 +1,8 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
-import axios from "axios";
-import { RequestHandler } from "express";
-import { Session, SessionData } from "express-session";
 
+import { RequestHandler } from "express";
+import { SessionData } from "express-session";
 interface SignUpData {
   id: string;
   email: string;
@@ -11,14 +10,6 @@ interface SignUpData {
   userName: string;
   password: string;
   password2: string;
-}
-
-interface CustomSessionData extends Session {
-  user?: string;
-}
-
-interface CustomLoginSessionData extends SessionData {
-  loggedIn: boolean;
 }
 
 export const getSignUp: RequestHandler = (req, res) => res.redirect("/signUp");
@@ -63,35 +54,33 @@ export const getLogin: RequestHandler = (req, res) => {
   return res.redirect("/");
 };
 
-export const postLogin: RequestHandler<CustomLoginSessionData> = async (
-  req,
-  res
-) => {
+export const postLogin: RequestHandler = async (req, res) => {
   const { id, password } = req.body;
+  const session: any = req.session;
+  //다음기회에
   try {
-    const user = await User.findOne(id);
+    const user = await User.findOne({ id });
     if (!user) {
-      return res.status(400).send({ errorMsg: "User not found." });
+      return res.status(400).send({ errorMsg: "User's not found." });
     }
-    const passwordOk = bcrypt.compare(password, user.password);
+    const passwordOk = await bcrypt.compare(password, user.password);
     if (!passwordOk) {
-      return res.status(400).send({ errorMsg: "User not found." });
+      return res.status(400).send({ errorMsg: "User's password not found." });
     }
-    req.session.loggedIn = true;
-    req.session.user = user;
+    session.loggedIn = true;
+    session.user = user;
 
     return res.json({ success: true });
-  } catch {
-    console.log("로그인 중 오류가 발생했습니다.");
+  } catch (error) {
+    console.log("controller로그인 중 오류가 발생했습니다.");
     return res
       .status(500)
-      .json({ error: "catch2로그인 중 오류가 발생했습니다." });
+      .json({ error: "catch로그인 중 오류가 발생했습니다." });
   }
 };
 
 export const logOut: RequestHandler = (req, res) => {
-  const sessionData = req.session as CustomSessionData;
-  delete sessionData.user;
+  req.session.destroy;
   return res.redirect("/");
 };
 //가입, 로그인 만들기

@@ -1,12 +1,11 @@
 /* eslint-disable */
-import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 import {
   MyActionType,
-  logInUser,
+  //  logInUser,
   setId,
   setPassword,
 } from "../redux/modules/user/logInUser";
@@ -14,11 +13,12 @@ import { setMember } from "../redux/modules/user/confirmUser";
 import "../scss/Login.scss";
 import { RootState } from "../../src/redux/store";
 
-type MyDispatch = ThunkDispatch<RootState, unknown, MyActionType>;
+//type MyDispatch = ThunkDispatch<RootState, unknown, MyActionType>;
 
 function Login(): JSX.Element {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const { id, password } = useSelector((state: RootState) => state.logInUser);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -29,6 +29,8 @@ function Login(): JSX.Element {
         alert("ID와 비밀번호를 입력해주세요.");
         return navigate("/login");
       }
+      /* 
+
 
       const dataToSubmit = {
         id,
@@ -36,7 +38,7 @@ function Login(): JSX.Element {
       };
 
       await (dispatch as MyDispatch)(logInUser(dataToSubmit));
-      console.log(id);
+      */
       dispatch(setMember(true));
 
       console.log("로그인이 되었습니다.");

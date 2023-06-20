@@ -1,10 +1,11 @@
 // loginUserSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+/*
 import axios from "axios";
 import { ThunkAction } from "redux-thunk";
 import { RootState } from "../../store";
 import { UserActionTypes } from "../constants/actionTypes";
-
+*/
 export type MyActionType = { type: string; payload: string };
 
 interface UserState {
@@ -34,7 +35,7 @@ const logInUserSlice = createSlice({
 });
 
 export const { setId, setPassword } = logInUserSlice.actions;
-
+/**
 export const logInUser =
   (
     dataToSubmit: UserState
@@ -50,5 +51,5 @@ export const logInUser =
       console.error("로그인 중 오류 발생", error);
     }
   };
-
+ */
 export default logInUserSlice.reducer;
