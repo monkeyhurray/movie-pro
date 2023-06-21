@@ -1,13 +1,7 @@
 import express, { Router, Request, Response } from "express";
 import path from "path";
 
-import {
-  postSignUp,
-  logOut,
-  postLogin,
-  getLogin,
-  getSignUp,
-} from "../controllers/userController";
+import {} from "../controllers/userController";
 
 import { requireLogin } from "./middlewares";
 
@@ -20,12 +14,9 @@ const realRoot = (req: Request, res: Response) => {
   res.sendFile(path.join(staticPath, "index.html"));
 };
 
-rootRouter.get("/", realRoot);
-rootRouter.get("/masterPiece", realRoot);
-rootRouter.get("/latestMovie", realRoot);
-rootRouter.route("/signUp").get(realRoot).post(postSignUp);
-rootRouter.route("/login").get(realRoot).post(postLogin);
-rootRouter.get("/community", requireLogin, realRoot);
-rootRouter.get("/myPage", requireLogin, realRoot);
+rootRouter.route("/").get(realRoot);
+rootRouter.route("/masterPiece").get(realRoot);
+rootRouter.route("/latestMovie").get(realRoot);
+
 //수정하기
 export default rootRouter;

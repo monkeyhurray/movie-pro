@@ -23,13 +23,13 @@ import { useDispatch } from "react-redux";
 const Movie = lazy(() => import("./routes/Movie"));
 const Login = lazy(() => import("./routes/Login"));
 const SignUp = lazy(() => import("./routes/SignUp"));
-const Community = lazy(() => import("./routes/Community"));
 const Wirting = lazy(() => import("./routes/Wirting"));
 const LatestMovie = lazy(() => import("./routes/LatestMovie"));
 const MasterPiece = lazy(() => import("./routes/MasterPiece"));
 const MyPage = lazy(() => import("./routes/MyPage"));
 
 function App() {
+  const login = useSelector((state: RootState) => state.confirmUser.member);
   return (
     <div className="App">
       <NavScrollExample />
@@ -46,7 +46,6 @@ function App() {
             }
           />
 
-          <Route path="/community" element={<Community />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/movie" element={<Movie />} />
@@ -54,7 +53,7 @@ function App() {
           <Route path="/masterPiece" element={<MasterPiece />} />
 
           <Route path="/wirting" element={<Wirting />} />
-          <Route path="/myPage" element={<MyPage />} />
+          {login ? <Route path="/myPage" element={<MyPage />} /> : null}
           <Route
             path="*"
             element={
@@ -129,13 +128,6 @@ function NavScrollExample(): JSX.Element {
                 Master Piece
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item
-                onClick={() => {
-                  navigate("/community");
-                }}
-              >
-                Community
-              </NavDropdown.Item>
             </NavDropdown>
             <Nav.Link href="#" disabled>
               Link
@@ -153,8 +145,15 @@ function NavScrollExample(): JSX.Element {
           </Form>
 
           <Nav>
-            {login ? ( // loggedIn 상태에 따라 다른 내용 보여주기
-              <Nav.Link className="LoggedInContent">I'm User</Nav.Link>
+            {login ? ( // logIn 상태에 따라 다른 내용 보여주기
+              <Nav.Link
+                className="LoggedInContent"
+                onClick={() => {
+                  navigate("/myPage");
+                }}
+              >
+                I'm User
+              </Nav.Link>
             ) : (
               <>
                 <Nav.Link
@@ -199,18 +198,10 @@ function CarouselFadeExample(props: {
         />
       </Carousel.Item>
       <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src="holder.js/800x400?text=Second slide&bg=282c34"
-          alt={props.movieTrailer}
-        />
+        <img className="d-block w-100" alt={props.movieTrailer} />
       </Carousel.Item>
       <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src="holder.js/800x400?text=Third slide&bg=20232a"
-          alt={props.movieInfo}
-        />
+        <img className="d-block w-100" alt={props.movieInfo} />
       </Carousel.Item>
     </Carousel>
   );
