@@ -56,7 +56,7 @@ export const getLogin: RequestHandler = (req, res) => {
 
 export const postLogin: RequestHandler = async (req, res) => {
   const { id, password } = req.body;
-  const session: any = req.session;
+  const session = req.session;
   //다음기회에
   try {
     const user = await User.findOne({ id });

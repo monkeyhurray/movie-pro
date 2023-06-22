@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { Session, SessionData } from "express-session";
 import User, { DBUser } from "../models/User";
-import bcrypt from "bcrypt";
+import multer from "multer";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 import { secretKey } from "../server";
@@ -77,3 +77,14 @@ export const alreadyLoggedInUser = async (
     res.redirect("/");
   }
 };
+
+export const avatarUpload = multer({
+  dest: "uploads/avatars/",
+  limits: {
+    fileSize: 3000000,
+  },
+});
+
+export const videoUpload = multer({
+  dest: "uploads/videos/",
+});

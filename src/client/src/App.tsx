@@ -27,6 +27,7 @@ const Wirting = lazy(() => import("./routes/Wirting"));
 const LatestMovie = lazy(() => import("./routes/LatestMovie"));
 const MasterPiece = lazy(() => import("./routes/MasterPiece"));
 const MyPage = lazy(() => import("./routes/MyPage"));
+const VideoUpload = lazy(() => import("./routes/VideoUpload"));
 
 function App() {
   const login = useSelector((state: RootState) => state.confirmUser.member);
@@ -51,9 +52,14 @@ function App() {
           <Route path="/movie" element={<Movie />} />
           <Route path="/latestMovie" element={<LatestMovie />} />
           <Route path="/masterPiece" element={<MasterPiece />} />
-
+          <Route path="/videoUpload" element={<VideoUpload />} />
           <Route path="/wirting" element={<Wirting />} />
-          {login ? <Route path="/myPage" element={<MyPage />} /> : null}
+          {login ? (
+            <>
+              <Route path="/myPage" element={<MyPage />} />
+              <Route path="/videoUpload" element={<VideoUpload />} />{" "}
+            </>
+          ) : null}
           <Route
             path="*"
             element={
@@ -128,6 +134,13 @@ function NavScrollExample(): JSX.Element {
                 Master Piece
               </NavDropdown.Item>
               <NavDropdown.Divider />
+              <NavDropdown.Item
+                onClick={() => {
+                  navigate("/latestMovie");
+                }}
+              >
+                Video Upload
+              </NavDropdown.Item>
             </NavDropdown>
             <Nav.Link href="#" disabled>
               Link

@@ -7,6 +7,7 @@ export interface DBUser extends Document {
   name: string;
   userName: string;
   password: string;
+  videos: string[];
 }
 
 const userSchema = new mongoose.Schema<DBUser>({
@@ -15,6 +16,7 @@ const userSchema = new mongoose.Schema<DBUser>({
   name: { type: String, required: true },
   userName: { type: String, required: true },
   password: { type: String, required: true },
+  videos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video" }],
 });
 
 userSchema.pre("save", async function () {
