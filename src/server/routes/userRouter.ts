@@ -19,7 +19,11 @@ const userRoot = (req: Request, res: Response) => {
   res.sendFile(path.join(staticPath, "index.html"));
 };
 
-userRouter.route("/login").get(userRoot, alreadyLoggedInUser).post(postLogin);
+userRouter
+  .route("/login")
+  .all(requireLogin)
+  .get(userRoot, alreadyLoggedInUser)
+  .post(postLogin);
 userRouter.route("/signUp").get(userRoot).post(postSignUp);
 userRouter.route("/myPage").all(requireLogin).get(userRoot);
 

@@ -56,7 +56,7 @@ export const getLogin: RequestHandler = (req, res) => {
 
 export const postLogin: RequestHandler = async (req, res) => {
   const { id, password } = req.body;
-  const session = req.session;
+
   //다음기회에
   try {
     const user = await User.findOne({ id });
@@ -67,9 +67,14 @@ export const postLogin: RequestHandler = async (req, res) => {
     if (!passwordOk) {
       return res.status(400).send({ errorMsg: "User's password not found." });
     }
-    session.loggedIn = true;
-    session.user = user;
-
+    req.session.loggedIn = true;
+    req.session.user = user;
+    if (req.session.user) {
+      console.log(req.session.user + "존재해");
+    } else {
+      console.log(req.session.user + "없어");
+    }
+    req.session.save();
     return res.json({ success: true });
   } catch (error) {
     console.log("controller로그인 중 오류가 발생했습니다.");

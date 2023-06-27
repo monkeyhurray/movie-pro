@@ -1,14 +1,16 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 
-interface DBVideo {
+interface DBVideo extends Document {
   title: string;
-  fileUrl: string;
-  thumbUrl: string;
+  videoContent: string;
+  thumb: string;
+  owner: mongoose.Types.ObjectId;
 }
 const videoSchema = new mongoose.Schema<DBVideo>({
   title: { type: String, required: true, maxLength: 80 },
-  fileUrl: { type: String, required: true },
-  thumbUrl: { type: String },
+  videoContent: { type: String, required: true },
+  thumb: { type: String },
+  owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
 });
 
 const Video = mongoose.model("Video", videoSchema);

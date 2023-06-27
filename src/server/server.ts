@@ -1,6 +1,7 @@
 import express, { Express, NextFunction, Request, Response } from "express";
 import rootRouter from "./routes/rootRouter";
 import userRouter from "./routes/userRouter";
+import videoRouter from "./routes/videoRouter";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 
@@ -45,6 +46,7 @@ app.use(
 
 app.use("/", rootRouter);
 app.use("/", userRouter);
+app.use("/watch", videoRouter);
 app.post(
   "/",
   (req: Request, res: Response, next: NextFunction) => {

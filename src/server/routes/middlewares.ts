@@ -7,13 +7,8 @@ import cookieParser from "cookie-parser";
 import { secretKey } from "../server";
 
 interface ExtendedRequest extends Request {
-  session: Session &
-    Partial<SessionData> & { userId?: string; loggedIn?: boolean };
+  session: Session & Partial<SessionData>;
   currentUser?: DBUser;
-}
-
-interface CustomSessionData extends Session {
-  user?: string;
 }
 
 export const requireLogin = async (
@@ -23,7 +18,7 @@ export const requireLogin = async (
 ): Promise<void> => {
   try {
     if (req.session.loggedIn) {
-      const userId = req.session.userId;
+      const userId = req.session.user;
       const user = await User.findById(userId);
 
       if (user) {
@@ -50,7 +45,7 @@ export const SomeProtectedRoute = (
   res: Response,
   next: NextFunction
 ) => {
-  const sessionData = req.session as CustomSessionData;
+  const sessionData = req.session;
 
   if (sessionData.user) {
     // 로그인된 사용자라면 다음 미들웨어 또는 핸들러로 이동
@@ -78,8 +73,8 @@ export const alreadyLoggedInUser = async (
   }
 };
 
-export const avatarUpload = multer({
-  dest: "uploads/avatars/",
+export const thumbUpload = multer({
+  dest: "uploads/thumb/",
   limits: {
     fileSize: 3000000,
   },

@@ -16,7 +16,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 import "./scss/App.scss";
-import session from "express-session";
+
 import { RootState } from "./redux/store";
 import { useDispatch } from "react-redux";
 
@@ -27,7 +27,9 @@ const Wirting = lazy(() => import("./routes/Wirting"));
 const LatestMovie = lazy(() => import("./routes/LatestMovie"));
 const MasterPiece = lazy(() => import("./routes/MasterPiece"));
 const MyPage = lazy(() => import("./routes/MyPage"));
-const VideoUpload = lazy(() => import("./routes/VideoUpload"));
+const Watch = lazy(() => import("./routes/Watch"));
+
+export const VideoUpload = lazy(() => import("./routes/VideoUpload"));
 
 function App() {
   const login = useSelector((state: RootState) => state.confirmUser.member);
@@ -52,12 +54,13 @@ function App() {
           <Route path="/movie" element={<Movie />} />
           <Route path="/latestMovie" element={<LatestMovie />} />
           <Route path="/masterPiece" element={<MasterPiece />} />
-          <Route path="/videoUpload" element={<VideoUpload />} />
+
           <Route path="/wirting" element={<Wirting />} />
+          <Route path="/watch/upload" element={<VideoUpload />} />
           {login ? (
             <>
               <Route path="/myPage" element={<MyPage />} />
-              <Route path="/videoUpload" element={<VideoUpload />} />{" "}
+              <Route path="/watch" element={<Watch />} />{" "}
             </>
           ) : null}
           <Route
@@ -136,10 +139,10 @@ function NavScrollExample(): JSX.Element {
               <NavDropdown.Divider />
               <NavDropdown.Item
                 onClick={() => {
-                  navigate("/latestMovie");
+                  navigate("/watch");
                 }}
               >
-                Video Upload
+                Watch
               </NavDropdown.Item>
             </NavDropdown>
             <Nav.Link href="#" disabled>

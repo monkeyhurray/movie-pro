@@ -1,0 +1,13 @@
+.box {
+  display: flex;
+  margin: 0 auto;
+  border-radius: 5px;
+  width: 100%;
+  align-content: center;
+  justify-content: center;
+  overflow: auto;
+  .mb1 {
+    margin-bottom: 14px;
+    width: 800px;
+  }
+}

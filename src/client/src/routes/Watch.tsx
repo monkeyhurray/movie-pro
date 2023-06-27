@@ -1,4 +1,7 @@
+import "../scss/Watch.scss";
+import { useNavigate } from "react-router-dom";
 import { Figure } from "react-bootstrap";
+
 function Watch() {
   return (
     <>
@@ -8,13 +11,23 @@ function Watch() {
 }
 
 function FigureExample() {
+  const navigate = useNavigate();
   return (
-    <Figure>
-      <Figure.Image width={171} height={180} alt="trailler img" />
-      <Figure.Caption>
-        Nulla vitae elit libero, a pharetra augue mollis interdum.
-      </Figure.Caption>
-    </Figure>
+    <>
+      <div className="uploadBtn">
+        <button onClick={() => navigate("/watch/upload")}>video upload</button>
+      </div>
+
+      <Figure
+        className="figureFrame"
+        onClick={() => navigate("/watch/:id([0-9a-f]{24})")}
+      >
+        <Figure.Image width={171} height={180} alt="trailler img" />
+        <Figure.Caption>
+          Nulla vitae elit libero, a pharetra augue mollis interdum.
+        </Figure.Caption>
+      </Figure>
+    </>
   );
 }
 
