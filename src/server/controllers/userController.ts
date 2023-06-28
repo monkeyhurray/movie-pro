@@ -57,24 +57,25 @@ export const getLogin: RequestHandler = (req, res) => {
 export const postLogin: RequestHandler = async (req, res) => {
   const { id, password } = req.body;
 
-  //다음기회에
   try {
-    const user = await User.findOne({ id });
+    const user = await User.findOne({ where: { id } });
+
     if (!user) {
       return res.status(400).send({ errorMsg: "User's not found." });
     }
+
     const passwordOk = await bcrypt.compare(password, user.password);
+
     if (!passwordOk) {
       return res.status(400).send({ errorMsg: "User's password not found." });
     }
+
     req.session.loggedIn = true;
     req.session.user = user;
-    if (req.session.user) {
-      console.log(req.session.user + "존재해");
-    } else {
-      console.log(req.session.user + "없어");
-    }
-    req.session.save();
+
+    localStorage.setItem("user", JSON.stringify(user));
+    req.session.save(() => res.redirect("/"));
+
     return res.json({ success: true });
   } catch (error) {
     console.log("controller로그인 중 오류가 발생했습니다.");
@@ -83,6 +84,12 @@ export const postLogin: RequestHandler = async (req, res) => {
       .json({ error: "catch로그인 중 오류가 발생했습니다." });
   }
 };
+
+export const getMasterPiece: RequestHandler = (req, res) =>
+  res.redirect("/masterPiece");
+
+export const getLatestMovie: RequestHandler = (req, res) =>
+  res.redirect("/latestMovie");
 
 export const logOut: RequestHandler = (req, res) => {
   req.session.destroy;

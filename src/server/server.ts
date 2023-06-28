@@ -6,7 +6,7 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 
 import { logOut } from "./controllers/userController";
-
+import {} from "./routes/middlewares";
 require("dotenv").config();
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -27,11 +27,7 @@ if (!sessionId) {
 
 const app: Express = express();
 
-app.use(express.static(path.join(__dirname, "../client/build")));
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(cookieParser(sessionId));
 app.use(
   session({
     secret: sessionId,
@@ -40,12 +36,18 @@ app.use(
     store: MongoStore.create({ mongoUrl: mongoUrl }),
     cookie: {
       maxAge: 3600000,
+      secure: false,
     },
   })
 );
 
+app.use(express.static(path.join(__dirname, "../client/build")));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use("/", rootRouter);
 app.use("/", userRouter);
+
 app.use("/watch", videoRouter);
 app.post(
   "/",

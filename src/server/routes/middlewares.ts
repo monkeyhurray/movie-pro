@@ -4,25 +4,28 @@ import User, { DBUser } from "../models/User";
 import multer from "multer";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
-import { secretKey } from "../server";
+import { RequestHandler } from "express";
 
-interface ExtendedRequest extends Request {
-  session: Session & Partial<SessionData>;
-  currentUser?: DBUser;
-}
-
-export const requireLogin = async (
-  req: ExtendedRequest,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
+export const confirmUser: RequestHandler = async (req, res) => {};
+export const beforeLogin: RequestHandler = (req, res, next) => {
   try {
-    if (req.session.loggedIn) {
+    if (!req.session.loggedIn) {
+      next();
+    }
+  } catch (error) {
+    console.error(error);
+    res.redirect("/login");
+  }
+};
+
+export const requireLogin: RequestHandler = async (req, res, next) => {
+  try {
+    if (req.session && req.session.loggedIn) {
       const userId = req.session.user;
       const user = await User.findById(userId);
 
       if (user) {
-        req.currentUser = user;
+        req.session.user = user;
         next();
       } else {
         res.redirect("/login");
@@ -38,13 +41,10 @@ export const requireLogin = async (
     console.error(error);
     res.redirect("/login");
   }
+  next();
 };
 
-export const SomeProtectedRoute = (
-  req: ExtendedRequest,
-  res: Response,
-  next: NextFunction
-) => {
+export const SomeProtectedRoute: RequestHandler = (req, res, next) => {
   const sessionData = req.session;
 
   if (sessionData.user) {
@@ -56,10 +56,10 @@ export const SomeProtectedRoute = (
   }
 };
 
-export const alreadyLoggedInUser = async (
-  req: ExtendedRequest,
-  res: Response,
-  next: NextFunction
+export const alreadyLoggedInUser: RequestHandler = async (
+  req,
+  res,
+  next
 ): Promise<void> => {
   try {
     if (req.session && req.session.loggedIn) {
