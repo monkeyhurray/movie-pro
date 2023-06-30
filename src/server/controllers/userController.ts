@@ -11,6 +11,10 @@ interface SignUpData {
   password: string;
   password2: string;
 }
+interface LoginData {
+  id: string;
+  password: string;
+}
 
 export const getSignUp: RequestHandler = (req, res) => res.redirect("/signUp");
 
@@ -54,11 +58,10 @@ export const getLogin: RequestHandler = (req, res) => {
   return res.redirect("/");
 };
 
-export const postLogin: RequestHandler = async (req, res) => {
+export const postLogin: RequestHandler<LoginData> = async (req, res) => {
   const { id, password } = req.body;
-
   try {
-    const user = await User.findOne({ where: { id } });
+    const user = await User.findOne({ id });
 
     if (!user) {
       return res.status(400).send({ errorMsg: "User's not found." });
@@ -71,12 +74,13 @@ export const postLogin: RequestHandler = async (req, res) => {
     }
 
     req.session.loggedIn = true;
-    req.session.user = user;
+    req.session.userID = user._id;
 
-    localStorage.setItem("user", JSON.stringify(user));
-    req.session.save(() => res.redirect("/"));
+    await req.session.save();
 
-    return res.json({ success: true });
+    res.cookie("user", user._id);
+    res.send("Cookie set");
+    return res.redirect("/");
   } catch (error) {
     console.log("controller로그인 중 오류가 발생했습니다.");
     return res

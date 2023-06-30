@@ -10,13 +10,14 @@ import {
 
 const userRouter: Router = express.Router();
 
+userRouter.route("/signUp").get(getSignUp).post(postSignUp);
+
 userRouter
   .route("/login")
   .all(beforeLogin)
   .get(alreadyLoggedInUser, getLogin)
   .post(postLogin);
 
-userRouter.route("/signUp").get(getSignUp).post(postSignUp);
 userRouter.route("/myPage").all(requireLogin);
 
 export default userRouter;

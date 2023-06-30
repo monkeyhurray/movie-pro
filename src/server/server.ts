@@ -13,7 +13,6 @@ const cookieParser = require("cookie-parser");
 
 const mongoUrl = process.env.MONGO_URL;
 const sessionId = process.env.SESSION_ID;
-export const secretKey: string = process.env.COOKIE_SECRET || "";
 
 if (!mongoUrl) {
   console.error("MONGO_URL not set in environment variables");
@@ -28,6 +27,7 @@ if (!sessionId) {
 const app: Express = express();
 
 app.use(cookieParser(sessionId));
+
 app.use(
   session({
     secret: sessionId,
@@ -49,6 +49,10 @@ app.use("/", rootRouter);
 app.use("/", userRouter);
 
 app.use("/watch", videoRouter);
+app.get("/", (req, res) => {
+  console.log(req.session);
+  res.send("hello world");
+});
 app.post(
   "/",
   (req: Request, res: Response, next: NextFunction) => {

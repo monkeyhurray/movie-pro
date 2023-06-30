@@ -2,16 +2,15 @@
 import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  //  logInUser,
-  setId,
-  setPassword,
-} from "../redux/modules/user/logInUser";
+import { logInUser, setId, setPassword } from "../redux/modules/user/logInUser";
 import { setMember } from "../redux/modules/user/confirmUser";
 import "../scss/Login.scss";
 import { RootState } from "../../src/redux/store";
+import { AnyAction } from "redux";
+import { ThunkDispatch } from "redux-thunk";
 
-//type MyDispatch = ThunkDispatch<RootState, unknown, MyActionType>;
+type MyDispatch = ThunkDispatch<RootState, unknown, AnyAction>;
+type UsersCookie = string | undefined;
 
 function Login(): JSX.Element {
   const dispatch = useDispatch();
@@ -19,7 +18,7 @@ function Login(): JSX.Element {
 
   const { id, password } = useSelector((state: RootState) => state.logInUser);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleButtonClick = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
@@ -27,17 +26,29 @@ function Login(): JSX.Element {
         alert("ID와 비밀번호를 입력해주세요.");
         return navigate("/login");
       }
-      /* 
-
-
       const dataToSubmit = {
         id,
         password,
       };
-
       await (dispatch as MyDispatch)(logInUser(dataToSubmit));
-      */
-      dispatch(setMember(true));
+
+      const cookies = document.cookie.split(";");
+      let userCookie: UsersCookie;
+
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith("userID=")) {
+          userCookie = cookie.split("=")[1];
+          break;
+        }
+      }
+
+      if (userCookie) {
+        dispatch(setMember(true));
+      } else {
+        console.log("userCookie에 담기지 않음");
+        return navigate("/login");
+      }
 
       console.log("로그인이 되었습니다.");
       return navigate("/");
@@ -47,18 +58,29 @@ function Login(): JSX.Element {
   };
 
   return (
-    <form className="loginPage" method="post">
+    <form
+      className="loginPage"
+      action="/login"
+      method="post"
+      onSubmit={handleButtonClick}
+    >
       <div>
-        <FormGroupExample />
+        <FormGroupExample id={id} password={password} />
       </div>
-      <OutlineTypesExample handleSubmit={handleSubmit} />
+      <OutlineTypesExample />
     </form>
   );
 }
 
-function FormGroupExample(): JSX.Element {
+function FormGroupExample({
+  id,
+  password,
+}: {
+  id: string;
+  password: string;
+}): JSX.Element {
   const dispatch = useDispatch();
-  const { id, password } = useSelector((state: RootState) => state.logInUser);
+
   return (
     <div className="id">
       <>
@@ -91,16 +113,12 @@ function FormGroupExample(): JSX.Element {
   );
 }
 
-function OutlineTypesExample({
-  handleSubmit,
-}: {
-  handleSubmit: (e: React.FormEvent) => Promise<void>;
-}): JSX.Element {
+function OutlineTypesExample(): JSX.Element {
   const navigate = useNavigate();
 
   return (
     <div>
-      <Button variant="outline-primary" type="submit" onClick={handleSubmit}>
+      <Button variant="outline-primary" type="submit">
         Login
       </Button>{" "}
       <Button

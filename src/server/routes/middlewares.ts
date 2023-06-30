@@ -9,12 +9,12 @@ import { RequestHandler } from "express";
 export const confirmUser: RequestHandler = async (req, res) => {};
 export const beforeLogin: RequestHandler = (req, res, next) => {
   try {
-    if (!req.session.loggedIn) {
+    if (req.session.loggedIn === false) {
       next();
     }
   } catch (error) {
     console.error(error);
-    res.redirect("/login");
+    res.redirect("/");
   }
 };
 
@@ -63,8 +63,6 @@ export const alreadyLoggedInUser: RequestHandler = async (
 ): Promise<void> => {
   try {
     if (req.session && req.session.loggedIn) {
-      res.redirect("/");
-    } else {
       next();
     }
   } catch (error) {

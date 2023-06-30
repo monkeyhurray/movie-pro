@@ -10,9 +10,14 @@ interface MongoUser {
   password: string;
 }
 
+interface UserId {
+  _id: Types.ObjectId;
+}
+
 declare module "express-session" {
   interface SessionData {
     loggedIn: boolean;
     user: MongoUser;
+    userID: UserId;
   }
 }

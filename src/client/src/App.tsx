@@ -33,6 +33,7 @@ export const VideoUpload = lazy(() => import("./routes/VideoUpload"));
 
 function App() {
   const login = useSelector((state: RootState) => state.confirmUser.member);
+
   return (
     <div className="App">
       <NavScrollExample />
@@ -91,6 +92,7 @@ function BorderExample() {
 
 function NavScrollExample(): JSX.Element {
   const login = useSelector((state: RootState) => state.confirmUser.member);
+
   const navigate = useNavigate();
 
   return (
