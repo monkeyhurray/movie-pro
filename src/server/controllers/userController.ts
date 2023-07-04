@@ -2,7 +2,8 @@ import User from "../models/User";
 import bcrypt from "bcrypt";
 
 import { RequestHandler } from "express";
-import { SessionData } from "express-session";
+import jwt from "jsonwebtoken";
+
 interface SignUpData {
   id: string;
   email: string;
@@ -33,22 +34,24 @@ export const postSignUp: RequestHandler<SignUpData> = async (req, res) => {
       return res.status(400).json({ error: "Wrong password" });
     }
   }
+
   const exists = await User.exists({ $or: [{ id }, { email }, { userName }] });
+
   if (exists) {
     return res.status(400).json({ error: "User already exists" });
   }
+
   try {
-    const hashPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
       id,
       email,
       name,
       userName,
-      password: hashPassword,
+      password,
     });
 
     await newUser.save();
-    return res.redirect("/login");
+    return res.redirect("/");
   } catch (error) {
     return res.status(500).send("Failed to create user");
   }
@@ -75,11 +78,11 @@ export const postLogin: RequestHandler<LoginData> = async (req, res) => {
 
     req.session.loggedIn = true;
     req.session.userID = user._id;
-
     await req.session.save();
+    const userId = req.session.userID;
+    const token = jwt.sign({ userId }, process.env.JWT_SECRET);
+    res.cookie("token", token, { maxAge: 3600000, httpOnly: true });
 
-    res.cookie("user", user._id);
-    res.send("Cookie set");
     return res.redirect("/");
   } catch (error) {
     console.log("controller로그인 중 오류가 발생했습니다.");

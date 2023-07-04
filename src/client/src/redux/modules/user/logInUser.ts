@@ -36,7 +36,9 @@ export const logInUser =
       const response = await axios.post("/login", dataToSubmit);
       dispatch({
         type: UserActionTypes.LOGIN_USER,
-        payload: response.data,
+        payload: {
+          ...response.data,
+        },
       });
     } catch (error) {
       console.error("로그인 중 오류 발생", error);

@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction, Dispatch } from "@reduxjs/toolkit";
 import axios from "axios";
-import { RootState } from "../../store";
 import { UserActionTypes } from "../constants/actionTypes";
 
 interface UserState {
@@ -55,8 +54,7 @@ export const {
 } = signUpUserSlice.actions;
 
 export const signUpUser =
-  (dataToSubmit: UserState) =>
-  async (dispatch: Dispatch, getState: () => RootState) => {
+  (dataToSubmit: UserState) => async (dispatch: Dispatch) => {
     try {
       const response = await axios.post("/signUp", dataToSubmit);
       dispatch({

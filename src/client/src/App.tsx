@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense } from "react";
 import { wiseSaying, num } from "./wiseSaying";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
@@ -16,6 +16,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 import "./scss/App.scss";
+import Cookies from "universal-cookie";
 
 import { RootState } from "./redux/store";
 import { useDispatch } from "react-redux";
@@ -33,6 +34,8 @@ export const VideoUpload = lazy(() => import("./routes/VideoUpload"));
 
 function App() {
   const login = useSelector((state: RootState) => state.confirmUser.member);
+  const dispatch = useDispatch();
+  const cookies = new Cookies();
 
   return (
     <div className="App">

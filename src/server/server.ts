@@ -7,6 +7,7 @@ import MongoStore from "connect-mongo";
 
 import { logOut } from "./controllers/userController";
 import {} from "./routes/middlewares";
+
 require("dotenv").config();
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -43,16 +44,13 @@ app.use(
 
 app.use(express.static(path.join(__dirname, "../client/build")));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 
 app.use("/", rootRouter);
 app.use("/", userRouter);
 
 app.use("/watch", videoRouter);
-app.get("/", (req, res) => {
-  console.log(req.session);
-  res.send("hello world");
-});
+/* 
 app.post(
   "/",
   (req: Request, res: Response, next: NextFunction) => {
@@ -64,7 +62,6 @@ app.post(
     });
   }
 );
-
+*/
 //수정하기
-
 export default app;

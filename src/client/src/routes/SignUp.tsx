@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import { RootState } from "../../src/redux/store";
-import bcrypt from "bcrypt";
-import axios from "axios";
+
 import { FloatingLabel, Form, Button } from "react-bootstrap";
 
 import {
@@ -236,7 +235,7 @@ function SizesExample({ handleButtonClick }: SizesExampleProps): JSX.Element {
   const handleSignUpClick = async () => {
     await handleButtonClick();
 
-    navigate("/login");
+    navigate("/");
   };
   return (
     <div>

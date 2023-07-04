@@ -1,5 +1,3 @@
-import { Request, Response, NextFunction } from "express";
-import { Session, SessionData } from "express-session";
 import User, { DBUser } from "../models/User";
 import multer from "multer";
 import jwt from "jsonwebtoken";
@@ -9,7 +7,7 @@ import { RequestHandler } from "express";
 export const confirmUser: RequestHandler = async (req, res) => {};
 export const beforeLogin: RequestHandler = (req, res, next) => {
   try {
-    if (req.session.loggedIn === false) {
+    if (req.session.loggedIn === false || req.session.loggedIn === undefined) {
       next();
     }
   } catch (error) {
