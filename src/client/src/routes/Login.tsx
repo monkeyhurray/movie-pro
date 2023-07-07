@@ -3,7 +3,7 @@ import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logInUser, setId, setPassword } from "../redux/modules/user/logInUser";
-import { setMember } from "../redux/modules/user/confirmUser";
+import { setLoginStay } from "../redux/modules/user/confirmUser";
 import "../scss/Login.scss";
 import { RootState } from "../../src/redux/store";
 import { Action } from "redux";
@@ -28,7 +28,7 @@ function Login(): JSX.Element {
         password,
       };
       await (dispatch as MyDispatch)(logInUser(dataToSubmit));
-      dispatch(setMember(true));
+      dispatch(setLoginStay(true));
 
       console.log("로그인이 되었습니다.");
     } catch (error) {

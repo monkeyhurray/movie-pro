@@ -22,19 +22,17 @@ const userCookieSlice = createSlice({
 
 export const { setGcookie } = userCookieSlice.actions;
 
-export const signUpUser =
-  (cookieData: CookieState) => async (dispatch: Dispatch) => {
-    try {
-      const response = await axios.post("/login", cookieData);
-      dispatch({
-        type: UserActionTypes.USER_COOKIE_CONFRIM,
-        payload: response.data,
-      });
-      console.log("쿠키 전송 완료");
-    } catch (error) {
-      alert("쿠키전송 실패");
-      console.error("쿠키전송 실패", error);
+export const userCookie = async (dispatch: Dispatch) => {
+  try {
+    const response = await axios.get("/");
+    const token = response.data.token;
+    if (token) {
+      dispatch(setGcookie(token));
+      console.log("쿠키전송 성공");
     }
-  };
+  } catch (error) {
+    console.error("쿠키전송 실패", error);
+  }
+};
 
 export default userCookieSlice.reducer;

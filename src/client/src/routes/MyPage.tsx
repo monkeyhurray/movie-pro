@@ -1,8 +1,26 @@
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import { logOut } from "../redux/modules/user/confirmUser";
+
 function MyPage() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const handleLogoutClick = () => {
+    logOut(dispatch);
+  };
+
   return (
     <>
       <h4>Your Profile</h4>
-      <button onClick={() => {}}>LogOut</button>
+      <button
+        onClick={() => {
+          handleLogoutClick();
+          navigate("/");
+        }}
+      >
+        LogOut
+      </button>
     </>
   );
 }

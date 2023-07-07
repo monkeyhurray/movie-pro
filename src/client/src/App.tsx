@@ -16,7 +16,6 @@ import {
   Spinner,
 } from "react-bootstrap";
 import "./scss/App.scss";
-import Cookies from "universal-cookie";
 
 import { RootState } from "./redux/store";
 import { useDispatch } from "react-redux";
@@ -33,10 +32,12 @@ const Watch = lazy(() => import("./routes/Watch"));
 export const VideoUpload = lazy(() => import("./routes/VideoUpload"));
 
 function App() {
-  const login = useSelector((state: RootState) => state.confirmUser.member);
-  const dispatch = useDispatch();
-  const cookies = new Cookies();
+  const login = useSelector((state: RootState) => state.confirmUser.loginStay);
 
+  const cookieValue = document.cookie;
+  if (typeof cookieValue === "string" && cookieValue !== "") {
+    localStorage.setItem("userCookie", cookieValue);
+  }
   return (
     <div className="App">
       <NavScrollExample />
@@ -94,7 +95,7 @@ function BorderExample() {
 }
 
 function NavScrollExample(): JSX.Element {
-  const login = useSelector((state: RootState) => state.confirmUser.member);
+  const login = useSelector((state: RootState) => state.confirmUser.loginStay);
 
   const navigate = useNavigate();
 

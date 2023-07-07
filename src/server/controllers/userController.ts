@@ -56,7 +56,7 @@ export const postSignUp: RequestHandler<SignUpData> = async (req, res) => {
     return res.status(500).send("Failed to create user");
   }
 };
-
+//로그인
 export const getLogin: RequestHandler = (req, res) => {
   return res.redirect("/");
 };
@@ -91,7 +91,7 @@ export const postLogin: RequestHandler<LoginData> = async (req, res) => {
       .json({ error: "catch로그인 중 오류가 발생했습니다." });
   }
 };
-
+//로그인
 export const getMasterPiece: RequestHandler = (req, res) =>
   res.redirect("/masterPiece");
 
@@ -102,4 +102,4 @@ export const logOut: RequestHandler = (req, res) => {
   req.session.destroy;
   return res.redirect("/");
 };
-//가입, 로그인 만들기
+//로그아웃 세션삭제

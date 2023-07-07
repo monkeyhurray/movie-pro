@@ -2,25 +2,38 @@
 import { createSlice, PayloadAction, Dispatch } from "@reduxjs/toolkit";
 import axios from "axios";
 import { UserActionTypes } from "../constants/actionTypes";
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
+
 interface confirmUserState {
-  member: boolean;
+  loginStay: boolean;
 }
 
 const initialState: confirmUserState = {
-  member: false,
+  loginStay: false,
 };
 
 const confirmUserSlice = createSlice({
   name: "confirmUser",
   initialState,
   reducers: {
-    setMember: (state, action: PayloadAction<boolean>) => {
-      state.member = action.payload;
+    setLoginStay: (state, action: PayloadAction<boolean>) => {
+      state.loginStay = action.payload;
     },
   },
 });
-export const { setMember } = confirmUserSlice.actions;
 
+export const { setLoginStay } = confirmUserSlice.actions;
+
+export const logOut = (dispatch: Dispatch) => {
+  const response = cookies.remove("token", { path: "/" });
+  dispatch(setLoginStay(false));
+  dispatch({
+    type: UserActionTypes.DELETE_COOKIE,
+    payload: response,
+  });
+};
 export const confirmUser =
   (data: confirmUserState) => async (dispatch: Dispatch) => {
     try {
