@@ -1,9 +1,9 @@
 /* eslint-disable */
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { wiseSaying, num } from "./wiseSaying";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import {
   Button,
@@ -16,9 +16,11 @@ import {
   Spinner,
 } from "react-bootstrap";
 import "./scss/App.scss";
-
+import {
+  selectUserCookie,
+  userCookie,
+} from "../src/redux/modules/user/userCookie";
 import { RootState } from "./redux/store";
-import { useDispatch } from "react-redux";
 
 const Movie = lazy(() => import("./routes/Movie"));
 const Login = lazy(() => import("./routes/Login"));
@@ -32,7 +34,14 @@ const Watch = lazy(() => import("./routes/Watch"));
 export const VideoUpload = lazy(() => import("./routes/VideoUpload"));
 
 function App() {
+  const dispatch = useDispatch();
   const login = useSelector((state: RootState) => state.confirmUser.loginStay);
+
+  useEffect(() => {
+    if (login) {
+      userCookie(dispatch);
+    }
+  }, [dispatch, login]);
 
   const cookieValue = document.cookie;
   if (typeof cookieValue === "string" && cookieValue !== "") {

@@ -12,6 +12,7 @@ interface SignUpData {
   password: string;
   password2: string;
 }
+
 interface LoginData {
   id: string;
   password: string;
@@ -65,25 +66,23 @@ export const postLogin: RequestHandler<LoginData> = async (req, res) => {
   const { id, password } = req.body;
   try {
     const user = await User.findOne({ id });
-
     if (!user) {
       return res.status(400).send({ errorMsg: "User's not found." });
     }
 
     const passwordOk = await bcrypt.compare(password, user.password);
+    if (passwordOk) {
+      req.session.loggedIn = true;
+      req.session.userID = user._id;
+      await req.session.save();
+      const userId = req.session.userID;
+      const token = jwt.sign({ userId }, process.env.JWT_SECRET);
+      res.cookie("token", token, { maxAge: 3600000, httpOnly: true });
 
-    if (!passwordOk) {
+      return res.redirect("/");
+    } else {
       return res.status(400).send({ errorMsg: "User's password not found." });
     }
-
-    req.session.loggedIn = true;
-    req.session.userID = user._id;
-    await req.session.save();
-    const userId = req.session.userID;
-    const token = jwt.sign({ userId }, process.env.JWT_SECRET);
-    res.cookie("token", token, { maxAge: 3600000, httpOnly: true });
-
-    return res.redirect("/");
   } catch (error) {
     console.log("controller로그인 중 오류가 발생했습니다.");
     return res

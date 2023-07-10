@@ -34,6 +34,7 @@ export const logOut = (dispatch: Dispatch) => {
     payload: response,
   });
 };
+
 export const confirmUser =
   (data: confirmUserState) => async (dispatch: Dispatch) => {
     try {

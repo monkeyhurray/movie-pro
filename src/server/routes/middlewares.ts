@@ -1,7 +1,5 @@
-import User, { DBUser } from "../models/User";
+import User from "../models/User";
 import multer from "multer";
-import jwt from "jsonwebtoken";
-import cookieParser from "cookie-parser";
 import { RequestHandler } from "express";
 
 export const confirmUser: RequestHandler = async (req, res) => {};
@@ -61,6 +59,9 @@ export const alreadyLoggedInUser: RequestHandler = async (
 ): Promise<void> => {
   try {
     if (req.session && req.session.loggedIn) {
+      console.log("이미 로그인이 된 유저 입니다.");
+      res.redirect("/");
+    } else {
       next();
     }
   } catch (error) {
