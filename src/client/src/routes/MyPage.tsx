@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { logOut } from "../redux/modules/user/confirmUser";
-import Cookies from "js-cookie";
 
 function MyPage() {
   const navigate = useNavigate();

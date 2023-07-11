@@ -20,7 +20,7 @@ import "../scss/SignUp.scss";
 
 function SignUp() {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const { id, email, name, userName, password, password2 } = useSelector(
     (state: RootState) => state.user
   );
@@ -76,9 +76,8 @@ function SignUp() {
         signUpUser(dataToSubmit)
       );
 
-      // 회원가입 성공 처리
       console.log("회원가입이 성공적으로 처리되었습니다.");
-      // 이후 필요한 처리 (예: 로그인 페이지로 이동 등)
+      navigate("/");
     } catch (error) {
       // 회원가입 실패 처리
       console.error("회원가입 중 오류가 발생했습니다.", error);
@@ -232,18 +231,14 @@ interface SizesExampleProps {
 
 function SizesExample({ handleButtonClick }: SizesExampleProps): JSX.Element {
   const navigate = useNavigate();
-  const handleSignUpClick = async () => {
-    await handleButtonClick();
 
-    navigate("/");
-  };
   return (
     <div>
       <Button
         className="btn2"
         variant="primary"
         size="lg"
-        onClick={handleSignUpClick}
+        onClick={handleButtonClick}
       >
         Sign Up
       </Button>

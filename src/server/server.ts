@@ -4,9 +4,7 @@ import userRouter from "./routes/userRouter";
 import videoRouter from "./routes/videoRouter";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-
-import { logOut } from "./controllers/userController";
-import {} from "./routes/middlewares";
+import cors from "cors";
 
 require("dotenv").config();
 const path = require("path");
@@ -26,7 +24,7 @@ if (!sessionId) {
 }
 
 const app: Express = express();
-
+app.use(cors());
 app.use(cookieParser(sessionId));
 
 app.use(

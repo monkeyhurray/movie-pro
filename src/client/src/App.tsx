@@ -16,10 +16,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 import "./scss/App.scss";
-import {
-  selectUserCookie,
-  userCookie,
-} from "../src/redux/modules/user/userCookie";
+import { userCookie } from "../src/redux/modules/user/userCookie";
 import { RootState } from "./redux/store";
 
 const Movie = lazy(() => import("./routes/Movie"));

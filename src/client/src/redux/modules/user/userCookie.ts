@@ -1,6 +1,4 @@
 import { createSlice, PayloadAction, Dispatch } from "@reduxjs/toolkit";
-import { RootState } from "../../store";
-import axios from "axios";
 
 interface CookieState {
   gCookie: string;
@@ -22,11 +20,11 @@ const userCookieSlice = createSlice({
 
 export const { setGcookie } = userCookieSlice.actions;
 
-export const userCookie = async (dispatch: Dispatch) => {
+export const userCookie = (dispatch: Dispatch) => {
   try {
-    const response = await axios.get("/");
-    const token = response.data.token;
+    const token = document.cookie;
     if (typeof token === "string" && token !== "") {
+      console.log(token);
       dispatch(setGcookie(token));
       console.log("쿠키전송 성공");
     } else {
@@ -37,6 +35,5 @@ export const userCookie = async (dispatch: Dispatch) => {
     console.error("쿠키전송 실패", error);
   }
 };
-export const selectUserCookie = (state: RootState) => state.userCookie.gCookie;
 
 export default userCookieSlice.reducer;

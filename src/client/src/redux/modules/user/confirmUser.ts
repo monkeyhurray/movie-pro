@@ -4,8 +4,6 @@ import axios from "axios";
 import { UserActionTypes } from "../constants/actionTypes";
 import Cookies from "universal-cookie";
 
-const cookies = new Cookies();
-
 interface confirmUserState {
   loginStay: boolean;
 }
@@ -27,11 +25,11 @@ const confirmUserSlice = createSlice({
 export const { setLoginStay } = confirmUserSlice.actions;
 
 export const logOut = (dispatch: Dispatch) => {
-  const response = cookies.remove("token", { path: "/" });
+  const cookies = new Cookies();
+  cookies.remove("token");
   dispatch(setLoginStay(false));
   dispatch({
     type: UserActionTypes.DELETE_COOKIE,
-    payload: response,
   });
 };
 

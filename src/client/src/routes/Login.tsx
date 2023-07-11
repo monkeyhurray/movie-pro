@@ -12,12 +12,11 @@ import { ThunkDispatch } from "redux-thunk";
 type MyDispatch = ThunkDispatch<RootState, Action<string>, Action<string>>;
 
 function Login(): JSX.Element {
-  const dispatch = useDispatch();
+  const dispatch: MyDispatch = useDispatch();
 
   const { id, password } = useSelector((state: RootState) => state.logInUser);
 
-  const handleButtonClick = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleButtonClick = async () => {
     if (id === "" || password === "") {
       alert("ID와 비밀번호를 입력해주세요.");
       return;
@@ -27,7 +26,9 @@ function Login(): JSX.Element {
         id,
         password,
       };
-      await (dispatch as MyDispatch)(logInUser(dataToSubmit));
+      //(dispatch as MyDispatch)(logInUser(dataToSubmit));
+
+      dispatch(logInUser(dataToSubmit));
       dispatch(setLoginStay(true));
 
       console.log("로그인이 되었습니다.");
@@ -35,14 +36,8 @@ function Login(): JSX.Element {
       console.log("로그인 중 오류가 발생하였습니다.");
     }
   };
-
   return (
-    <form
-      className="loginPage"
-      action="/login"
-      method="post"
-      onSubmit={handleButtonClick}
-    >
+    <form className="loginPage" name="loginForm" action="/login" method="post">
       <div>
         <FormGroupExample id={id} password={password} />
       </div>
@@ -98,9 +93,9 @@ function OutlineTypesExample({
   handleButtonClick,
 }: OutlineTypesExampleProps): JSX.Element {
   const navigate = useNavigate();
-  const handleLoginClick = async (event: React.MouseEvent) => {
-    event.preventDefault();
-    await handleButtonClick(event);
+  const handleLoginClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    await handleButtonClick(e);
     navigate("/");
   };
 
