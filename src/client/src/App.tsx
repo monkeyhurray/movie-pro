@@ -4,7 +4,7 @@ import { wiseSaying, num } from "./wiseSaying";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import { useSelector, useDispatch } from "react-redux";
-
+import { Cookies } from "react-cookie";
 import {
   Button,
   Container,
@@ -29,6 +29,7 @@ const MyPage = lazy(() => import("./routes/MyPage"));
 const Watch = lazy(() => import("./routes/Watch"));
 
 export const VideoUpload = lazy(() => import("./routes/VideoUpload"));
+const cookies = new Cookies();
 
 function App() {
   const dispatch = useDispatch();
@@ -40,7 +41,7 @@ function App() {
     }
   }, [dispatch, login]);
 
-  const cookieValue = document.cookie;
+  const cookieValue = cookies.get("token");
   if (typeof cookieValue === "string" && cookieValue !== "") {
     localStorage.setItem("userCookie", cookieValue);
   }

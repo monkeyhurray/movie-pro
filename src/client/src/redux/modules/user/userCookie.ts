@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction, Dispatch } from "@reduxjs/toolkit";
-
+import { Cookies } from "react-cookie";
 interface CookieState {
   gCookie: string;
 }
-
+const cookies = new Cookies();
 const initialState: CookieState = {
   gCookie: "",
 };
@@ -21,11 +21,10 @@ const userCookieSlice = createSlice({
 export const { setGcookie } = userCookieSlice.actions;
 
 export const userCookie = (dispatch: Dispatch) => {
+  const cookieValue = cookies.get("token");
   try {
-    const token = document.cookie;
-    if (typeof token === "string" && token !== "") {
-      console.log(token);
-      dispatch(setGcookie(token));
+    if (typeof cookieValue === "string" && cookieValue !== "") {
+      dispatch(setGcookie(cookieValue));
       console.log("쿠키전송 성공");
     } else {
       dispatch(setGcookie(""));

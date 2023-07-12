@@ -10,10 +10,13 @@ import { Action } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 
 type MyDispatch = ThunkDispatch<RootState, Action<string>, Action<string>>;
+interface LoginFormElement extends HTMLFormElement {
+  name: string;
+}
 
 function Login(): JSX.Element {
   const dispatch: MyDispatch = useDispatch();
-
+  const navigate = useNavigate();
   const { id, password } = useSelector((state: RootState) => state.logInUser);
 
   const handleButtonClick = async () => {
@@ -28,14 +31,15 @@ function Login(): JSX.Element {
       };
       //(dispatch as MyDispatch)(logInUser(dataToSubmit));
 
-      dispatch(logInUser(dataToSubmit));
+      await dispatch(logInUser(dataToSubmit));
       dispatch(setLoginStay(true));
-
+      navigate("/");
       console.log("로그인이 되었습니다.");
     } catch (error) {
       console.log("로그인 중 오류가 발생하였습니다.");
     }
   };
+
   return (
     <form className="loginPage" name="loginForm" action="/login" method="post">
       <div>
@@ -87,24 +91,19 @@ function FormGroupExample({
   );
 }
 type OutlineTypesExampleProps = {
-  handleButtonClick: (event: React.FormEvent) => void;
+  handleButtonClick: () => void;
 };
 function OutlineTypesExample({
   handleButtonClick,
 }: OutlineTypesExampleProps): JSX.Element {
   const navigate = useNavigate();
-  const handleLoginClick = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    await handleButtonClick(e);
-    navigate("/");
-  };
 
   return (
     <div>
       <Button
         variant="outline-primary"
         type="submit"
-        onClick={handleLoginClick}
+        onClick={handleButtonClick}
       >
         Login
       </Button>{" "}

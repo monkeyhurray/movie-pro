@@ -1,7 +1,7 @@
 // loginUserSlice.ts
 import { createSlice, PayloadAction, Dispatch } from "@reduxjs/toolkit";
-import axios from "axios";
 import { UserActionTypes } from "../constants/actionTypes";
+import axios from "axios";
 
 interface LoginUserState {
   id: string;
@@ -36,9 +36,7 @@ export const logInUser =
       const response = await axios.post("/login", dataToSubmit);
       dispatch({
         type: UserActionTypes.LOGIN_USER,
-        payload: {
-          ...response.data,
-        },
+        payload: response.data,
       });
     } catch (error) {
       console.error("로그인 중 오류 발생", error);
