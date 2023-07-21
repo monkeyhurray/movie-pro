@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction, Dispatch } from "@reduxjs/toolkit";
-import { Cookies } from "react-cookie";
+import { PURGE } from "redux-persist";
+
+import { getCookie } from "../../../cookie";
 interface CookieState {
   gCookie: string;
 }
-const cookies = new Cookies();
+
 const initialState: CookieState = {
   gCookie: "",
 };
@@ -16,14 +18,18 @@ const userCookieSlice = createSlice({
       state.gCookie = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(PURGE, () => initialState);
+  },
 });
 
 export const { setGcookie } = userCookieSlice.actions;
 
-export const userCookie = (dispatch: Dispatch) => {
-  const cookieValue = cookies.get("token");
+export const userCookie = async (dispatch: Dispatch) => {
+  const cookieValue = getCookie("myToken");
   try {
-    if (typeof cookieValue === "string" && cookieValue !== "") {
+    console.log(cookieValue);
+    if (cookieValue !== "") {
       dispatch(setGcookie(cookieValue));
       console.log("쿠키전송 성공");
     } else {

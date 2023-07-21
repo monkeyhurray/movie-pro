@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction, Dispatch } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { UserActionTypes } from "../constants/actionTypes";
+import axios from "axios";
 
 interface UserState {
   id: string;
@@ -19,6 +19,19 @@ const initialState: UserState = {
   password: "",
   password2: "",
 };
+
+export const signUpConfirm = createAsyncThunk(
+  UserActionTypes.SIGN_UP_USER,
+  async (dataToSubmit: UserState) => {
+    const request = await axios
+      .post("/signUp", dataToSubmit)
+      .then((response) => response.data);
+    return {
+      type: UserActionTypes.SIGN_UP_USER,
+      payload: request,
+    };
+  }
+);
 
 const signUpUserSlice = createSlice({
   name: "user",
@@ -43,7 +56,13 @@ const signUpUserSlice = createSlice({
       state.password2 = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(signUpConfirm.fulfilled, (state, action) => {
+      return { ...state, register: action.payload };
+    });
+  },
 });
+
 export const {
   setId,
   setEmail,
@@ -52,20 +71,5 @@ export const {
   setPassword,
   setPassword2,
 } = signUpUserSlice.actions;
-
-export const signUpUser =
-  (dataToSubmit: UserState) => async (dispatch: Dispatch) => {
-    try {
-      const response = await axios.post("/signUp", dataToSubmit);
-      dispatch({
-        type: UserActionTypes.SIGN_UP_USER,
-        payload: response.data,
-      });
-      console.log("회원가입이 성공적으로 처리되었습니다.");
-    } catch (error) {
-      alert("가입 오류가 발생하였습니다.");
-      console.error("회원가입 중 오류가 발생했습니다.", error);
-    }
-  };
 
 export default signUpUserSlice.reducer;

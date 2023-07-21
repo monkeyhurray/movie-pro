@@ -1,11 +1,9 @@
-import express, { Router, Request, Response } from "express";
-import path from "path";
-
-import { postUpload, getSee } from "../controllers/videoController";
-import { videoUpload, requireLogin, SomeProtectedRoute } from "./middlewares";
+import express, { Router } from "express";
+import { postUpload, getSee, getMovie } from "../controllers/videoController";
+import { videoUpload } from "./middlewares";
 
 const videoRouter: Router = express.Router();
-
+videoRouter.route("/movie").get(getMovie);
 videoRouter.route("/:id([0-9a-f]{24})").get(getSee);
 
 videoRouter.route("/upload").post(

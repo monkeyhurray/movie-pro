@@ -1,13 +1,13 @@
-// confirmUserSlice.ts
 import { createSlice, PayloadAction, Dispatch } from "@reduxjs/toolkit";
 import axios from "axios";
 import { UserActionTypes } from "../constants/actionTypes";
-import Cookies from "universal-cookie";
+import { Cookies } from "react-cookie";
+import { PURGE } from "redux-persist";
 
 interface confirmUserState {
   loginStay: boolean;
 }
-
+const cookies = new Cookies();
 const initialState: confirmUserState = {
   loginStay: false,
 };
@@ -20,12 +20,14 @@ const confirmUserSlice = createSlice({
       state.loginStay = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(PURGE, () => initialState);
+  },
 });
 
 export const { setLoginStay } = confirmUserSlice.actions;
 
 export const logOut = (dispatch: Dispatch) => {
-  const cookies = new Cookies();
   cookies.remove("token");
   dispatch(setLoginStay(false));
   dispatch({

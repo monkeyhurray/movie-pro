@@ -1,15 +1,20 @@
-import express, { Router, Request, Response } from "express";
-import path from "path";
+import express, { Router } from "express";
 
-import { getMasterPiece, getLatestMovie } from "../controllers/userController";
-
-import { requireLogin } from "./middlewares";
-
+import {
+  getMasterPiece,
+  getLatestMovie,
+  postLogin,
+  getLogin,
+  getSignUp,
+  postSignUp,
+} from "../controllers/userController";
+import { beforeLogin } from "./middlewares";
 const rootRouter: Router = express.Router();
 
-rootRouter.route("/");
 rootRouter.route("/masterPiece").get(getMasterPiece);
 rootRouter.route("/latestMovie").get(getLatestMovie);
 
-//수정하기
+rootRouter.route("/login").get(getLogin).post(postLogin);
+rootRouter.route("/signUp").get(getSignUp).post(postSignUp);
+
 export default rootRouter;

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -8,18 +7,18 @@ import "../scss/Login.scss";
 import { RootState } from "../../src/redux/store";
 import { Action } from "redux";
 import { ThunkDispatch } from "redux-thunk";
+import React from "react";
 
 type MyDispatch = ThunkDispatch<RootState, Action<string>, Action<string>>;
-interface LoginFormElement extends HTMLFormElement {
-  name: string;
-}
 
 function Login(): JSX.Element {
-  const dispatch: MyDispatch = useDispatch();
-  const navigate = useNavigate();
   const { id, password } = useSelector((state: RootState) => state.logInUser);
+  const navigate = useNavigate();
+  const dispatch: MyDispatch = useDispatch();
 
-  const handleButtonClick = async () => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     if (id === "" || password === "") {
       alert("ID와 비밀번호를 입력해주세요.");
       return;
@@ -29,45 +28,44 @@ function Login(): JSX.Element {
         id,
         password,
       };
-      //(dispatch as MyDispatch)(logInUser(dataToSubmit));
 
       await dispatch(logInUser(dataToSubmit));
       dispatch(setLoginStay(true));
+
       navigate("/");
       console.log("로그인이 되었습니다.");
     } catch (error) {
       console.log("로그인 중 오류가 발생하였습니다.");
     }
   };
-
   return (
-    <form className="loginPage" name="loginForm" action="/login" method="post">
+    <form
+      className="loginPage"
+      name="loginForm"
+      method="post"
+      onSubmit={handleLogin}
+    >
       <div>
-        <FormGroupExample id={id} password={password} />
+        <FormGroupExample />
       </div>
-      <OutlineTypesExample handleButtonClick={handleButtonClick} />
+      <OutlineTypesExample />
     </form>
   );
 }
 
-function FormGroupExample({
-  id,
-  password,
-}: {
-  id: string;
-  password: string;
-}): JSX.Element {
+function FormGroupExample(): JSX.Element {
   const dispatch = useDispatch();
+  const { id, password } = useSelector((state: RootState) => state.logInUser);
 
   return (
     <div className="id">
       <>
         <div className="formId">
           <Form.Group className="mb-3" controlId="formGroupEmail">
-            <Form.Label>ID</Form.Label>
+            <Form.Label>Login</Form.Label>
             <Form.Control
               type="text"
-              placeholder="id"
+              placeholder="Id"
               value={id}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 dispatch(setId(e.target.value))
@@ -90,21 +88,12 @@ function FormGroupExample({
     </div>
   );
 }
-type OutlineTypesExampleProps = {
-  handleButtonClick: () => void;
-};
-function OutlineTypesExample({
-  handleButtonClick,
-}: OutlineTypesExampleProps): JSX.Element {
-  const navigate = useNavigate();
 
+function OutlineTypesExample(): JSX.Element {
+  const navigate = useNavigate();
   return (
     <div>
-      <Button
-        variant="outline-primary"
-        type="submit"
-        onClick={handleButtonClick}
-      >
+      <Button variant="outline-primary" type="submit">
         Login
       </Button>{" "}
       <Button

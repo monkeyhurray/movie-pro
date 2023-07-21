@@ -1,7 +1,5 @@
-/* eslint-disable */
 import { Table } from "react-bootstrap";
 import "../scss/MasterPiece.scss";
-import path from "path";
 import { useNavigate } from "react-router-dom";
 
 function MasterPiece(): JSX.Element {

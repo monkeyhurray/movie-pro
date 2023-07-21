@@ -1,10 +1,8 @@
 /* eslint-disable */
 import { lazy, Suspense, useEffect } from "react";
 import { wiseSaying, num } from "./wiseSaying";
-import { Routes, Route, Link, useNavigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.css";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Cookies } from "react-cookie";
 import {
   Button,
   Container,
@@ -16,20 +14,19 @@ import {
   Spinner,
 } from "react-bootstrap";
 import "./scss/App.scss";
-import { userCookie } from "../src/redux/modules/user/userCookie";
+import "bootstrap/dist/css/bootstrap.css";
+import { userCookie, setGcookie } from "../src/redux/modules/user/userCookie";
 import { RootState } from "./redux/store";
 
 const Movie = lazy(() => import("./routes/Movie"));
 const Login = lazy(() => import("./routes/Login"));
+const Watch = lazy(() => import("./routes/Watch"));
 const SignUp = lazy(() => import("./routes/SignUp"));
+const MyPage = lazy(() => import("./routes/MyPage"));
 const Wirting = lazy(() => import("./routes/Wirting"));
 const LatestMovie = lazy(() => import("./routes/LatestMovie"));
 const MasterPiece = lazy(() => import("./routes/MasterPiece"));
-const MyPage = lazy(() => import("./routes/MyPage"));
-const Watch = lazy(() => import("./routes/Watch"));
-
-export const VideoUpload = lazy(() => import("./routes/VideoUpload"));
-const cookies = new Cookies();
+const VideoUpload = lazy(() => import("./routes/VideoUpload"));
 
 function App() {
   const dispatch = useDispatch();
@@ -38,13 +35,16 @@ function App() {
   useEffect(() => {
     if (login) {
       userCookie(dispatch);
+    } else {
+      dispatch(setGcookie(""));
     }
   }, [dispatch, login]);
 
-  const cookieValue = cookies.get("token");
-  if (typeof cookieValue === "string" && cookieValue !== "") {
+  /*
+  if (typeof cookieValue === "string" && cookieValue !== undefined) {
     localStorage.setItem("userCookie", cookieValue);
   }
+*/
   return (
     <div className="App">
       <NavScrollExample />
@@ -67,12 +67,13 @@ function App() {
           <Route path="/latestMovie" element={<LatestMovie />} />
           <Route path="/masterPiece" element={<MasterPiece />} />
 
+          <Route path="/user/logOut" />
           <Route path="/wirting" element={<Wirting />} />
-          <Route path="/watch/upload" element={<VideoUpload />} />
+          <Route path="/video/upload" element={<VideoUpload />} />
           {login ? (
             <>
-              <Route path="/myPage" element={<MyPage />} />
-              <Route path="/watch" element={<Watch />} />{" "}
+              <Route path="/user/myPage" element={<MyPage />} />
+              <Route path="/video/watch" element={<Watch />} />{" "}
             </>
           ) : null}
           <Route
@@ -109,9 +110,7 @@ function NavScrollExample(): JSX.Element {
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
-        <Navbar.Brand as={Link} to="/">
-          MoviePro
-        </Navbar.Brand>
+        <Navbar.Brand>MoviePro</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -120,16 +119,15 @@ function NavScrollExample(): JSX.Element {
             navbarScroll
           >
             <Nav.Link
-              onClick={(): void => {
+              onClick={() => {
                 navigate("/");
               }}
-              href="/"
             >
               Home
             </Nav.Link>
             <Nav.Link
               onClick={() => {
-                navigate("/movie");
+                navigate("/video/movie");
               }}
             >
               Movie
@@ -152,7 +150,7 @@ function NavScrollExample(): JSX.Element {
               <NavDropdown.Divider />
               <NavDropdown.Item
                 onClick={() => {
-                  navigate("/watch");
+                  navigate("/video/watch");
                 }}
               >
                 Watch
@@ -178,7 +176,7 @@ function NavScrollExample(): JSX.Element {
               <Nav.Link
                 className="LoggedInContent"
                 onClick={() => {
-                  navigate("/myPage");
+                  navigate("/user/myPage");
                 }}
               >
                 I'm User
@@ -222,7 +220,7 @@ function CarouselFadeExample(props: {
           className="d-blockw-100"
           src="img/assets/Apes.png"
           onClick={() => {
-            navigate("/movie");
+            navigate("/video/movie");
           }}
         />
       </Carousel.Item>

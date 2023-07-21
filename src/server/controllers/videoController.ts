@@ -3,13 +3,15 @@ import User from "../models/User";
 import { RequestHandler } from "express";
 
 export const getWatch: RequestHandler = (req, res) => {
-  return res.redirect("/watch");
+  return res.redirect("/video/watch");
 };
 
 export const postWatch: RequestHandler = (req, res) => {
-  return res.redirect("/watch");
+  return res.redirect("/video/watch");
 };
-
+export const getMovie: RequestHandler = (req, res) => {
+  return res.redirect("/video/movie");
+};
 export const getSee: RequestHandler = async (req, res) => {
   const { id } = req.params;
   const video = await Video.findById(id).populate("owner");

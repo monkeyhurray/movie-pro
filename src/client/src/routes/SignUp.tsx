@@ -1,26 +1,31 @@
-/* eslint-disable */
+import React from "react";
+import { FloatingLabel, Form, Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../src/redux/store";
 import { useNavigate } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";
-import { AnyAction } from "redux";
-import { RootState } from "../../src/redux/store";
-
-import { FloatingLabel, Form, Button } from "react-bootstrap";
+import { AnyAction, Action } from "redux";
 
 import {
-  signUpUser,
   setId,
   setEmail,
   setName,
   setUserName,
   setPassword,
   setPassword2,
+  signUpConfirm,
 } from "../redux/modules/user/signUpUser";
+
 import "../scss/SignUp.scss";
 
 function SignUp() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch: ThunkDispatch<
+    RootState,
+    AnyAction,
+    Action<string>
+  > = useDispatch();
+
   const { id, email, name, userName, password, password2 } = useSelector(
     (state: RootState) => state.user
   );
@@ -30,58 +35,18 @@ function SignUp() {
 
     if (password !== password2) {
       console.log("Passwords do not match");
-      return;
+      return navigate("/signUp");
     }
 
     try {
-      // 제출할 데이터
-      const dataToSubmit = {
-        id,
-        email,
-        name,
-        userName,
-        password,
-        password2,
-      };
+      const dataToSubmit = { id, email, name, userName, password, password2 };
 
-      // signUpUser 액션 디스패치
-      await (dispatch as ThunkDispatch<RootState, unknown, AnyAction>)(
-        signUpUser(dataToSubmit)
-      );
+      await dispatch(signUpConfirm(dataToSubmit));
+
       console.log("회원가입 완료");
-    } catch (error) {
-      console.log("회원가입 중 오류 발생");
-    }
-  };
-
-  const handleButtonClick = async () => {
-    if (password !== password2) {
-      console.log("Passwords do not match");
-      // 비밀번호가 일치하지 않을 때 오류 처리
-      return;
-    }
-    try {
-      // 회원가입을 위한 데이터
-      const dataToSubmit = {
-        id,
-        email,
-        name,
-        userName,
-        password,
-        password2,
-      };
-
-      // signUpUser 액션 디스패치
-      await (dispatch as ThunkDispatch<RootState, unknown, AnyAction>)(
-        signUpUser(dataToSubmit)
-      );
-
-      console.log("회원가입이 성공적으로 처리되었습니다.");
       navigate("/");
     } catch (error) {
-      // 회원가입 실패 처리
-      console.error("회원가입 중 오류가 발생했습니다.", error);
-      // 이후 필요한 처리
+      console.log("회원가입 중 오류 발생");
     }
   };
 
@@ -95,13 +60,13 @@ function SignUp() {
       <div className="box">
         <FormFloatingBasicExample />
       </div>
-      <SizesExample handleButtonClick={handleButtonClick} />
+      <SizesExample />
     </form>
   );
 }
 
 function FormFloatingBasicExample(): JSX.Element {
-  const dispatch = useDispatch<ThunkDispatch<RootState, any, AnyAction>>();
+  const dispatch = useDispatch();
 
   const { id, email, name, userName, password, password2 } = useSelector(
     (state: RootState) => state.user
@@ -112,10 +77,10 @@ function FormFloatingBasicExample(): JSX.Element {
       <tbody>
         <tr>
           <td>
-            <FloatingLabel controlId="floatingInput" label="Id" className="mb1">
+            <FloatingLabel controlId="floatingInput" label="ID" className="mb1">
               <Form.Control
                 type="text"
-                placeholder="Id"
+                placeholder="ID"
                 name="id"
                 value={id}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -225,21 +190,12 @@ function FormFloatingBasicExample(): JSX.Element {
   );
 }
 
-interface SizesExampleProps {
-  handleButtonClick: () => void;
-}
-
-function SizesExample({ handleButtonClick }: SizesExampleProps): JSX.Element {
+function SizesExample(): JSX.Element {
   const navigate = useNavigate();
 
   return (
     <div>
-      <Button
-        className="btn2"
-        variant="primary"
-        size="lg"
-        onClick={handleButtonClick}
-      >
+      <Button className="btn2" variant="primary" size="lg" type="submit">
         Sign Up
       </Button>
 

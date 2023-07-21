@@ -3,7 +3,6 @@ import { Types } from "mongoose";
 
 interface MongoUser {
   _id: Types.ObjectId;
-  id: string;
   email: string;
   name: string;
   userName: string;

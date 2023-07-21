@@ -1,5 +1,4 @@
-/* eslint-disable */
-import { useMemo, useRef, useState } from "react";
+import { useState } from "react";
 import "../scss/Movie.scss";
 import { Card, Button, Placeholder, Modal } from "react-bootstrap";
 

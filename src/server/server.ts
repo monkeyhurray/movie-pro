@@ -1,10 +1,11 @@
-import express, { Express, NextFunction, Request, Response } from "express";
+import express, { Express } from "express";
 import rootRouter from "./routes/rootRouter";
 import userRouter from "./routes/userRouter";
 import videoRouter from "./routes/videoRouter";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import cors from "cors";
+import { localsMiddleware } from "./routes/middlewares";
 
 require("dotenv").config();
 const path = require("path");
@@ -24,42 +25,34 @@ if (!sessionId) {
 }
 
 const app: Express = express();
-app.use(cors());
-app.use(cookieParser(sessionId));
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
+app.use(cookieParser());
 
 app.use(
   session({
     secret: sessionId,
     resave: false,
     saveUninitialized: true,
-    store: MongoStore.create({ mongoUrl: mongoUrl }),
+    store: MongoStore.create({ mongoUrl }),
     cookie: {
       maxAge: 3600000,
       secure: false,
     },
   })
 );
-
+//app.use(localsMiddleware);
 app.use(express.static(path.join(__dirname, "../client/build")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/", rootRouter);
-app.use("/", userRouter);
+app.use("/user", userRouter);
+app.use("/video", videoRouter);
 
-app.use("/watch", videoRouter);
-/* 
-app.post(
-  "/",
-  (req: Request, res: Response, next: NextFunction) => {
-    logOut(req, res, next);
-  },
-  (req: Request, res: Response): void => {
-    res.status(200).json({
-      success: true,
-    });
-  }
-);
-*/
 //수정하기
 export default app;

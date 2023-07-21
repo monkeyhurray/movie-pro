@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { Table } from "react-bootstrap";
 import "../scss/LatestMovie.scss";
 function LatestMovie(): JSX.Element {

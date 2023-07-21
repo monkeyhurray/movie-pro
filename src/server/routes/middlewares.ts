@@ -1,72 +1,26 @@
-import User from "../models/User";
 import multer from "multer";
 import { RequestHandler } from "express";
+//로그인전 유저
+//로그인한 유저
 
-export const confirmUser: RequestHandler = async (req, res) => {};
-export const beforeLogin: RequestHandler = (req, res, next) => {
-  try {
-    if (req.session.loggedIn === false || req.session.loggedIn === undefined) {
-      next();
-    }
-  } catch (error) {
-    console.error(error);
-    res.redirect("/");
-  }
-};
-
-export const requireLogin: RequestHandler = async (req, res, next) => {
-  try {
-    if (req.session && req.session.loggedIn) {
-      const userId = req.session.user;
-      const user = await User.findById(userId);
-
-      if (user) {
-        req.session.user = user;
-        next();
-      } else {
-        res.redirect("/login");
-      }
-    } else {
-      if (req.originalUrl === "/login") {
-        next();
-      } else {
-        res.redirect("/login");
-      }
-    }
-  } catch (error) {
-    console.error(error);
-    res.redirect("/login");
-  }
+export const localsMiddleware: RequestHandler = (req, res, next) => {
+  req.session.loggedIn = Boolean(req.session.loggedIn);
+  req.session.userID = req.session.userID || null;
   next();
 };
 
-export const SomeProtectedRoute: RequestHandler = (req, res, next) => {
-  const sessionData = req.session;
-
-  if (sessionData.user) {
-    // 로그인된 사용자라면 다음 미들웨어 또는 핸들러로 이동
+export const beforeLogin: RequestHandler = (req, res, next) => {
+  if (req.session.loggedIn === false || req.session.loggedIn === undefined) {
     next();
-  } else {
-    // 로그인되지 않은 사용자라면 로그인 페이지로 리디렉션
-    res.redirect("/login");
   }
+  res.redirect("/");
 };
 
-export const alreadyLoggedInUser: RequestHandler = async (
-  req,
-  res,
-  next
-): Promise<void> => {
-  try {
-    if (req.session && req.session.loggedIn) {
-      console.log("이미 로그인이 된 유저 입니다.");
-      res.redirect("/");
-    } else {
-      next();
-    }
-  } catch (error) {
-    console.error(error);
-    res.redirect("/");
+export const afterLogin: RequestHandler = async (req, res, next) => {
+  if (req.session && req.session.loggedIn) {
+    next();
+  } else {
+    res.redirect("/login");
   }
 };
 
