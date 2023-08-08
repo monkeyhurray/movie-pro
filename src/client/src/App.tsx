@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { lazy, Suspense, useEffect } from "react";
 import { wiseSaying, num } from "./wiseSaying";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Button,
@@ -17,8 +17,14 @@ import "./scss/App.scss";
 import "bootstrap/dist/css/bootstrap.css";
 import { userCookie, setGcookie } from "../src/redux/modules/user/userCookie";
 import { RootState } from "./redux/store";
+import {
+  setVideoOwner,
+  setVideoUrl,
+  videoOwner,
+} from "./redux/modules/product/videoOwner";
+import { Action } from "redux";
+import { getCookie } from "./cookie";
 
-const Movie = lazy(() => import("./routes/Movie"));
 const Login = lazy(() => import("./routes/Login"));
 const Watch = lazy(() => import("./routes/Watch"));
 const SignUp = lazy(() => import("./routes/SignUp"));
@@ -26,25 +32,33 @@ const MyPage = lazy(() => import("./routes/MyPage"));
 const Wirting = lazy(() => import("./routes/Wirting"));
 const LatestMovie = lazy(() => import("./routes/LatestMovie"));
 const MasterPiece = lazy(() => import("./routes/MasterPiece"));
-const VideoUpload = lazy(() => import("./routes/VideoUpload"));
+const Upload = lazy(() => import("./routes/Upload"));
+const See = lazy(() => import("./routes/See"));
 
 function App() {
   const dispatch = useDispatch();
   const login = useSelector((state: RootState) => state.confirmUser.loginStay);
+  const { videoId, videoUrl } = useSelector(
+    (state: RootState) => state.videoOwner
+  );
 
   useEffect(() => {
     if (login) {
       userCookie(dispatch);
+      const id = getCookie("videoId");
+      const url = getCookie("videoUrl");
+      dispatch(setVideoOwner(id));
+      dispatch(setVideoUrl(url));
     } else {
       dispatch(setGcookie(""));
     }
   }, [dispatch, login]);
 
-  /*
-  if (typeof cookieValue === "string" && cookieValue !== undefined) {
-    localStorage.setItem("userCookie", cookieValue);
-  }
-*/
+  const id = videoId;
+  const url = videoUrl;
+  console.log(id);
+  console.log(url);
+
   return (
     <div className="App">
       <NavScrollExample />
@@ -63,17 +77,19 @@ function App() {
 
           <Route path="/login" element={<Login />} />
           <Route path="/signUp" element={<SignUp />} />
-          <Route path="/movie" element={<Movie />} />
           <Route path="/latestMovie" element={<LatestMovie />} />
           <Route path="/masterPiece" element={<MasterPiece />} />
-
-          <Route path="/user/logOut" />
           <Route path="/wirting" element={<Wirting />} />
-          <Route path="/video/upload" element={<VideoUpload />} />
           {login ? (
             <>
+              <Route path="/video/upload" element={<Upload />} />
               <Route path="/user/myPage" element={<MyPage />} />
-              <Route path="/video/watch" element={<Watch />} />{" "}
+              <Route path="/user/logOut" />
+              <Route path="/video" element={<Watch id={id} />} />{" "}
+              <Route
+                path={`/video/${id}`}
+                element={<See id={id} url={url} />}
+              />
             </>
           ) : null}
           <Route
@@ -150,10 +166,10 @@ function NavScrollExample(): JSX.Element {
               <NavDropdown.Divider />
               <NavDropdown.Item
                 onClick={() => {
-                  navigate("/video/watch");
+                  navigate("/video");
                 }}
               >
-                Watch
+                Video
               </NavDropdown.Item>
             </NavDropdown>
             <Nav.Link href="#" disabled>

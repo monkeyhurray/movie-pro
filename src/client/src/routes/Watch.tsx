@@ -2,34 +2,38 @@ import "../scss/Watch.scss";
 import { useNavigate } from "react-router-dom";
 import { Figure } from "react-bootstrap";
 
-function Watch() {
-  return (
-    <>
-      <FigureExample />
-    </>
-  );
+interface WatchProps {
+  id: string;
 }
 
-function FigureExample() {
+const Watch: React.FC<WatchProps> = ({ id }) => {
+  return (
+    <>
+      <FigureExample id={id} />
+    </>
+  );
+};
+
+const FigureExample: React.FC<WatchProps> = ({ id }) => {
   const navigate = useNavigate();
+
   return (
     <>
       <div className="uploadBtn">
-        <button onClick={() => navigate("/watch/upload")}>video upload</button>
+        <button onClick={() => navigate("/video/upload")}>video upload</button>
       </div>
 
-      <Figure
-        className="figureFrame"
-        onClick={() => navigate("/watch/:id([0-9a-f]{24})")}
-      >
+      <div className="uploadBtn">
+        <button onClick={() => navigate("/video/delete")}>video delete</button>
+      </div>
+
+      <Figure className="figureFrame" onClick={() => navigate(`/video/${id}`)}>
         <Figure.Image width={171} height={180} alt="trailler img" />
-        <Figure.Caption>
-          Nulla vitae elit libero, a pharetra augue mollis interdum.
-        </Figure.Caption>
+        <Figure.Caption>asdasc.jasljd</Figure.Caption>
       </Figure>
     </>
   );
-}
+};
 
 export default Watch;
 /*

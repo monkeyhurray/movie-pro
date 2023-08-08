@@ -11,6 +11,7 @@ const initialState: LoginUserState = {
   id: "",
   password: "",
 };
+
 export const logInUser = createAsyncThunk(
   UserActionTypes.LOGIN_USER,
   async (dataToSubmit: LoginUserState) => {

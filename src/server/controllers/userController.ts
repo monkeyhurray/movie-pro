@@ -1,7 +1,6 @@
 //@ts-nocheck
 import User from "../models/User";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { RequestHandler } from "express";
 
 interface SignUpData {
@@ -58,7 +57,7 @@ export const postSignUp: RequestHandler = async (req, res) => {
 };
 //로그인
 export const getLogin: RequestHandler = (req, res) => {
-  return res.redirect("/login");
+  return res.redirect("/");
 };
 
 export const postLogin: RequestHandler = async (req, res) => {
@@ -67,6 +66,7 @@ export const postLogin: RequestHandler = async (req, res) => {
   const user = await User.findOne({ id });
 
   if (!user) {
+    console.log("아이디가 틀렸습니다.");
     return res.status(400).send({ errorMsg: "User's not found." });
   }
 
@@ -74,21 +74,28 @@ export const postLogin: RequestHandler = async (req, res) => {
     const passwordOk = await bcrypt.compare(password, user.password);
 
     if (!passwordOk) {
+      console.log("비밀번호가 틀렸습니다.");
       return res.status(400).send({ errorMsg: "User's password not found." });
     }
 
     req.session.loggedIn = true;
-    req.session.userID = user._id;
+    req.session.userId = user._id;
     await req.session.save();
 
-    const userId = req.session.userID;
-    res.cookie("myToken", userId, {
+    const userConfirm = req.session.loggedIn;
+    const userId = req.session.userId;
+    const token = {
+      userConfirm,
+      userId,
+    };
+    res.cookie("myToken", token, {
       maxAge: 3600000,
-      secure: true,
     });
+
     return res.redirect("/");
   } catch (error) {
     console.error("로그인 중 오류가 발생했습니다:", error);
+    return res.redirect("/login");
   }
 };
 //로그인
@@ -105,7 +112,6 @@ export const getMyPage: RequestHandler = (req, res) => {
 
 export const logOut: RequestHandler = (req, res) => {
   req.session.destroy;
-  res.clearCookie("myToken");
-  return res.redirect("/");
+  return res.clearCookie("myToken", "video_id").redirect("/");
 };
 //로그아웃 세션삭제

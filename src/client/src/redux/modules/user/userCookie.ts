@@ -28,8 +28,7 @@ export const { setGcookie } = userCookieSlice.actions;
 export const userCookie = async (dispatch: Dispatch) => {
   const cookieValue = getCookie("myToken");
   try {
-    console.log(cookieValue);
-    if (cookieValue !== "") {
+    if (cookieValue !== "" || cookieValue !== undefined) {
       dispatch(setGcookie(cookieValue));
       console.log("쿠키전송 성공");
     } else {

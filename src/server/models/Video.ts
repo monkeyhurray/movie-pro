@@ -2,14 +2,16 @@ import mongoose, { Document } from "mongoose";
 
 interface DBVideo extends Document {
   title: string;
-  videoContent: string;
-  thumb: string;
+  videoUrl: string;
+  genre: string;
+  actors: string;
   owner: mongoose.Types.ObjectId;
 }
 const videoSchema = new mongoose.Schema<DBVideo>({
   title: { type: String, required: true, maxLength: 80 },
-  videoContent: { type: String, required: true },
-  thumb: { type: String },
+  videoUrl: { type: String, required: true },
+  genre: { type: String },
+  actors: { type: String },
   owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
 });
 

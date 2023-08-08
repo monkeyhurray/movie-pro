@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logOut } from "../redux/modules/user/confirmUser";
 import { persistor } from "../index";
+import { removeCookie } from "../cookie";
 function MyPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ function MyPage() {
     logOut(dispatch);
     localStorage.removeItem("persist:root");
     await purge();
+    removeCookie("myToken");
     navigate("/");
   };
 

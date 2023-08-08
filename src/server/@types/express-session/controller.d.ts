@@ -17,6 +17,6 @@ declare module "express-session" {
   interface SessionData {
     loggedIn: boolean;
     user: MongoUser;
-    userID: UserId;
+    userId: UserId;
   }
 }

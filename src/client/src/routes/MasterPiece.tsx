@@ -25,7 +25,7 @@ function BasicExample(): JSX.Element {
       <tbody>
         <tr
           onClick={() => {
-            navigate("/movie");
+            navigate(`/video/:id`);
           }}
         >
           <td>1</td>
@@ -33,25 +33,41 @@ function BasicExample(): JSX.Element {
           <td>SF, 액션</td>
           <td>앤디 서키스, 우디 해럴슨, 스티브 잔, 아미아 밀러</td>
         </tr>
-        <tr>
+        <tr
+          onClick={() => {
+            navigate(`/video/:id`);
+          }}
+        >
           <td>2</td>
           <td>그 시절, 우리가 좋아했던 소녀</td>
           <td>멜로/로맨스, 드라마</td>
           <td>가진동, 천옌시, 오견, 만만, 언승우</td>
         </tr>
-        <tr>
+        <tr
+          onClick={() => {
+            navigate(`/video/:id`);
+          }}
+        >
           <td>3</td>
           <td>실버라이닝 플레이북</td>
           <td>로맨틱 코미디</td>
           <td>브래들리 쿠퍼, 제니퍼 로렌스, 로버트 드 니로</td>
         </tr>
-        <tr>
+        <tr
+          onClick={() => {
+            navigate(`/video/:id`);
+          }}
+        >
           <td>4</td>
           <td>플립</td>
           <td>맬로/로맨스, 드라마</td>
           <td>매들린 캐롤, 캘런 맥오리피, 존 마호니</td>
         </tr>
-        <tr>
+        <tr
+          onClick={() => {
+            navigate(`/video/:id`);
+          }}
+        >
           <td>5</td>
           <td>그 여자 작사 그 남자 작곡</td>
           <td>맬로/로맨스</td>

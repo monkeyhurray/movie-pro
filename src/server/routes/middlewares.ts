@@ -5,7 +5,7 @@ import { RequestHandler } from "express";
 
 export const localsMiddleware: RequestHandler = (req, res, next) => {
   req.session.loggedIn = Boolean(req.session.loggedIn);
-  req.session.userID = req.session.userID || null;
+  req.session.userId = req.session.userId || null;
   next();
 };
 
@@ -31,6 +31,10 @@ export const thumbUpload = multer({
   },
 });
 
-export const videoUpload = multer({
-  dest: "uploads/videos/",
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/videos/");
+  },
 });
+
+export const videoUpload = multer({ storage });

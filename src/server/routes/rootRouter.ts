@@ -8,9 +8,11 @@ import {
   getSignUp,
   postSignUp,
 } from "../controllers/userController";
+import { getVideoOwner } from "../controllers/videoController";
 import { beforeLogin } from "./middlewares";
 const rootRouter: Router = express.Router();
 
+rootRouter.route("/").get(getVideoOwner);
 rootRouter.route("/masterPiece").get(getMasterPiece);
 rootRouter.route("/latestMovie").get(getLatestMovie);
 
