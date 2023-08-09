@@ -56,13 +56,11 @@ export const postUpload: RequestHandler = async (req, res) => {
     user.videos.push(newVideo._id);
     user.save();
     req.session.videoId = newVideo._id;
-    req.session.videoUrl = newVideo.videoUrl;
 
     const videoSessionId = req.session.videoId;
-    const videoSessionUrl = req.session.videoUrl;
 
     res.cookie("videoId", videoSessionId);
-    res.cookie("videoUrl", videoSessionUrl);
+
     return res.redirect("/");
   } catch (error) {
     console.error(error);

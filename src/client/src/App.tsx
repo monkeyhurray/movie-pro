@@ -36,28 +36,26 @@ const Upload = lazy(() => import("./routes/Upload"));
 const See = lazy(() => import("./routes/See"));
 
 function App() {
+  interface VideoId {
+    videoUrl: string;
+  }
+
   const dispatch = useDispatch();
   const login = useSelector((state: RootState) => state.confirmUser.loginStay);
-  const { videoId, videoUrl } = useSelector(
-    (state: RootState) => state.videoOwner
-  );
+  const { videoId } = useSelector((state: RootState) => state.videoOwner);
 
   useEffect(() => {
     if (login) {
       userCookie(dispatch);
       const id = getCookie("videoId");
-      const url = getCookie("videoUrl");
       dispatch(setVideoOwner(id));
-      dispatch(setVideoUrl(url));
     } else {
       dispatch(setGcookie(""));
     }
   }, [dispatch, login]);
-
   const id = videoId;
-  const url = videoUrl;
+
   console.log(id);
-  console.log(url);
 
   return (
     <div className="App">
@@ -86,10 +84,7 @@ function App() {
               <Route path="/user/myPage" element={<MyPage />} />
               <Route path="/user/logOut" />
               <Route path="/video" element={<Watch id={id} />} />{" "}
-              <Route
-                path={`/video/${id}`}
-                element={<See id={id} url={url} />}
-              />
+              <Route path={`/video/${id}`} element={<See id={id} />} />
             </>
           ) : null}
           <Route

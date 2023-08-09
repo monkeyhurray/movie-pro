@@ -3,9 +3,9 @@ import "../scss/Movie.scss";
 import { Card, Button, Modal } from "react-bootstrap";
 import { RootState } from "../../src/redux/store";
 import { ThunkDispatch } from "redux-thunk";
-import { RequestHandler } from "express";
 import { Action } from "redux";
 import { useSelector, useDispatch } from "react-redux";
+
 import {
   setTitle,
   setOwner,
@@ -40,19 +40,18 @@ interface PayLoad {
   payload: {};
 }
 interface SeeProps {
-  url: string;
   id: string;
 }
 
-const See: React.FC<SeeProps> = ({ url, id }) => {
+const See: React.FC<SeeProps> = ({ id }) => {
   return (
     <div>
-      <CardExample id={id} url={url} />
+      <CardExample id={id} />
     </div>
   );
 };
 
-const CardExample: React.FC<SeeProps> = ({ url, id }) => {
+const CardExample: React.FC<SeeProps> = ({ id }) => {
   const dispatch: ThunkDispatch<
     RootState,
     Action<string>,
@@ -76,6 +75,7 @@ const CardExample: React.FC<SeeProps> = ({ url, id }) => {
     };
     dispatFuc();
   }, [dispatch, id]);
+
   console.log(video);
   /*
 <Card.Img variant="top" src="img/assets/Apes.png" />
@@ -85,17 +85,27 @@ Card.Body태그 안에 작성되어 있던 것
     <div className="d-flex justify-content-around">
       <Card style={{ width: "30rem" }}>
         <Card.Body>
+          <video controls>
+            <source
+              src="../../../../uploads/videos/14c05da4bd9e0bfd48631c219a08153e"
+              type="video/mp4"
+            />
+          </video>
+        </Card.Body>
+      </Card>
+
+      <Card style={{ width: "18rem" }}>
+        <Card.Body>
           <Card.Title>{title}</Card.Title>
-          <Card.Text className="hideText">
-            <h4>{genre}</h4>
+          <Card.Text>
+            <strong>Genre:</strong> {genre}
+            <br />
+            <strong>Owner:</strong> {owner}
+            <br />
+            <strong>Actors:</strong>
+            {actors}
+            <br />
           </Card.Text>
-          <Card.Text className="hideText">
-            <h4>{actors}</h4>
-          </Card.Text>
-          <Card.Text className="hideText">
-            <h4>{owner}</h4>
-          </Card.Text>
-          <video src={"/" + video} style={{ maxHeight: 600, maxWidth: 1400 }} />
           <Example />
         </Card.Body>
       </Card>
