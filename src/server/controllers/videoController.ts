@@ -33,6 +33,7 @@ export const getSee: RequestHandler = async (req, res) => {
 };
 
 export const getUpload: RequestHandler = (req, res) => {
+  const { upload } = req.params;
   return res.redirect("/video/upload");
 };
 
@@ -72,8 +73,8 @@ export const postWatch: RequestHandler = (req, res) => {
   return res.redirect("/video");
 };
 export const getMovie: RequestHandler = (req, res) => {
-  return res.redirect("/video/movie");
+  return res.redirect("/movie");
 };
 export const postMovie: RequestHandler = (req, res) => {
-  return res.redirect("/video/movie");
+  return res.redirect("/movie");
 };

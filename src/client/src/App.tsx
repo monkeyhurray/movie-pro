@@ -30,10 +30,9 @@ const Watch = lazy(() => import("./routes/Watch"));
 const SignUp = lazy(() => import("./routes/SignUp"));
 const MyPage = lazy(() => import("./routes/MyPage"));
 const Wirting = lazy(() => import("./routes/Wirting"));
-const LatestMovie = lazy(() => import("./routes/LatestMovie"));
-const MasterPiece = lazy(() => import("./routes/MasterPiece"));
 const Upload = lazy(() => import("./routes/Upload"));
 const See = lazy(() => import("./routes/See"));
+const Moive = lazy(() => import("./routes/Movie"));
 
 function App() {
   interface VideoId {
@@ -75,8 +74,7 @@ function App() {
 
           <Route path="/login" element={<Login />} />
           <Route path="/signUp" element={<SignUp />} />
-          <Route path="/latestMovie" element={<LatestMovie />} />
-          <Route path="/masterPiece" element={<MasterPiece />} />
+          <Route path="/movie" element={<Moive id={id} />} />
           <Route path="/wirting" element={<Wirting />} />
           {login ? (
             <>
@@ -146,17 +144,10 @@ function NavScrollExample(): JSX.Element {
             <NavDropdown title="MovieInfo" id="navbarScrollingDropdown">
               <NavDropdown.Item
                 onClick={() => {
-                  navigate("/latestMovie");
+                  navigate("/movie");
                 }}
               >
-                Latest Movie
-              </NavDropdown.Item>
-              <NavDropdown.Item
-                onClick={() => {
-                  navigate("/masterPiece");
-                }}
-              >
-                Master Piece
+                Movie
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item

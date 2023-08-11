@@ -71,6 +71,7 @@ function FormFloatingBasicExample(): JSX.Element {
   const { title, genre, actors } = useSelector(
     (state: RootState) => state.videoUpload
   );
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const videoFile = e.target.files?.[0];
     if (videoFile !== undefined) {

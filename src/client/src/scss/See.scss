@@ -1,0 +1,15 @@
+.video-Card {
+  max-width: 500px;
+
+  .video-Card-Body {
+    max-height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .video-Card-Body-content {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+}

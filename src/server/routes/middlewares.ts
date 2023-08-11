@@ -25,7 +25,7 @@ export const afterLogin: RequestHandler = async (req, res, next) => {
 };
 
 export const thumbUpload = multer({
-  dest: "uploads/thumb/",
+  dest: "src/client/public/uploads/thumb/",
   limits: {
     fileSize: 3000000,
   },
@@ -33,7 +33,7 @@ export const thumbUpload = multer({
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/videos/");
+    cb(null, "src/client/public/uploads/videos/");
   },
 });
 

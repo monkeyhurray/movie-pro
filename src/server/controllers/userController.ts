@@ -100,12 +100,6 @@ export const postLogin: RequestHandler = async (req, res) => {
 };
 //로그인
 
-export const getMasterPiece: RequestHandler = (req, res) =>
-  res.redirect("/masterPiece");
-
-export const getLatestMovie: RequestHandler = (req, res) =>
-  res.redirect("/latestMovie");
-
 export const getMyPage: RequestHandler = (req, res) => {
   res.redirect("/");
 };

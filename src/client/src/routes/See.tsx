@@ -5,7 +5,7 @@ import { RootState } from "../../src/redux/store";
 import { ThunkDispatch } from "redux-thunk";
 import { Action } from "redux";
 import { useSelector, useDispatch } from "react-redux";
-
+import "../scss/See.scss";
 import {
   setTitle,
   setOwner,
@@ -61,6 +61,7 @@ const CardExample: React.FC<SeeProps> = ({ id }) => {
   const { title, genre, owner, video, actors } = useSelector(
     (state: RootState) => state.videoPlay
   );
+
   useEffect(() => {
     const dispatFuc = async () => {
       const videoControllInfo = await dispatch(videoControll(id));
@@ -71,32 +72,36 @@ const CardExample: React.FC<SeeProps> = ({ id }) => {
       dispatch(setGenre(realVideo.genre));
       dispatch(setActors(realVideo.actors));
       dispatch(setVideo(realVideo.videoUrl));
-      console.log(realVideo.videoUrl);
     };
     dispatFuc();
   }, [dispatch, id]);
-
   console.log(video);
+  const videoContent = video.replace("src\\client\\public\\", "");
+
+  const sss = "/uploads/videos/c3c883439a1ee2bce3cdb356f81693f3";
   /*
 <Card.Img variant="top" src="img/assets/Apes.png" />
 Card.Body태그 안에 작성되어 있던 것
 */
   return (
     <div className="d-flex justify-content-around">
-      <Card style={{ width: "30rem" }}>
-        <Card.Body>
-          <video controls>
-            <source
-              src="../../../../uploads/videos/14c05da4bd9e0bfd48631c219a08153e"
-              type="video/mp4"
-            />
-          </video>
+      <Card className="video-Card">
+        <Card.Body className="video-Card-Body">
+          <video
+            className="video-Card-Body-content"
+            src={"/" + videoContent}
+            controls
+          ></video>
         </Card.Body>
       </Card>
 
       <Card style={{ width: "18rem" }}>
         <Card.Body>
-          <Card.Title>{title}</Card.Title>
+          <Card.Title>
+            <strong>Title:</strong>
+            {title}
+            <br />
+          </Card.Title>
           <Card.Text>
             <strong>Genre:</strong> {genre}
             <br />
