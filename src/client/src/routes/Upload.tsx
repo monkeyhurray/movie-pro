@@ -6,22 +6,26 @@ import { RootState } from "../redux/store";
 import {
   setActors,
   setGenre,
-  videoUpload,
-} from "../redux/modules/product/videoUpload";
-import {
   setTitle,
   setVideoFile,
   setOwner,
+  setIntroduce,
+  videoUpload,
 } from "../redux/modules/product/videoUpload";
+
 import "../scss/VideoUpload.scss";
 import { Action } from "redux";
 import { getCookie } from "../cookie";
+
+interface BasicExampleProps {
+  introduce: string;
+}
 
 function VideoUpload() {
   type VideoUploadDispatch = ThunkDispatch<RootState, File, Action<string>>;
   const dispatch: VideoUploadDispatch = useDispatch();
   const navigate = useNavigate();
-  const { title, videoFile, genre, actors } = useSelector(
+  const { title, videoFile, genre, actors, introduce } = useSelector(
     (state: RootState) => state.videoUpload
   );
 
@@ -41,6 +45,7 @@ function VideoUpload() {
       formData.append("owner", userId);
       formData.append("genre", genre);
       formData.append("actors", actors);
+      formData.append("introduce", introduce);
 
       await dispatch(videoUpload(formData));
 
@@ -68,7 +73,7 @@ function VideoUpload() {
 
 function FormFloatingBasicExample(): JSX.Element {
   const dispatch = useDispatch();
-  const { title, genre, actors } = useSelector(
+  const { title, genre, actors, introduce } = useSelector(
     (state: RootState) => state.videoUpload
   );
 
@@ -160,10 +165,35 @@ function FormFloatingBasicExample(): JSX.Element {
             </FloatingLabel>
           </td>
         </tr>
+        <tr>
+          <td>
+            <TextArea introduce={introduce} />
+          </td>
+        </tr>
       </tbody>
     </table>
   );
 }
+
+const TextArea: React.FC<BasicExampleProps> = ({ introduce }) => {
+  const dispatch = useDispatch();
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const text = e.target.value;
+    dispatch(setIntroduce(text));
+  };
+
+  return (
+    <textarea
+      cols={40}
+      rows={10}
+      placeholder="Introduce"
+      name="introduce"
+      id="introduce"
+      value={introduce}
+      onChange={handleTextChange}
+    />
+  );
+};
 
 function SizesExample(): JSX.Element {
   const navigate = useNavigate();

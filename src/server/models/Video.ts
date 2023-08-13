@@ -6,6 +6,7 @@ interface DBVideo extends Document {
   genre: string;
   actors: string;
   owner: mongoose.Types.ObjectId;
+  introduce: string;
 }
 const videoSchema = new mongoose.Schema<DBVideo>({
   title: { type: String, required: true, maxLength: 80 },
@@ -13,6 +14,7 @@ const videoSchema = new mongoose.Schema<DBVideo>({
   genre: { type: String },
   actors: { type: String },
   owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
+  introduce: { type: String },
 });
 
 const Video = mongoose.model("Video", videoSchema);

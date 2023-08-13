@@ -43,7 +43,7 @@ export const postUpload: RequestHandler = async (req, res) => {
   }
   const _id = req.session.userId;
   const videFile = req.file;
-  const { title, owner, genre, actors } = req.body;
+  const { title, owner, genre, actors, introduce } = req.body;
   try {
     const newVideo = await Video.create({
       title,
@@ -51,6 +51,7 @@ export const postUpload: RequestHandler = async (req, res) => {
       owner,
       genre,
       actors,
+      introduce,
     });
 
     const user = await User.findById(_id);

@@ -9,6 +9,7 @@ interface videoBox {
   video: string;
   genre: string;
   actors: string;
+  introduce: string;
 }
 
 const initialState: videoBox = {
@@ -17,6 +18,7 @@ const initialState: videoBox = {
   video: "",
   genre: "",
   actors: "",
+  introduce: "",
 };
 
 export const videoControll = createAsyncThunk(
@@ -53,6 +55,9 @@ const videoPlaySlice = createSlice({
     setActors: (state, action: PayloadAction<string>) => {
       state.actors = action.payload;
     },
+    setIntroduce: (state, action: PayloadAction<string>) => {
+      state.introduce = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(videoControll.fulfilled, (state, action) => {
@@ -61,12 +66,13 @@ const videoPlaySlice = createSlice({
   },
 });
 
-export const { setTitle, setOwner, setVideo, setGenre, setActors } =
-  videoPlaySlice.actions;
+export const {
+  setTitle,
+  setOwner,
+  setVideo,
+  setGenre,
+  setActors,
+  setIntroduce,
+} = videoPlaySlice.actions;
 
 export default videoPlaySlice.reducer;
-/*
-
-
-
-*/

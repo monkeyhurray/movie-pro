@@ -8,6 +8,7 @@ interface videoUploadState {
   owner: string;
   genre: string;
   actors: string;
+  introduce: string;
 }
 
 const initialState: videoUploadState = {
@@ -16,6 +17,7 @@ const initialState: videoUploadState = {
   owner: "",
   genre: "",
   actors: "",
+  introduce: "",
 };
 
 export const videoUpload = createAsyncThunk(
@@ -49,6 +51,9 @@ const videoUploadSlice = createSlice({
     setActors: (state, action: PayloadAction<string>) => {
       state.actors = action.payload;
     },
+    setIntroduce: (state, action: PayloadAction<string>) => {
+      state.introduce = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(videoUpload.fulfilled, (state, action) => {
@@ -56,7 +61,13 @@ const videoUploadSlice = createSlice({
     });
   },
 });
-export const { setTitle, setVideoFile, setOwner, setGenre, setActors } =
-  videoUploadSlice.actions;
+export const {
+  setTitle,
+  setVideoFile,
+  setOwner,
+  setGenre,
+  setActors,
+  setIntroduce,
+} = videoUploadSlice.actions;
 
 export default videoUploadSlice.reducer;
