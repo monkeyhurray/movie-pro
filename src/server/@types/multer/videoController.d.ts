@@ -8,6 +8,7 @@ interface MongoVideo {
   videoUrl: string;
   genre: string;
   actors: string;
+  introduce: string;
   owner: Types.ObjectId;
 }
 

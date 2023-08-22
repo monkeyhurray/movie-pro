@@ -1,89 +1,70 @@
 import { useState, useEffect } from "react";
-import "../scss/Movie.scss";
 import { Card, Button, Modal } from "react-bootstrap";
-import { RootState } from "../../src/redux/store";
-import { ThunkDispatch } from "redux-thunk";
-import { Action } from "redux";
 import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../redux/store";
+import { getCookie } from "../cookie";
 import "../scss/See.scss";
-import {
-  setTitle,
-  setOwner,
-  setVideo,
-  setGenre,
-  setActors,
-  setIntroduce,
-  videoControll,
-} from "src/redux/modules/product/videoPlay";
+import { setVideoId } from "../redux/modules/product/videoOwner";
 
-interface Owner {
-  _id: string;
-  id: string;
-  email: string;
-  name: string;
-  socialOnly: boolean;
-  userName: string;
-  password: string;
-  videos: [];
-  __v: number;
-}
-interface VideoPayload {
-  actors: string;
+import { userCookie } from "../../src/redux/modules/user/userCookie";
+import { useParams } from "react-router-dom";
+interface Movie {
+  id: number;
+  movie: string;
   genre: string;
-  introduce: string;
-  owner: Owner;
-  title: string;
-  videoUrl: string;
-  __v: number;
-  _id: string;
+  cast: string;
+  fileNum: string;
+  owner: string;
 }
-interface PayLoad {
-  type: string;
-  payload: {};
+
+interface TableData {
+  tableData: Movie[];
 }
-interface SeeProps {
-  id: string;
-}
-interface ExampleProps {
-  introduce: string;
-}
-const See: React.FC<SeeProps> = ({ id }) => {
+
+const See: React.FC = () => {
+  localStorage.getItem("");
   return (
     <div>
-      <CardExample id={id} />
+      <CardExample />
     </div>
   );
 };
 
-const CardExample: React.FC<SeeProps> = ({ id }) => {
-  const dispatch: ThunkDispatch<
-    RootState,
-    Action<string>,
-    Action<string>
-  > = useDispatch();
-
-  const { title, genre, owner, video, actors, introduce } = useSelector(
-    (state: RootState) => state.videoPlay
-  );
-
+const CardExample: React.FC = () => {
+  const dispatch = useDispatch();
+  const { videoId } = useSelector((state: RootState) => state.videoOwner);
+  const { id } = useParams();
   useEffect(() => {
-    const dispatFuc = async () => {
-      const videoControllInfo = await dispatch(videoControll(id));
-      const videoInfo = videoControllInfo.payload as PayLoad;
-      console.log(videoInfo);
-      const realVideo = videoInfo.payload as VideoPayload;
-      console.log(realVideo);
-      dispatch(setTitle(realVideo.title));
-      dispatch(setOwner(realVideo.owner.userName));
-      dispatch(setGenre(realVideo.genre));
-      dispatch(setActors(realVideo.actors));
-      dispatch(setVideo(realVideo.videoUrl));
-      dispatch(setIntroduce(realVideo.introduce));
-    };
-    dispatFuc();
-  }, [dispatch, id]);
-  console.log(video);
-  const videoContent = video.replace("src\\client\\public\\", "");
+    userCookie(dispatch);
+    const id = getCookie("videoId");
+    dispatch(setVideoId(id));
+  }, [dispatch]);
+  const fileUrlId = videoId;
+
+  console.log(fileUrlId);
+
+  const storedDataString = localStorage.getItem("recoil-persist");
+  let tableData: TableData | null = null;
+
+  if (storedDataString !== null) {
+    tableData = JSON.parse(storedDataString) as TableData;
+  }
+
+  if (tableData === null) {
+    throw new Error("tableData is null");
+  }
+  const items = tableData.tableData;
+
+  /* 
+    items.map((item) => {
+      const id = item.id;
+      const movieTitle = item.movie;
+      const genre = item.genre;
+      const cast = item.cast;
+      const fileNum = item.fileNum;
+      // 이제 id, movieTitle, genre, cast 등의 값을 사용할 수 있습니다.
+     });
+  */
 
   /*
 <Card.Img variant="top" src="img/assets/Apes.png" />
@@ -96,7 +77,7 @@ Card.Body태그 안에 작성되어 있던 것
         <Card.Body className="video-Card-Body">
           <video
             className="video-Card-Body-content"
-            src={"/" + videoContent}
+            src={"/" + items[0].fileNum}
             controls
           ></video>
         </Card.Body>
@@ -106,26 +87,29 @@ Card.Body태그 안에 작성되어 있던 것
         <Card.Body>
           <Card.Title>
             <strong>Title:</strong>
-            {title}
+            {items[0].movie}
             <br />
           </Card.Title>
           <Card.Text>
-            <strong>Genre:</strong> {genre}
+            <strong>Genre:</strong>
+            {items[0].genre}
             <br />
-            <strong>Owner:</strong> {owner}
+            <strong>Owner:</strong>
+            {items[0].owner}
             <br />
             <strong>Actors:</strong>
-            {actors}
+            {items[0].cast}
+
             <br />
           </Card.Text>
-          <Example introduce={introduce} />
+          <Example />
         </Card.Body>
       </Card>
     </div>
   );
 };
 
-const Example: React.FC<ExampleProps> = ({ introduce }) => {
+const Example: React.FC = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -145,7 +129,7 @@ const Example: React.FC<ExampleProps> = ({ introduce }) => {
         <Modal.Header closeButton>
           <Modal.Title>Introduce</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{introduce}</Modal.Body>
+        <Modal.Body></Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close

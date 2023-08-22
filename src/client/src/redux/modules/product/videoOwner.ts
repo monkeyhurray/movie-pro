@@ -29,7 +29,7 @@ const videoOwnerSlice = createSlice({
   name: "videoOwner",
   initialState,
   reducers: {
-    setVideoOwner: (state, action: PayloadAction<string>) => {
+    setVideoId: (state, action: PayloadAction<string>) => {
       state.videoId = action.payload;
     },
     setVideoUrl: (state, action: PayloadAction<string>) => {
@@ -42,6 +42,6 @@ const videoOwnerSlice = createSlice({
     });
   },
 });
-export const { setVideoOwner, setVideoUrl } = videoOwnerSlice.actions;
+export const { setVideoId, setVideoUrl } = videoOwnerSlice.actions;
 
 export default videoOwnerSlice.reducer;

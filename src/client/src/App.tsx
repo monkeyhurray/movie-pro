@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useEffect, createContext } from "react";
 import { wiseSaying, num } from "./wiseSaying";
 import { Routes, Route, useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -18,7 +18,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import { userCookie, setGcookie } from "../src/redux/modules/user/userCookie";
 import { RootState } from "./redux/store";
 import {
-  setVideoOwner,
+  setVideoId,
   setVideoUrl,
   videoOwner,
 } from "./redux/modules/product/videoOwner";
@@ -34,11 +34,9 @@ const Upload = lazy(() => import("./routes/Upload"));
 const See = lazy(() => import("./routes/See"));
 const Moive = lazy(() => import("./routes/Movie"));
 
-function App() {
-  interface VideoId {
-    videoUrl: string;
-  }
+export let MyContext = createContext("");
 
+function App() {
   const dispatch = useDispatch();
   const login = useSelector((state: RootState) => state.confirmUser.loginStay);
   const { videoId } = useSelector((state: RootState) => state.videoOwner);
@@ -46,15 +44,20 @@ function App() {
   useEffect(() => {
     if (login) {
       userCookie(dispatch);
-      const id = getCookie("videoId");
-      dispatch(setVideoOwner(id));
+      const id: [] | undefined = getCookie("videoIdBox");
+      if (id && id.length > 0) {
+        const idValue = id.slice(-1)[0];
+        dispatch(setVideoId(idValue));
+      } else {
+        dispatch(setGcookie(""));
+      }
     } else {
       dispatch(setGcookie(""));
     }
   }, [dispatch, login]);
-  const id = videoId;
+  const fileUrlId = videoId;
 
-  console.log(id);
+  console.log(fileUrlId);
 
   return (
     <div className="App">
@@ -74,15 +77,33 @@ function App() {
 
           <Route path="/login" element={<Login />} />
           <Route path="/signUp" element={<SignUp />} />
-          <Route path="/movie" element={<Moive id={id} />} />
+
           <Route path="/wirting" element={<Wirting />} />
           {login ? (
             <>
-              <Route path="/video/upload" element={<Upload />} />
               <Route path="/user/myPage" element={<MyPage />} />
               <Route path="/user/logOut" />
-              <Route path="/video" element={<Watch id={id} />} />{" "}
-              <Route path={`/video/${id}`} element={<See id={id} />} />
+              <Route
+                path="/video"
+                element={<Watch fileUrlId={fileUrlId} />}
+              />{" "}
+              <Route path="/video/upload" element={<Upload />} />
+              <Route
+                path="/video/movie"
+                element={
+                  <MyContext.Provider value="">
+                    <Moive fileUrlId={fileUrlId} />
+                  </MyContext.Provider>
+                }
+              />
+              <Route
+                path={"/video/movie/:id"}
+                element={
+                  <MyContext.Provider value={fileUrlId}>
+                    <See />
+                  </MyContext.Provider>
+                }
+              />
             </>
           ) : null}
           <Route
@@ -144,7 +165,7 @@ function NavScrollExample(): JSX.Element {
             <NavDropdown title="MovieInfo" id="navbarScrollingDropdown">
               <NavDropdown.Item
                 onClick={() => {
-                  navigate("/movie");
+                  navigate("/video/movie");
                 }}
               >
                 Movie

@@ -17,14 +17,10 @@ export const getVideoOwner: RequestHandler = async (req, res) => {
   }
 };
 
-export const getWatch: RequestHandler = async (req, res) => {
-  return res.redirect("/video");
-};
-
 export const getSee: RequestHandler = async (req, res) => {
-  const { id } = req.params;
-  console.log(id);
-  const video = await Video.findById(id).populate("owner");
+  const { fileUrlId } = req.params;
+  console.log(fileUrlId);
+  const video = await Video.findById(fileUrlId).populate("owner");
   if (!video) {
     return res.status(404).send({ errorMsg: "Can not find User." });
   }
@@ -33,7 +29,6 @@ export const getSee: RequestHandler = async (req, res) => {
 };
 
 export const getUpload: RequestHandler = (req, res) => {
-  const { upload } = req.params;
   return res.redirect("/video/upload");
 };
 
@@ -55,13 +50,15 @@ export const postUpload: RequestHandler = async (req, res) => {
     });
 
     const user = await User.findById(_id);
+    const videoBox: string[] = [];
     user.videos.push(newVideo._id);
     user.save();
     req.session.videoId = newVideo._id;
+    videoBox.push(newVideo._id);
 
-    const videoSessionId = req.session.videoId;
+    const videoSessionId = videoBox;
 
-    res.cookie("videoId", videoSessionId);
+    res.cookie("videoIdBox", videoSessionId);
 
     return res.redirect("/");
   } catch (error) {
@@ -69,13 +66,16 @@ export const postUpload: RequestHandler = async (req, res) => {
     return res.status(400).send("Failed to create user");
   }
 };
+export const getWatch: RequestHandler = async (req, res) => {
+  return res.redirect("/video");
+};
 
 export const postWatch: RequestHandler = (req, res) => {
   return res.redirect("/video");
 };
 export const getMovie: RequestHandler = (req, res) => {
-  return res.redirect("/movie");
+  return res.redirect("/video/movie");
 };
 export const postMovie: RequestHandler = (req, res) => {
-  return res.redirect("/movie");
+  return res.redirect("/video/movie");
 };

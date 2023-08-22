@@ -6,6 +6,7 @@ import userCookieReducer from "../modules/user/userCookie";
 import videoUploadReducer from "../modules/product/videoUpload";
 import videoPlayReducer from "../modules/product/videoPlay";
 import videoOwnerReducer from "../modules/product/videoOwner";
+import movieTableReducer from "../modules/product/movieTable";
 
 const rootReducer = combineReducers({
   user: signUpUserReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   videoOwner: videoOwnerReducer,
   videoPlay: videoPlayReducer,
   userCookie: userCookieReducer,
+  movieTable: movieTableReducer,
 });
 
 export default rootReducer;

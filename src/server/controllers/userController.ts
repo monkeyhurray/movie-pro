@@ -99,7 +99,12 @@ export const postLogin: RequestHandler = async (req, res) => {
   }
 };
 //로그인
-
+export const githubSignUp = (req, res) => {
+  return res.redirect("/");
+};
+export const githubLogin = (req, res) => {
+  return res.redirect("/");
+};
 export const getMyPage: RequestHandler = (req, res) => {
   res.redirect("/");
 };

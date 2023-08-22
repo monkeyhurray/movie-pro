@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { UserActionTypes } from "../constants/actionTypes";
-
 import axios from "axios";
 
 interface videoBox {
@@ -23,9 +22,9 @@ const initialState: videoBox = {
 
 export const videoControll = createAsyncThunk(
   UserActionTypes.VIDEO_PLAY,
-  async (id: string) => {
+  async (fileUrlId: string) => {
     try {
-      const response = await axios.get(`/video/${id}`);
+      const response = await axios.get(`/video/movie/${fileUrlId}`);
       return {
         type: UserActionTypes.VIDEO_PLAY,
         payload: response.data.video,

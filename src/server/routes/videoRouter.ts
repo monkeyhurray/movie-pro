@@ -3,6 +3,7 @@ import {
   getUpload,
   postUpload,
   getWatch,
+  getMovie,
   getSee,
 } from "../controllers/videoController";
 import { videoUpload } from "./middlewares";
@@ -10,7 +11,9 @@ import { videoUpload } from "./middlewares";
 const videoRouter: Router = express.Router();
 videoRouter.route("/").get(getWatch);
 
-videoRouter.route("/:id").get(getSee);
+videoRouter.route("/movie").get(getMovie);
+
+videoRouter.route("/movie/:fileUrlId([0-9a-f]{24})").get(getSee);
 
 videoRouter
   .route("/upload")

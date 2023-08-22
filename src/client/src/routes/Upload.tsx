@@ -206,6 +206,7 @@ function SizesExample(): JSX.Element {
 
       <Button
         className="btn2"
+        size="lg"
         onClick={() => {
           navigate("/");
         }}

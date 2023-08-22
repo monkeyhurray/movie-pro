@@ -8,7 +8,7 @@ import { CookiesProvider } from "react-cookie";
 import { BrowserRouter } from "react-router-dom";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
-
+import { RecoilRoot } from "recoil";
 <link
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
@@ -27,7 +27,9 @@ root.render(
     <PersistGate loading={null} persistor={persistor}>
       <CookiesProvider>
         <BrowserRouter>
-          <App />
+          <RecoilRoot>
+            <App />
+          </RecoilRoot>
         </BrowserRouter>
       </CookiesProvider>
     </PersistGate>

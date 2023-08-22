@@ -3,18 +3,18 @@ import { useNavigate } from "react-router-dom";
 import { Figure } from "react-bootstrap";
 
 interface WatchProps {
-  id: string;
+  fileUrlId: string;
 }
 
-const Watch: React.FC<WatchProps> = ({ id }) => {
+const Watch: React.FC<WatchProps> = ({ fileUrlId }) => {
   return (
     <>
-      <FigureExample id={id} />
+      <FigureExample fileUrlId={fileUrlId} />
     </>
   );
 };
 
-const FigureExample: React.FC<WatchProps> = ({ id }) => {
+const FigureExample: React.FC<WatchProps> = ({ fileUrlId }) => {
   const navigate = useNavigate();
 
   return (
@@ -27,7 +27,10 @@ const FigureExample: React.FC<WatchProps> = ({ id }) => {
         <button onClick={() => navigate("/video/delete")}>video delete</button>
       </div>
 
-      <Figure className="figureFrame" onClick={() => navigate(`/video/${id}`)}>
+      <Figure
+        className="figureFrame"
+        onClick={() => navigate(`/video/movie/${fileUrlId}`)}
+      >
         <Figure.Image width={171} height={180} alt="trailler img" />
         <Figure.Caption>asdasc.jasljd</Figure.Caption>
       </Figure>
