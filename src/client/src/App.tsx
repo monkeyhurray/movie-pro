@@ -1,8 +1,9 @@
 /* eslint-disable */
-import { lazy, Suspense, useEffect, createContext } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import { wiseSaying, num } from "./wiseSaying";
-import { Routes, Route, useNavigate, useParams } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+
 import {
   Button,
   Container,
@@ -13,41 +14,43 @@ import {
   Carousel,
   Spinner,
 } from "react-bootstrap";
+
+import { userCookie, setGcookie } from "../src/redux/modules/user/userCookie";
+import { setVideoId } from "./redux/modules/product/videoOwner";
+import { setLoginStay } from "./redux/modules/user/confirmUser";
+import {
+  setFileUrlId,
+  setFileUrlIdNum,
+  setVideoIdBox,
+} from "./redux/modules/product/videoInfo";
+
+import { RootState } from "./redux/store";
+import { getCookie } from "./cookie";
 import "./scss/App.scss";
 import "bootstrap/dist/css/bootstrap.css";
-import { userCookie, setGcookie } from "../src/redux/modules/user/userCookie";
-import { RootState } from "./redux/store";
-import {
-  setVideoId,
-  setVideoUrl,
-  videoOwner,
-} from "./redux/modules/product/videoOwner";
-import { Action } from "redux";
-import { getCookie } from "./cookie";
 
 const Login = lazy(() => import("./routes/Login"));
 const Watch = lazy(() => import("./routes/Watch"));
 const SignUp = lazy(() => import("./routes/SignUp"));
 const MyPage = lazy(() => import("./routes/MyPage"));
-const Wirting = lazy(() => import("./routes/Wirting"));
 const Upload = lazy(() => import("./routes/Upload"));
 const See = lazy(() => import("./routes/See"));
 const Moive = lazy(() => import("./routes/Movie"));
 
-export let MyContext = createContext("");
-
 function App() {
   const dispatch = useDispatch();
   const login = useSelector((state: RootState) => state.confirmUser.loginStay);
+
   const { videoId } = useSelector((state: RootState) => state.videoOwner);
+  const [fileUrlId, setFileUrlId] = useState("");
+  const [fileUrlIdNum, setFileUrlIdNum] = useState(0);
 
   useEffect(() => {
     if (login) {
       userCookie(dispatch);
-      const id: [] | undefined = getCookie("videoIdBox");
-      if (id && id.length > 0) {
-        const idValue = id.slice(-1)[0];
-        dispatch(setVideoId(idValue));
+      let id: string = getCookie("videoId");
+      if (id !== null) {
+        dispatch(setVideoId(id));
       } else {
         dispatch(setGcookie(""));
       }
@@ -55,9 +58,57 @@ function App() {
       dispatch(setGcookie(""));
     }
   }, [dispatch, login]);
-  const fileUrlId = videoId;
 
+  let videoIdBox: string[] = [];
+  let videoIdBoxArray: string[] = [];
+  let storedData: string | null;
+
+  videoIdBox.push(videoId);
+
+  useEffect(() => {
+    if (videoIdBox.length > 0) {
+      localStorage.setItem("videoIdBox", JSON.stringify(videoIdBox));
+    } else {
+      storedData = localStorage.getItem("videoIdBox");
+      if (typeof storedData === "string") {
+        videoIdBoxArray = JSON.parse(storedData) as string[];
+        videoIdBox.push(...videoIdBoxArray);
+        localStorage.setItem("videoIdBox", JSON.stringify(videoIdBoxArray));
+      }
+    }
+
+    const propFileUrlIdNum = () => {
+      setFileUrlIdNum(
+        videoIdBoxArray.findIndex((element) => {
+          return element === fileUrlId;
+        })
+      );
+    };
+
+    propFileUrlIdNum();
+  }, [videoIdBox]);
+
+  storedData = localStorage.getItem("videoIdBox");
+  if (typeof storedData === "string") {
+    videoIdBoxArray = JSON.parse(storedData) as string[];
+  }
+  useEffect(() => {
+    const propFileUrlId = () => {
+      setFileUrlId(videoIdBoxArray.slice(-1)[0]);
+    };
+    propFileUrlId();
+  }, []);
+
+  console.log(videoIdBox);
+  console.log(videoIdBoxArray);
   console.log(fileUrlId);
+  console.log(fileUrlIdNum);
+  const userConfirm: string = getCookie("myToken");
+  if (userConfirm !== undefined) {
+    dispatch(setLoginStay(true));
+  } else {
+    dispatch(setLoginStay(false));
+  }
 
   return (
     <div className="App">
@@ -78,7 +129,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signUp" element={<SignUp />} />
 
-          <Route path="/wirting" element={<Wirting />} />
           {login ? (
             <>
               <Route path="/user/myPage" element={<MyPage />} />
@@ -91,18 +141,12 @@ function App() {
               <Route
                 path="/video/movie"
                 element={
-                  <MyContext.Provider value="">
-                    <Moive fileUrlId={fileUrlId} />
-                  </MyContext.Provider>
+                  <Moive fileUrlId={fileUrlId} fileUrlIdNum={fileUrlIdNum} />
                 }
               />
               <Route
                 path={"/video/movie/:id"}
-                element={
-                  <MyContext.Provider value={fileUrlId}>
-                    <See />
-                  </MyContext.Provider>
-                }
+                element={<See videoIdBoxArray={videoIdBoxArray} />}
               />
             </>
           ) : null}

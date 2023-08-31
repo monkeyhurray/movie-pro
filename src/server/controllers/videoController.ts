@@ -50,15 +50,12 @@ export const postUpload: RequestHandler = async (req, res) => {
     });
 
     const user = await User.findById(_id);
-    const videoBox: string[] = [];
+
     user.videos.push(newVideo._id);
     user.save();
     req.session.videoId = newVideo._id;
-    videoBox.push(newVideo._id);
-
-    const videoSessionId = videoBox;
-
-    res.cookie("videoIdBox", videoSessionId);
+    let videoSessionId = req.session.videoId;
+    res.cookie("videoId", videoSessionId);
 
     return res.redirect("/");
   } catch (error) {

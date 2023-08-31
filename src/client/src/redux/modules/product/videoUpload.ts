@@ -24,7 +24,6 @@ export const videoUpload = createAsyncThunk(
   UserActionTypes.VIDEO_UPLOAD,
   async (dataToSubmit: FormData) => {
     const request = await axios.post("/video/upload", dataToSubmit);
-
     return {
       type: UserActionTypes.VIDEO_UPLOAD,
       payload: request,

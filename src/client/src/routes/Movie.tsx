@@ -8,9 +8,6 @@ import { recoilPersist } from "recoil-persist";
 import { useSelector, useDispatch } from "react-redux";
 import { Action } from "redux";
 import "../scss/MasterPiece.scss";
-import { setVideoId } from "../redux/modules/product/videoOwner";
-import { getCookie } from "../cookie";
-import { userCookie } from "../../src/redux/modules/user/userCookie";
 
 import {
   setTitle,
@@ -50,6 +47,7 @@ interface PayLoad {
 }
 interface MovideProps {
   fileUrlId: string;
+  fileUrlIdNum: number;
 }
 
 interface MovieData {
@@ -61,31 +59,27 @@ interface MovieData {
   owner: string;
 }
 
-const Movie: React.FC<MovideProps> = ({ fileUrlId }) => {
+function Movie({ fileUrlId, fileUrlIdNum }: MovideProps) {
+  console.log(fileUrlId);
   return (
     <div className="masterMovieFrame">
-      <BasicExample fileUrlId={fileUrlId} />
+      <BasicExample fileUrlId={fileUrlId} fileUrlIdNum={fileUrlIdNum} />
     </div>
   );
-};
+}
 
-const BasicExample: React.FC<MovideProps> = ({ fileUrlId }) => {
+function BasicExample({ fileUrlId, fileUrlIdNum }: MovideProps) {
   const navigate = useNavigate();
-  const [videoIdArray, setVideoIdArray] = useState();
 
+  console.log(fileUrlId);
+  console.log(fileUrlIdNum);
   const dispatch: ThunkDispatch<
     RootState,
     Action<string>,
     Action<string>
   > = useDispatch();
-  const { videoId } = useSelector((state: RootState) => state.videoOwner);
 
-  useEffect(() => {
-    userCookie(dispatch);
-    const id = getCookie("videoIdBox");
-    dispatch(setVideoId(id));
-  }, [dispatch]);
-  //const fileUrlId = videoId;
+  const [newRowId, setNewRowId] = useState<number>(0);
 
   const { title, genre, owner, video, actors, introduce } = useSelector(
     (state: RootState) => state.videoPlay
@@ -94,6 +88,7 @@ const BasicExample: React.FC<MovideProps> = ({ fileUrlId }) => {
   useEffect(() => {
     const dispatFuc = async () => {
       const videoControllInfo = await dispatch(videoControll(fileUrlId));
+      console.log(fileUrlId);
       const videoInfo = videoControllInfo.payload as PayLoad;
       console.log(videoInfo);
       const realVideo = videoInfo.payload as VideoPayload;
@@ -107,6 +102,7 @@ const BasicExample: React.FC<MovideProps> = ({ fileUrlId }) => {
     };
     dispatFuc();
   }, [dispatch, fileUrlId]);
+  console.log(fileUrlId);
 
   useEffect(() => {
     if (fileUrlId !== undefined) {
@@ -115,6 +111,7 @@ const BasicExample: React.FC<MovideProps> = ({ fileUrlId }) => {
   }, [fileUrlId]);
 
   const videoContent = video.replace("src\\client\\public\\", "");
+  let onlyVideoNum = videoContent.replace("uploads\\videos\\", "");
 
   const { persistAtom } = recoilPersist();
 
@@ -146,14 +143,17 @@ const BasicExample: React.FC<MovideProps> = ({ fileUrlId }) => {
     });
 
   const handleAddRow = () => {
+    const newId = fileUrlIdNum + 1;
+
     const newRow: MovieData = {
-      id: tableData.length + 1,
+      id: newId,
       movie: `${title}`,
       genre: `${genre}`,
       cast: `${actors}`,
       fileNum: `${videoContent}`,
       owner: `${owner}`,
     };
+    setNewRowId(newId);
     if (
       newRow.movie.trim() === "" ||
       newRow.genre.trim() === "" ||
@@ -178,6 +178,7 @@ const BasicExample: React.FC<MovideProps> = ({ fileUrlId }) => {
       setTableData((prevData) => [...prevData, newRow]);
     }
   };
+
   const handleRemoveRow = (id: number) => {
     const newData = tableData.filter((item) => item.id !== id);
     setTableData(newData);
@@ -215,7 +216,7 @@ const BasicExample: React.FC<MovideProps> = ({ fileUrlId }) => {
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => (
                   <td
-                    onClick={() => navigate(`/video/movie/${fileUrlId}`)}
+                    onClick={() => navigate(`/video/movie/${newRowId}`)}
                     {...cell.getCellProps()}
                   >
                     {cell.render("Cell")}
@@ -231,6 +232,6 @@ const BasicExample: React.FC<MovideProps> = ({ fileUrlId }) => {
       </table>
     </>
   );
-};
+}
 
 export default Movie;

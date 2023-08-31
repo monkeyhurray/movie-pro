@@ -7,5 +7,5 @@ export enum UserActionTypes {
   CONFIRM_USER = "confirmUser/CONFIRM_USER",
   DELETE_COOKIE = "confirmUser/DELETE_COOKIE",
   USER_COOKIE_CONFRIM = "userCookie/USER_COOKIE_CONFRIM",
-  MOVIE_TABLE = "movieTable/MOVIE_TABLE",
+  VIDEO_INFO = "videoInfo/VIDEO_INFO",
 }

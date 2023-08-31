@@ -1,13 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, Button, Modal } from "react-bootstrap";
+import "../scss/See.scss";
+/*
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/store";
 import { getCookie } from "../cookie";
-import "../scss/See.scss";
 import { setVideoId } from "../redux/modules/product/videoOwner";
-
 import { userCookie } from "../../src/redux/modules/user/userCookie";
+*/
+
 import { useParams } from "react-router-dom";
+
+interface TableData {
+  tableData: Movie[];
+}
+
 interface Movie {
   id: number;
   movie: string;
@@ -16,44 +23,49 @@ interface Movie {
   fileNum: string;
   owner: string;
 }
-
-interface TableData {
-  tableData: Movie[];
+interface SeeProps {
+  videoIdBoxArray: string[];
 }
-
-const See: React.FC = () => {
-  localStorage.getItem("");
+function See({ videoIdBoxArray }: SeeProps) {
   return (
     <div>
-      <CardExample />
+      <CardExample videoIdBoxArray={videoIdBoxArray} />
     </div>
   );
-};
+}
 
-const CardExample: React.FC = () => {
+function CardExample({ videoIdBoxArray }: SeeProps) {
+  /*
   const dispatch = useDispatch();
   const { videoId } = useSelector((state: RootState) => state.videoOwner);
-  const { id } = useParams();
   useEffect(() => {
     userCookie(dispatch);
     const id = getCookie("videoId");
     dispatch(setVideoId(id));
   }, [dispatch]);
   const fileUrlId = videoId;
-
   console.log(fileUrlId);
-
+ */
+  const { id } = useParams<{ id: string }>();
   const storedDataString = localStorage.getItem("recoil-persist");
-  let tableData: TableData | null = null;
+  const tableData: TableData = storedDataString
+    ? JSON.parse(storedDataString)
+    : null;
+  let parsedId: number;
 
-  if (storedDataString !== null) {
-    tableData = JSON.parse(storedDataString) as TableData;
+  if (id !== undefined) {
+    parsedId = parseInt(id) - 1;
+  } else {
+    parsedId = 0;
   }
-
-  if (tableData === null) {
-    throw new Error("tableData is null");
-  }
-  const items = tableData.tableData;
+  let items = tableData.tableData[parsedId];
+  console.log(items);
+  console.log(parsedId);
+  /*
+  const findVideo = videoIdBoxArray.find((d) => {
+    d;
+  });
+   */
 
   /* 
     items.map((item) => {
@@ -77,7 +89,7 @@ Card.Body태그 안에 작성되어 있던 것
         <Card.Body className="video-Card-Body">
           <video
             className="video-Card-Body-content"
-            src={"/" + items[0].fileNum}
+            src={"/" + items.fileNum}
             controls
           ></video>
         </Card.Body>
@@ -87,18 +99,18 @@ Card.Body태그 안에 작성되어 있던 것
         <Card.Body>
           <Card.Title>
             <strong>Title:</strong>
-            {items[0].movie}
+            {items.movie}
             <br />
           </Card.Title>
           <Card.Text>
             <strong>Genre:</strong>
-            {items[0].genre}
+            {items.genre}
             <br />
             <strong>Owner:</strong>
-            {items[0].owner}
+            {items.owner}
             <br />
             <strong>Actors:</strong>
-            {items[0].cast}
+            {items.cast}
 
             <br />
           </Card.Text>
@@ -107,7 +119,7 @@ Card.Body태그 안에 작성되어 있던 것
       </Card>
     </div>
   );
-};
+}
 
 const Example: React.FC = () => {
   const [show, setShow] = useState(false);

@@ -28,7 +28,7 @@ const confirmUserSlice = createSlice({
 export const { setLoginStay } = confirmUserSlice.actions;
 
 export const logOut = (dispatch: Dispatch) => {
-  cookies.remove("token");
+  cookies.remove("myToken");
   dispatch(setLoginStay(false));
   dispatch({
     type: UserActionTypes.DELETE_COOKIE,

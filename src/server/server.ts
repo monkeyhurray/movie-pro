@@ -45,6 +45,7 @@ app.use(
     },
   })
 );
+
 //app.use(localsMiddleware);
 app.use(express.static(path.join(__dirname, "../client/build")));
 app.use(express.json());
@@ -54,5 +55,15 @@ app.use("/", rootRouter);
 app.use("/user", userRouter);
 app.use("/video", videoRouter);
 
+app.get("/*", function (req, res) {
+  res.sendFile(
+    path.join(__dirname, "..client/public/index.html"),
+    function (err) {
+      if (err) {
+        res.status(500).send(err);
+      }
+    }
+  );
+});
 //수정하기
 export default app;

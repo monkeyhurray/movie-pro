@@ -16,6 +16,8 @@ function MyPage() {
     localStorage.removeItem("persist:root");
     await purge();
     removeCookie("myToken");
+    removeCookie("videoId");
+
     navigate("/");
   };
 
