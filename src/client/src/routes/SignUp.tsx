@@ -26,9 +26,8 @@ function SignUp() {
     Action<string>
   > = useDispatch();
 
-  const { id, email, name, userName, password, password2 } = useSelector(
-    (state: RootState) => state.user
-  );
+  const { id, email, name, userName, userThumb, password, password2 } =
+    useSelector((state: RootState) => state.user);
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,7 +38,15 @@ function SignUp() {
     }
 
     try {
-      const dataToSubmit = { id, email, name, userName, password, password2 };
+      const dataToSubmit = {
+        id,
+        email,
+        name,
+        userName,
+        userThumb,
+        password,
+        password2,
+      };
 
       await dispatch(signUpConfirm(dataToSubmit));
 

@@ -5,6 +5,7 @@ export interface DBUser extends Document {
   id: string;
   email: string;
   name: string;
+  userImg: string;
   socialOnly: boolean;
   userName: string;
   password: string;
@@ -17,6 +18,7 @@ const userSchema = new mongoose.Schema<DBUser>({
   name: { type: String, required: true },
   socialOnly: { type: Boolean, default: false },
   userName: { type: String, required: true },
+  userImg: { type: String },
   password: { type: String },
   videos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video" }],
 });

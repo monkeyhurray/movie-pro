@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { ThunkDispatch } from "redux-thunk";
 import { useNavigate } from "react-router-dom";
 import { useTable, Column } from "react-table";
@@ -7,8 +7,6 @@ import { atom, useRecoilState } from "recoil";
 import { recoilPersist } from "recoil-persist";
 import { useSelector, useDispatch } from "react-redux";
 import { Action } from "redux";
-import "../scss/MasterPiece.scss";
-
 import {
   setTitle,
   setOwner,
@@ -18,6 +16,7 @@ import {
   setIntroduce,
   videoControll,
 } from "src/redux/modules/product/videoPlay";
+import "../scss/MasterPiece.scss";
 
 interface Owner {
   _id: string;
@@ -47,7 +46,6 @@ interface PayLoad {
 }
 interface MovideProps {
   fileUrlId: string;
-  fileUrlIdNum: number;
 }
 
 interface MovieData {
@@ -59,40 +57,34 @@ interface MovieData {
   owner: string;
 }
 
-function Movie({ fileUrlId, fileUrlIdNum }: MovideProps) {
-  console.log(fileUrlId);
+function Movie({ fileUrlId }: MovideProps) {
   return (
     <div className="masterMovieFrame">
-      <BasicExample fileUrlId={fileUrlId} fileUrlIdNum={fileUrlIdNum} />
+      <BasicExample fileUrlId={fileUrlId} />
     </div>
   );
 }
 
-function BasicExample({ fileUrlId, fileUrlIdNum }: MovideProps) {
+function BasicExample({ fileUrlId }: MovideProps) {
   const navigate = useNavigate();
 
   console.log(fileUrlId);
-  console.log(fileUrlIdNum);
+
   const dispatch: ThunkDispatch<
     RootState,
     Action<string>,
     Action<string>
   > = useDispatch();
 
-  const [newRowId, setNewRowId] = useState<number>(0);
-
-  const { title, genre, owner, video, actors, introduce } = useSelector(
+  const { title, genre, owner, video, actors } = useSelector(
     (state: RootState) => state.videoPlay
   );
 
   useEffect(() => {
     const dispatFuc = async () => {
       const videoControllInfo = await dispatch(videoControll(fileUrlId));
-      console.log(fileUrlId);
       const videoInfo = videoControllInfo.payload as PayLoad;
-      console.log(videoInfo);
       const realVideo = videoInfo.payload as VideoPayload;
-      console.log(realVideo);
       dispatch(setTitle(realVideo.title));
       dispatch(setOwner(realVideo.owner.userName));
       dispatch(setGenre(realVideo.genre));
@@ -102,7 +94,6 @@ function BasicExample({ fileUrlId, fileUrlIdNum }: MovideProps) {
     };
     dispatFuc();
   }, [dispatch, fileUrlId]);
-  console.log(fileUrlId);
 
   useEffect(() => {
     if (fileUrlId !== undefined) {
@@ -110,7 +101,10 @@ function BasicExample({ fileUrlId, fileUrlIdNum }: MovideProps) {
     }
   }, [fileUrlId]);
 
-  const videoContent = video.replace("src\\client\\public\\", "");
+  const videoContent = video.replace(
+    "src\\client\\public\\uploads\\videos\\",
+    ""
+  );
   let onlyVideoNum = videoContent.replace("uploads\\videos\\", "");
 
   const { persistAtom } = recoilPersist();
@@ -142,8 +136,15 @@ function BasicExample({ fileUrlId, fileUrlIdNum }: MovideProps) {
       data: tableData,
     });
 
+  let getvideoIdBox = localStorage.getItem("videoIdBox") as string;
+  let confirmVideoIdBox = JSON.parse(getvideoIdBox);
+
+  let fileUrlIdNum = confirmVideoIdBox.findIndex(
+    (d: string) => d === fileUrlId
+  );
+
   const handleAddRow = () => {
-    const newId = fileUrlIdNum + 1;
+    let newId = fileUrlIdNum + 1;
 
     const newRow: MovieData = {
       id: newId,
@@ -153,7 +154,7 @@ function BasicExample({ fileUrlId, fileUrlIdNum }: MovideProps) {
       fileNum: `${videoContent}`,
       owner: `${owner}`,
     };
-    setNewRowId(newId);
+
     if (
       newRow.movie.trim() === "" ||
       newRow.genre.trim() === "" ||
@@ -216,7 +217,7 @@ function BasicExample({ fileUrlId, fileUrlIdNum }: MovideProps) {
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => (
                   <td
-                    onClick={() => navigate(`/video/movie/${newRowId}`)}
+                    onClick={() => navigate(`/video/movie/${id}`)}
                     {...cell.getCellProps()}
                   >
                     {cell.render("Cell")}

@@ -1,37 +1,23 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface videoInfo {
-  fileUrlId: string;
-  fileUrlIdNum: number;
-  videoIdBox: (string | string[])[];
+  videoInfo: string[];
 }
 
 const initialState: videoInfo = {
-  fileUrlId: "",
-  fileUrlIdNum: 0,
-  videoIdBox: [],
+  videoInfo: [],
 };
 
 const videoInfoSlice = createSlice({
   name: "videoInfo",
   initialState,
   reducers: {
-    setFileUrlId: (state, action: PayloadAction<string>) => {
-      state.fileUrlId = action.payload;
-    },
-    setFileUrlIdNum: (state, action: PayloadAction<number>) => {
-      state.fileUrlIdNum = action.payload;
-    },
-    setVideoIdBox: (state, action: PayloadAction<string | string[]>) => {
-      return {
-        ...state,
-        videoIdBox: [...state.videoIdBox, action.payload],
-      };
+    setVideoInfo: (state, action: PayloadAction<string[]>) => {
+      state.videoInfo = [...state.videoInfo, ...action.payload];
     },
   },
 });
 
-export const { setFileUrlId, setFileUrlIdNum, setVideoIdBox } =
-  videoInfoSlice.actions;
+export const { setVideoInfo } = videoInfoSlice.actions;
 
 export default videoInfoSlice.reducer;

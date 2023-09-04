@@ -19,6 +19,7 @@ interface LoginData {
 export const getSignUp: RequestHandler = (req, res) => res.redirect("/signUp");
 
 export const postSignUp: RequestHandler = async (req, res) => {
+  const userThumb = req.file;
   const { id, email, name, userName, password, password2 }: SignUpData =
     req.body;
   if (!password2 || password !== password2) {
@@ -44,6 +45,7 @@ export const postSignUp: RequestHandler = async (req, res) => {
     const newUser = new User({
       id,
       email,
+      userImg: userThumb.path,
       name,
       userName,
       password,
@@ -99,12 +101,20 @@ export const postLogin: RequestHandler = async (req, res) => {
   }
 };
 //로그인
+
+export const getMyPage = (req, res) => {
+  return res.redirect("/");
+};
+export const postMyPage = (req, res) => {
+  return res;
+};
 export const githubSignUp = (req, res) => {
   return res.redirect("/");
 };
 export const githubLogin = (req, res) => {
   return res.redirect("/");
 };
+
 export const getMyPage: RequestHandler = (req, res) => {
   res.redirect("/");
 };

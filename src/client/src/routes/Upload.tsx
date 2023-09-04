@@ -197,20 +197,17 @@ const TextArea: React.FC<BasicExampleProps> = ({ introduce }) => {
 
 function SizesExample(): JSX.Element {
   const navigate = useNavigate();
-
+  const movePage = () => {
+    navigate("/");
+    window.location.reload();
+  };
   return (
     <div>
       <Button className="btn2" variant="primary" size="lg" type="submit">
         Content Upload
       </Button>
 
-      <Button
-        className="btn2"
-        size="lg"
-        onClick={() => {
-          navigate("/");
-        }}
-      >
+      <Button className="btn2" size="lg" onClick={movePage}>
         Close
       </Button>
     </div>

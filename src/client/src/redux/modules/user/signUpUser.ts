@@ -6,6 +6,7 @@ interface UserState {
   id: string;
   email: string;
   name: string;
+  userThumb: File | null;
   userName: string;
   password: string;
   password2: string;
@@ -16,6 +17,7 @@ const initialState: UserState = {
   email: "",
   name: "",
   userName: "",
+  userThumb: null,
   password: "",
   password2: "",
 };

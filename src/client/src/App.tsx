@@ -5,9 +5,10 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
-  Button,
+  Col,
+  Image,
+  Row,
   Container,
-  Form,
   Nav,
   Navbar,
   NavDropdown,
@@ -18,12 +19,6 @@ import {
 import { userCookie, setGcookie } from "../src/redux/modules/user/userCookie";
 import { setVideoId } from "./redux/modules/product/videoOwner";
 import { setLoginStay } from "./redux/modules/user/confirmUser";
-import {
-  setFileUrlId,
-  setFileUrlIdNum,
-  setVideoIdBox,
-} from "./redux/modules/product/videoInfo";
-
 import { RootState } from "./redux/store";
 import { getCookie } from "./cookie";
 import "./scss/App.scss";
@@ -43,7 +38,6 @@ function App() {
 
   const { videoId } = useSelector((state: RootState) => state.videoOwner);
   const [fileUrlId, setFileUrlId] = useState("");
-  const [fileUrlIdNum, setFileUrlIdNum] = useState(0);
 
   useEffect(() => {
     if (login) {
@@ -59,57 +53,37 @@ function App() {
     }
   }, [dispatch, login]);
 
-  let videoIdBox: string[] = [];
-  let videoIdBoxArray: string[] = [];
-  let storedData: string | null;
-
-  videoIdBox.push(videoId);
-
-  useEffect(() => {
-    if (videoIdBox.length > 0) {
-      localStorage.setItem("videoIdBox", JSON.stringify(videoIdBox));
-    } else {
-      storedData = localStorage.getItem("videoIdBox");
-      if (typeof storedData === "string") {
-        videoIdBoxArray = JSON.parse(storedData) as string[];
-        videoIdBox.push(...videoIdBoxArray);
-        localStorage.setItem("videoIdBox", JSON.stringify(videoIdBoxArray));
-      }
-    }
-
-    const propFileUrlIdNum = () => {
-      setFileUrlIdNum(
-        videoIdBoxArray.findIndex((element) => {
-          return element === fileUrlId;
-        })
-      );
-    };
-
-    propFileUrlIdNum();
-  }, [videoIdBox]);
-
-  storedData = localStorage.getItem("videoIdBox");
-  if (typeof storedData === "string") {
-    videoIdBoxArray = JSON.parse(storedData) as string[];
-  }
   useEffect(() => {
     const propFileUrlId = () => {
-      setFileUrlId(videoIdBoxArray.slice(-1)[0]);
+      setFileUrlId(videoId);
     };
     propFileUrlId();
-  }, []);
+  }, [videoId]);
+
+  let videoIdBox: string[] = [];
+  let storedData = localStorage.getItem("videoIdBox") as string;
+  let parseStoredData = JSON.parse(storedData);
+
+  if (videoId !== null) {
+    videoIdBox.push(...parseStoredData, videoId);
+  } else {
+    videoIdBox.push(...parseStoredData);
+  }
+
+  videoIdBox = [...new Set(videoIdBox)];
+  videoIdBox = videoIdBox.filter((i) => i !== null && i !== "");
+  localStorage.setItem("videoIdBox", JSON.stringify(videoIdBox));
 
   console.log(videoIdBox);
-  console.log(videoIdBoxArray);
+  console.log(parseStoredData);
   console.log(fileUrlId);
-  console.log(fileUrlIdNum);
+
   const userConfirm: string = getCookie("myToken");
   if (userConfirm !== undefined) {
     dispatch(setLoginStay(true));
   } else {
     dispatch(setLoginStay(false));
   }
-
   return (
     <div className="App">
       <NavScrollExample />
@@ -140,14 +114,9 @@ function App() {
               <Route path="/video/upload" element={<Upload />} />
               <Route
                 path="/video/movie"
-                element={
-                  <Moive fileUrlId={fileUrlId} fileUrlIdNum={fileUrlIdNum} />
-                }
+                element={<Moive fileUrlId={fileUrlId} />}
               />
-              <Route
-                path={"/video/movie/:id"}
-                element={<See videoIdBoxArray={videoIdBoxArray} />}
-              />
+              <Route path={"/video/movie/:id"} element={<See />} />
             </>
           ) : null}
           <Route
@@ -209,45 +178,34 @@ function NavScrollExample(): JSX.Element {
             <NavDropdown title="MovieInfo" id="navbarScrollingDropdown">
               <NavDropdown.Item
                 onClick={() => {
-                  navigate("/video/movie");
-                }}
-              >
-                Movie
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item
-                onClick={() => {
                   navigate("/video");
                 }}
               >
                 Video
               </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item
+                onClick={() => {
+                  navigate("/video/movie");
+                }}
+              >
+                Movie
+              </NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link href="#" disabled>
-              Link
-            </Nav.Link>
           </Nav>
-
-          <Form className="d-flex">
-            <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-2"
-              aria-label="Search"
-            />
-            <Button variant="outline-success">Search</Button>
-          </Form>
 
           <Nav>
             {login ? ( // logIn 상태에 따라 다른 내용 보여주기
-              <Nav.Link
-                className="LoggedInContent"
-                onClick={() => {
-                  navigate("/user/myPage");
-                }}
-              >
-                I'm User
-              </Nav.Link>
+              <>
+                <Nav.Link
+                  className="LoggedInContent"
+                  onClick={() => {
+                    navigate("/user/myPage");
+                  }}
+                >
+                  I'm User
+                </Nav.Link>
+              </>
             ) : (
               <>
                 <Nav.Link
@@ -301,4 +259,15 @@ function CarouselFadeExample(props: {
   );
 }
 
+function ShapeExample() {
+  return (
+    <Container>
+      <Row>
+        <Col xs={6} md={4}>
+          <Image src="holder.js/171x180" roundedCircle />
+        </Col>
+      </Row>
+    </Container>
+  );
+}
 export default App;

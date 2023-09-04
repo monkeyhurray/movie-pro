@@ -1,15 +1,24 @@
-import { useState } from "react";
-import { Card, Button, Modal } from "react-bootstrap";
-import "../scss/See.scss";
-/*
+import { useState, useEffect } from "react";
+import { ThunkDispatch } from "redux-thunk";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../redux/store";
-import { getCookie } from "../cookie";
-import { setVideoId } from "../redux/modules/product/videoOwner";
-import { userCookie } from "../../src/redux/modules/user/userCookie";
-*/
-
+import { Card, Button, Modal } from "react-bootstrap";
+import { RootState } from "../../src/redux/store";
 import { useParams } from "react-router-dom";
+import { Action } from "redux";
+import "../scss/See.scss";
+import {
+  setIntroduce,
+  videoControll,
+} from "src/redux/modules/product/videoPlay";
+
+interface PayLoad {
+  type: string;
+  payload: {};
+}
+
+interface VideoPayload {
+  introduce: string;
+}
 
 interface TableData {
   tableData: Movie[];
@@ -22,35 +31,32 @@ interface Movie {
   cast: string;
   fileNum: string;
   owner: string;
+  introduce: string;
 }
-interface SeeProps {
-  videoIdBoxArray: string[];
-}
-function See({ videoIdBoxArray }: SeeProps) {
+
+function See() {
   return (
     <div>
-      <CardExample videoIdBoxArray={videoIdBoxArray} />
+      <CardExample />
     </div>
   );
 }
 
-function CardExample({ videoIdBoxArray }: SeeProps) {
-  /*
-  const dispatch = useDispatch();
-  const { videoId } = useSelector((state: RootState) => state.videoOwner);
-  useEffect(() => {
-    userCookie(dispatch);
-    const id = getCookie("videoId");
-    dispatch(setVideoId(id));
-  }, [dispatch]);
-  const fileUrlId = videoId;
-  console.log(fileUrlId);
- */
+function CardExample() {
   const { id } = useParams<{ id: string }>();
+  const dispatch: ThunkDispatch<
+    RootState,
+    Action<string>,
+    Action<string>
+  > = useDispatch();
+  const { introduce } = useSelector((state: RootState) => state.videoPlay);
+
   const storedDataString = localStorage.getItem("recoil-persist");
+
   const tableData: TableData = storedDataString
     ? JSON.parse(storedDataString)
     : null;
+
   let parsedId: number;
 
   if (id !== undefined) {
@@ -58,25 +64,25 @@ function CardExample({ videoIdBoxArray }: SeeProps) {
   } else {
     parsedId = 0;
   }
+
   let items = tableData.tableData[parsedId];
   console.log(items);
   console.log(parsedId);
-  /*
-  const findVideo = videoIdBoxArray.find((d) => {
-    d;
-  });
-   */
 
-  /* 
-    items.map((item) => {
-      const id = item.id;
-      const movieTitle = item.movie;
-      const genre = item.genre;
-      const cast = item.cast;
-      const fileNum = item.fileNum;
-      // 이제 id, movieTitle, genre, cast 등의 값을 사용할 수 있습니다.
-     });
-  */
+  let toUseIntroduce = localStorage.getItem("videoIdBox") as string;
+  let useIntroduce: string[] = JSON.parse(toUseIntroduce);
+  let intr = useIntroduce[parsedId];
+
+  useEffect(() => {
+    const dispatFuc = async () => {
+      const videoControllInfo = await dispatch(videoControll(intr));
+      const videoInfo = videoControllInfo.payload as PayLoad;
+      const realVideo = videoInfo.payload as VideoPayload;
+
+      dispatch(setIntroduce(realVideo.introduce));
+    };
+    dispatFuc();
+  }, [dispatch]);
 
   /*
 <Card.Img variant="top" src="img/assets/Apes.png" />
@@ -89,7 +95,7 @@ Card.Body태그 안에 작성되어 있던 것
         <Card.Body className="video-Card-Body">
           <video
             className="video-Card-Body-content"
-            src={"/" + items.fileNum}
+            src={"/" + "uploads\\videos\\" + items.fileNum}
             controls
           ></video>
         </Card.Body>
@@ -111,17 +117,18 @@ Card.Body태그 안에 작성되어 있던 것
             <br />
             <strong>Actors:</strong>
             {items.cast}
-
             <br />
           </Card.Text>
-          <Example />
+          <Example introduce={introduce} />
         </Card.Body>
       </Card>
     </div>
   );
 }
-
-const Example: React.FC = () => {
+interface ExampleProps {
+  introduce: string;
+}
+const Example = ({ introduce }: ExampleProps) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -141,7 +148,7 @@ const Example: React.FC = () => {
         <Modal.Header closeButton>
           <Modal.Title>Introduce</Modal.Title>
         </Modal.Header>
-        <Modal.Body></Modal.Body>
+        <Modal.Body>{introduce}</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
