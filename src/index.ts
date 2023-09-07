@@ -12,4 +12,5 @@ const PORT: number = 5000;
 const handleListening = () => {
   console.log(`[server]: Server is running at http://localhost:${PORT}`);
 };
+
 app.listen(PORT, handleListening);

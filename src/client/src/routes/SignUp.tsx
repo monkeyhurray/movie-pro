@@ -53,35 +53,7 @@ function SignUp() {
       console.error("동영상이 업로드 되지 않습니다.", error);
     }
   };
-  /*
-  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
 
-    if (password !== password2) {
-      console.log("Passwords do not match");
-      return navigate("/signUp");
-    }
-
-    try {
-      const dataToSubmit = {
-        id,
-        email,
-        name,
-        userName,
-        userThumb,
-        password,
-        password2,
-      };
-
-      await dispatch(signUpConfirm(dataToSubmit));
-
-      console.log("회원가입 완료");
-      navigate("/");
-    } catch (error) {
-      console.log("회원가입 중 오류 발생");
-    }
-  };
-*/
   return (
     <form
       className="frame"

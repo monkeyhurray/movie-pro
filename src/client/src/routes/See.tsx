@@ -83,7 +83,6 @@ function CardExample() {
   }, [dispatch]);
 
   /*
-Card.Body태그 안에 작성되어 있던 것
  <source type="video/mp4" />
 */
   return (

@@ -5,10 +5,6 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 import {
-  setVideo,
-  videoAppControll,
-} from "src/redux/modules/product/videoInfo";
-import {
   Col,
   Image,
   Row,
@@ -64,7 +60,6 @@ function App() {
     Action<string>,
     Action<string>
   > = useDispatch();
-  const { video } = useSelector((state: RootState) => state.videoPlay);
   const login = useSelector((state: RootState) => state.confirmUser.loginStay);
 
   const { videoId } = useSelector((state: RootState) => state.videoOwner);
@@ -274,11 +269,6 @@ interface PayLoad {
 function CarouselFadeExample({ login, imgContent }: CarouselFadeExampleProps) {
   const navigate = useNavigate();
 
-  const { video } = useSelector((state: RootState) => state.videoPlay);
-
-  // filteredRandomVideo 배열에서 무작위로 선택한 비디오를 사용할 수 있습니다.
-  //filteredRandomVideorm그냥 사용 x dispatch다시 필요
-
   return (
     <Carousel fade>
       <Carousel.Item className="poster">
@@ -324,7 +314,7 @@ function CarouselFadeExample({ login, imgContent }: CarouselFadeExampleProps) {
         <div className="App-video">
           <video
             className="video-Card-Body-content"
-            src={"/uploads\\videos\\"}
+            src={"/video\\intoLove.mp4"}
             controls
           ></video>
         </div>

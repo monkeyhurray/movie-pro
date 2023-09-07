@@ -2,14 +2,12 @@ import express, { Router } from "express";
 import {
   getUpload,
   postUpload,
-  getWatch,
   getMovie,
   getSee,
 } from "../controllers/videoController";
 import { videoUpload } from "./middlewares";
 
 const videoRouter: Router = express.Router();
-videoRouter.route("/").get(getWatch);
 
 videoRouter.route("/movie").get(getMovie);
 

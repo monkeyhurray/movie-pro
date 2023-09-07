@@ -2,7 +2,6 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
 import { RequestHandler } from "express";
-import mongoose from "mongoose";
 
 interface SignUpData {
   email: string;

@@ -64,16 +64,6 @@ export const postUpload: RequestHandler = async (req, res) => {
   }
 };
 
-export const getWatch: RequestHandler = async (req, res) => {
-  return res.redirect("/video");
-};
-
-export const postWatch: RequestHandler = (req, res) => {
-  return res.redirect("/video");
-};
 export const getMovie: RequestHandler = (req, res) => {
-  return res.redirect("/video/movie");
-};
-export const postMovie: RequestHandler = (req, res) => {
   return res.redirect("/video/movie");
 };

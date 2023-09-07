@@ -13,6 +13,7 @@ const rootRouter: Router = express.Router();
 rootRouter.route("/").get(getVideoOwner);
 
 rootRouter.route("/login").get(getLogin).post(postLogin);
+
 rootRouter
   .route("/signUp")
   .get(getSignUp)

@@ -6,8 +6,6 @@ import userCookieReducer from "../modules/user/userCookie";
 import videoUploadReducer from "../modules/product/videoUpload";
 import videoPlayReducer from "../modules/product/videoPlay";
 import videoOwnerReducer from "../modules/product/videoOwner";
-import videoInfoReducer from "../modules/product/videoInfo";
-import userThumbReducer from "../modules/user/userThumb";
 
 const rootReducer = combineReducers({
   user: signUpUserReducer,
@@ -17,8 +15,6 @@ const rootReducer = combineReducers({
   videoOwner: videoOwnerReducer,
   videoPlay: videoPlayReducer,
   userCookie: userCookieReducer,
-  videoInfo: videoInfoReducer,
-  userThumb: userThumbReducer,
 });
 
 export default rootReducer;
