@@ -1,6 +1,6 @@
 # mvoie-pro
 
-using NodeJS, Express, react, TypeScript and Es6
+using NodeJS, Express, React, Redux, TypeScript and Es6
 
 ---
 
@@ -12,10 +12,10 @@ using NodeJS, Express, react, TypeScript and Es6
 
 ### 개발기간
 
-4/24 ~ 7/
+5/1 ~ 9/5
 
 ---
 
 ### 구성
 
-홈, 로그인, 로그아웃, 최신영화, 명작영화
+홈, 로그인, 로그아웃, 회원가입, 영화 업로드, 영화 소개, 배우 명언
