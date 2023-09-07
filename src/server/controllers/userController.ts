@@ -2,6 +2,7 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
 import { RequestHandler } from "express";
+import mongoose from "mongoose";
 
 interface SignUpData {
   email: string;
@@ -50,7 +51,8 @@ export const postSignUp: RequestHandler = async (req, res) => {
       userName,
       password,
     });
-    newUser.save();
+
+    await newUser.save();
     return res.redirect("/");
   } catch (error) {
     console.error(error);
@@ -82,13 +84,16 @@ export const postLogin: RequestHandler = async (req, res) => {
 
     req.session.loggedIn = true;
     req.session.userId = user._id;
+    req.session.userImg = user.userImg;
     await req.session.save();
 
     const userConfirm = req.session.loggedIn;
     const userId = req.session.userId;
+    const userImg = req.session.userImg;
     const token = {
       userConfirm,
       userId,
+      userImg,
     };
     res.cookie("myToken", token, {
       maxAge: 3600000,
@@ -101,19 +106,6 @@ export const postLogin: RequestHandler = async (req, res) => {
   }
 };
 //로그인
-
-export const getMyPage = (req, res) => {
-  return res.redirect("/");
-};
-export const postMyPage = (req, res) => {
-  return res;
-};
-export const githubSignUp = (req, res) => {
-  return res.redirect("/");
-};
-export const githubLogin = (req, res) => {
-  return res.redirect("/");
-};
 
 export const getMyPage: RequestHandler = (req, res) => {
   res.redirect("/");

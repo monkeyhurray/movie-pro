@@ -13,7 +13,7 @@ import {
   videoUpload,
 } from "../redux/modules/product/videoUpload";
 
-import "../scss/VideoUpload.scss";
+import "../scss/Upload.scss";
 import { Action } from "redux";
 import { getCookie } from "../cookie";
 
@@ -25,6 +25,7 @@ function VideoUpload() {
   type VideoUploadDispatch = ThunkDispatch<RootState, File, Action<string>>;
   const dispatch: VideoUploadDispatch = useDispatch();
   const navigate = useNavigate();
+
   const { title, videoFile, genre, actors, introduce } = useSelector(
     (state: RootState) => state.videoUpload
   );
@@ -111,13 +112,13 @@ function FormFloatingBasicExample(): JSX.Element {
           <td>
             <FloatingLabel
               controlId="floatingInput"
-              label="genre"
+              label="Genre"
               className="mb1"
             >
               <Form.Control
                 type="text"
                 placeholder="Genre"
-                name="genre"
+                name="Genre"
                 value={genre}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   dispatch(setGenre(e.target.value))
@@ -184,6 +185,7 @@ const TextArea: React.FC<BasicExampleProps> = ({ introduce }) => {
 
   return (
     <textarea
+      className="introText"
       cols={40}
       rows={10}
       placeholder="Introduce"
@@ -202,16 +204,19 @@ function SizesExample(): JSX.Element {
     window.location.reload();
   };
   return (
-    <div>
-      <Button className="btn2" variant="primary" size="lg" type="submit">
-        Content Upload
-      </Button>
-
-      <Button className="btn2" size="lg" onClick={movePage}>
-        Close
-      </Button>
+    <div className="button-container">
+      <div className="uploadBtn">
+        <Button className="btn1" variant="primary" size="lg" type="submit">
+          Upload
+        </Button>
+      </div>
+      <div className="closeBtn">
+        <Button className="btn2" size="lg" onClick={movePage}>
+          Close
+        </Button>
+      </div>
     </div>
   );
 }
-//<label for="name에 적힌것"></label>
+
 export default VideoUpload;

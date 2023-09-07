@@ -19,7 +19,7 @@ export const getVideoOwner: RequestHandler = async (req, res) => {
 
 export const getSee: RequestHandler = async (req, res) => {
   const { fileUrlId } = req.params;
-  console.log(fileUrlId);
+
   const video = await Video.findById(fileUrlId).populate("owner");
   if (!video) {
     return res.status(404).send({ errorMsg: "Can not find User." });
@@ -63,6 +63,7 @@ export const postUpload: RequestHandler = async (req, res) => {
     return res.status(400).send("Failed to create user");
   }
 };
+
 export const getWatch: RequestHandler = async (req, res) => {
   return res.redirect("/video");
 };

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../src/redux/store";
 import { useNavigate } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";
-import { AnyAction, Action } from "redux";
+import { Action } from "redux";
 
 import {
   setId,
@@ -14,21 +14,46 @@ import {
   setPassword,
   setPassword2,
   signUpConfirm,
+  setUserThumb,
 } from "../redux/modules/user/signUpUser";
 
 import "../scss/SignUp.scss";
 
 function SignUp() {
+  type SignUpUploadDispatch = ThunkDispatch<RootState, File, Action<string>>;
   const navigate = useNavigate();
-  const dispatch: ThunkDispatch<
-    RootState,
-    AnyAction,
-    Action<string>
-  > = useDispatch();
+  const dispatch: SignUpUploadDispatch = useDispatch();
 
   const { id, email, name, userName, userThumb, password, password2 } =
     useSelector((state: RootState) => state.user);
 
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (password !== password2) {
+      console.log("Passwords do not match");
+      return navigate("/signUp");
+    }
+    try {
+      const formData = new FormData();
+      if (userThumb !== null) {
+        formData.append("userThumb", userThumb);
+      }
+      formData.append("id", id);
+      formData.append("email", email);
+      formData.append("name", name);
+      formData.append("userName", userName);
+      formData.append("password", password);
+      formData.append("password2", password2);
+
+      await dispatch(signUpConfirm(formData));
+
+      navigate("/");
+    } catch (error) {
+      console.error("동영상이 업로드 되지 않습니다.", error);
+    }
+  };
+  /*
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -56,10 +81,11 @@ function SignUp() {
       console.log("회원가입 중 오류 발생");
     }
   };
-
+*/
   return (
     <form
       className="frame"
+      encType="multipart/form-data"
       name="signUpForm"
       method="post"
       onSubmit={handleSignUp}
@@ -78,6 +104,13 @@ function FormFloatingBasicExample(): JSX.Element {
   const { id, email, name, userName, password, password2 } = useSelector(
     (state: RootState) => state.user
   );
+
+  const handleThumbChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const userThumb = e.target.files?.[0];
+    if (userThumb !== undefined) {
+      dispatch(setUserThumb(userThumb));
+    }
+  };
 
   return (
     <table>
@@ -150,6 +183,23 @@ function FormFloatingBasicExample(): JSX.Element {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   dispatch(setUserName(e.target.value))
                 }
+              />
+            </FloatingLabel>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <FloatingLabel
+              controlId="floatingInput"
+              label="Username"
+              className="mb1"
+            >
+              <Form.Control
+                type="file"
+                placeholder="User"
+                name="userThumb"
+                accept="image/*"
+                onChange={handleThumbChange}
               />
             </FloatingLabel>
           </td>

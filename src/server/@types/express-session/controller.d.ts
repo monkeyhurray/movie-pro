@@ -6,6 +6,7 @@ interface MongoUser {
   id: string;
   email: string;
   name: string;
+  userImg: string;
   userName: string;
   password: string;
 }

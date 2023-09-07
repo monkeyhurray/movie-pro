@@ -66,8 +66,6 @@ function CardExample() {
   }
 
   let items = tableData.tableData[parsedId];
-  console.log(items);
-  console.log(parsedId);
 
   let toUseIntroduce = localStorage.getItem("videoIdBox") as string;
   let useIntroduce: string[] = JSON.parse(toUseIntroduce);
@@ -85,7 +83,6 @@ function CardExample() {
   }, [dispatch]);
 
   /*
-<Card.Img variant="top" src="img/assets/Apes.png" />
 Card.Body태그 안에 작성되어 있던 것
  <source type="video/mp4" />
 */
@@ -95,7 +92,7 @@ Card.Body태그 안에 작성되어 있던 것
         <Card.Body className="video-Card-Body">
           <video
             className="video-Card-Body-content"
-            src={"/" + "uploads\\videos\\" + items.fileNum}
+            src={"/uploads\\videos\\" + items.fileNum}
             controls
           ></video>
         </Card.Body>

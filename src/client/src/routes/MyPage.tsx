@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { logOut } from "../redux/modules/user/confirmUser";
 import { persistor } from "../index";
 import { removeCookie } from "../cookie";
+import "../scss/MyPage.scss";
 function MyPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -25,11 +26,12 @@ function MyPage() {
     <>
       <h4>Your Profile</h4>
       <button
+        className="LogOut"
         onClick={() => {
           handleLogoutClick();
         }}
       >
-        LogOut
+        Log Out
       </button>
     </>
   );

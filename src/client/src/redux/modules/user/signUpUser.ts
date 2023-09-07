@@ -6,8 +6,8 @@ interface UserState {
   id: string;
   email: string;
   name: string;
-  userThumb: File | null;
   userName: string;
+  userThumb: File | null;
   password: string;
   password2: string;
 }
@@ -24,9 +24,9 @@ const initialState: UserState = {
 
 export const signUpConfirm = createAsyncThunk(
   UserActionTypes.SIGN_UP_USER,
-  async (dataToSubmit: UserState) => {
+  async (formData: FormData) => {
     const request = await axios
-      .post("/signUp", dataToSubmit)
+      .post("/signUp", formData)
       .then((response) => response.data);
     return {
       type: UserActionTypes.SIGN_UP_USER,
@@ -51,6 +51,9 @@ const signUpUserSlice = createSlice({
     setUserName: (state, action: PayloadAction<string>) => {
       state.userName = action.payload;
     },
+    setUserThumb: (state, action: PayloadAction<File>) => {
+      state.userThumb = action.payload;
+    },
     setPassword: (state, action: PayloadAction<string>) => {
       state.password = action.payload;
     },
@@ -70,6 +73,7 @@ export const {
   setEmail,
   setName,
   setUserName,
+  setUserThumb,
   setPassword,
   setPassword2,
 } = signUpUserSlice.actions;

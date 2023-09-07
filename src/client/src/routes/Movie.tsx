@@ -16,7 +16,7 @@ import {
   setIntroduce,
   videoControll,
 } from "src/redux/modules/product/videoPlay";
-import "../scss/MasterPiece.scss";
+import "../scss/Movie.scss";
 
 interface Owner {
   _id: string;
@@ -40,6 +40,7 @@ interface VideoPayload {
   __v: number;
   _id: string;
 }
+
 interface PayLoad {
   type: string;
   payload: {};
@@ -68,8 +69,6 @@ function Movie({ fileUrlId }: MovideProps) {
 function BasicExample({ fileUrlId }: MovideProps) {
   const navigate = useNavigate();
 
-  console.log(fileUrlId);
-
   const dispatch: ThunkDispatch<
     RootState,
     Action<string>,
@@ -85,6 +84,9 @@ function BasicExample({ fileUrlId }: MovideProps) {
       const videoControllInfo = await dispatch(videoControll(fileUrlId));
       const videoInfo = videoControllInfo.payload as PayLoad;
       const realVideo = videoInfo.payload as VideoPayload;
+      console.log(videoControllInfo);
+      console.log(videoInfo);
+      console.log(realVideo);
       dispatch(setTitle(realVideo.title));
       dispatch(setOwner(realVideo.owner.userName));
       dispatch(setGenre(realVideo.genre));
@@ -105,7 +107,6 @@ function BasicExample({ fileUrlId }: MovideProps) {
     "src\\client\\public\\uploads\\videos\\",
     ""
   );
-  let onlyVideoNum = videoContent.replace("uploads\\videos\\", "");
 
   const { persistAtom } = recoilPersist();
 
@@ -192,11 +193,16 @@ function BasicExample({ fileUrlId }: MovideProps) {
 
   return (
     <>
-      <div className="uploadBtn">
-        <button onClick={handleAddRow}>Add Table</button>
+      <div className="twoBtn">
+        <button className="addBtn" onClick={handleAddRow}>
+          Add Table
+        </button>
         {"   "}
-        <button onClick={handleButtonClick}>video upload</button>
+        <button className="uploadBtn" onClick={handleButtonClick}>
+          Video Upload
+        </button>
       </div>
+
       <br />
       <table {...getTableProps()} className="table">
         <thead>
@@ -224,7 +230,12 @@ function BasicExample({ fileUrlId }: MovideProps) {
                   </td>
                 ))}
                 <td>
-                  <button onClick={() => handleRemoveRow(id)}>Remove</button>
+                  <button
+                    className="removeBtn"
+                    onClick={() => handleRemoveRow(id)}
+                  >
+                    Remove
+                  </button>
                 </td>
               </tr>
             );

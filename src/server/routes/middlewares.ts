@@ -1,7 +1,5 @@
 import multer from "multer";
 import { RequestHandler } from "express";
-//로그인전 유저
-//로그인한 유저
 
 export const localsMiddleware: RequestHandler = (req, res, next) => {
   req.session.loggedIn = Boolean(req.session.loggedIn);
@@ -31,10 +29,17 @@ export const thumbUpload = multer({
   },
 });
 
-const storage = multer.diskStorage({
+const videoStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "src/client/public/uploads/videos/");
   },
 });
 
-export const videoUpload = multer({ storage });
+const imageStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "src/client/public/uploads/thumb/");
+  },
+});
+
+export const videoUpload = multer({ storage: videoStorage });
+export const userThumbUpload = multer({ storage: imageStorage });

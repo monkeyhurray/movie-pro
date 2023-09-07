@@ -104,7 +104,6 @@ function OutlineTypesExample(): JSX.Element {
       >
         Sign Up
       </Button>{" "}
-      <Button variant="outline-success">Login as GitHub</Button>{" "}
     </div>
   );
 }

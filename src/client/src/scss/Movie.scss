@@ -1,5 +1,39 @@
-.actorImg {
-  width: 150;
-  height: 150;
-  object-fit: scale-down;
+.masterMovieFrame {
+  margin-top: 40px;
+
+  .twoBtn {
+    display: flex;
+    justify-content: flex-end;
+
+    .addBtn {
+      background-color: #0e7af4;
+      border-color: rgb(41, 55, 165);
+      margin-right: 5px;
+      border-radius: 5px;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+    .addBtn:hover {
+      background-color: #2850d4;
+    }
+    .uploadBtn {
+      background-color: #0e7af4;
+      border-color: rgb(41, 55, 165);
+      margin-right: 15px;
+      border-radius: 5px;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+    .uploadBtn:hover {
+      background-color: #2850d4;
+    }
+  }
+  .table {
+    margin: 0 15px;
+    .removeBtn {
+      background-color: #d70f70;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+    .removeBtn:hover {
+      background-color: #b4116b;
+    }
+  }
 }

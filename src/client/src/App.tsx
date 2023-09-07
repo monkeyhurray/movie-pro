@@ -3,7 +3,11 @@ import React, { lazy, Suspense, useEffect, useState } from "react";
 import { wiseSaying, num } from "./wiseSaying";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-
+import { ThunkDispatch } from "redux-thunk";
+import {
+  setVideo,
+  videoAppControll,
+} from "src/redux/modules/product/videoInfo";
 import {
   Col,
   Image,
@@ -15,7 +19,7 @@ import {
   Carousel,
   Spinner,
 } from "react-bootstrap";
-
+import { Action } from "redux";
 import { userCookie, setGcookie } from "../src/redux/modules/user/userCookie";
 import { setVideoId } from "./redux/modules/product/videoOwner";
 import { setLoginStay } from "./redux/modules/user/confirmUser";
@@ -25,15 +29,42 @@ import "./scss/App.scss";
 import "bootstrap/dist/css/bootstrap.css";
 
 const Login = lazy(() => import("./routes/Login"));
-const Watch = lazy(() => import("./routes/Watch"));
+
 const SignUp = lazy(() => import("./routes/SignUp"));
 const MyPage = lazy(() => import("./routes/MyPage"));
 const Upload = lazy(() => import("./routes/Upload"));
 const See = lazy(() => import("./routes/See"));
 const Moive = lazy(() => import("./routes/Movie"));
+const Wise = lazy(() => import("./routes/WiseSaying"));
+
+interface imgContentprops {
+  imgContent: string;
+}
+
+interface UserConfirm {
+  userConfirm: boolean;
+  userId: string;
+  userImg: string;
+}
+
+interface CarouselFadeExampleProps {
+  login: boolean;
+  imgContent: string;
+  videoIdBox: string[];
+}
+
+interface PayLoad {
+  type: string;
+  payload: {};
+}
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch: ThunkDispatch<
+    RootState,
+    Action<string>,
+    Action<string>
+  > = useDispatch();
+  const { video } = useSelector((state: RootState) => state.videoPlay);
   const login = useSelector((state: RootState) => state.confirmUser.loginStay);
 
   const { videoId } = useSelector((state: RootState) => state.videoOwner);
@@ -74,19 +105,25 @@ function App() {
   videoIdBox = videoIdBox.filter((i) => i !== null && i !== "");
   localStorage.setItem("videoIdBox", JSON.stringify(videoIdBox));
 
-  console.log(videoIdBox);
-  console.log(parseStoredData);
-  console.log(fileUrlId);
+  const userConfirm: UserConfirm = getCookie("myToken");
 
-  const userConfirm: string = getCookie("myToken");
   if (userConfirm !== undefined) {
     dispatch(setLoginStay(true));
   } else {
     dispatch(setLoginStay(false));
   }
+  let img: string;
+
+  if (login === true) {
+    img = userConfirm.userImg;
+  } else {
+    img = "src\\client\\public\\img\\assets\\1998.jpg";
+  }
+  const imgContent = img.replace("src\\client\\public\\", "");
+
   return (
     <div className="App">
-      <NavScrollExample />
+      <NavScrollExample imgContent={imgContent} />
 
       <Suspense fallback={<BorderExample />}>
         <Routes>
@@ -94,8 +131,9 @@ function App() {
             path="/"
             element={
               <CarouselFadeExample
-                movieTrailer="Trailer"
-                movieInfo="MovieInfo"
+                login={login}
+                imgContent={imgContent}
+                videoIdBox={videoIdBox}
               />
             }
           />
@@ -107,10 +145,7 @@ function App() {
             <>
               <Route path="/user/myPage" element={<MyPage />} />
               <Route path="/user/logOut" />
-              <Route
-                path="/video"
-                element={<Watch fileUrlId={fileUrlId} />}
-              />{" "}
+              <Route path="/wise" element={<Wise />} />{" "}
               <Route path="/video/upload" element={<Upload />} />
               <Route
                 path="/video/movie"
@@ -132,11 +167,6 @@ function App() {
           />
         </Routes>
       </Suspense>
-
-      <div className="say">
-        <h5>{wiseSaying[num].content}</h5>
-        <h6>-{wiseSaying[num].actor}-</h6>
-      </div>
     </div>
   );
 }
@@ -145,13 +175,13 @@ function BorderExample() {
   return <Spinner animation="border" />;
 }
 
-function NavScrollExample(): JSX.Element {
+function NavScrollExample({ imgContent }: imgContentprops) {
   const login = useSelector((state: RootState) => state.confirmUser.loginStay);
 
   const navigate = useNavigate();
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="light" className="navBar" expand="lg">
       <Container fluid>
         <Navbar.Brand>MoviePro</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
@@ -178,10 +208,10 @@ function NavScrollExample(): JSX.Element {
             <NavDropdown title="MovieInfo" id="navbarScrollingDropdown">
               <NavDropdown.Item
                 onClick={() => {
-                  navigate("/video");
+                  navigate("/wise");
                 }}
               >
-                Video
+                Wise Saying
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item
@@ -203,7 +233,10 @@ function NavScrollExample(): JSX.Element {
                     navigate("/user/myPage");
                   }}
                 >
-                  I'm User
+                  <div style={{ display: "flex", flexDirection: "row" }}>
+                    <h4>I'm</h4>
+                    <ShapeExample imgContent={imgContent} />
+                  </div>
                 </Nav.Link>
               </>
             ) : (
@@ -233,38 +266,79 @@ function NavScrollExample(): JSX.Element {
   );
 }
 
-function CarouselFadeExample(props: {
-  movieTrailer: string;
-  movieInfo: string;
-}): JSX.Element {
-  let navigate = useNavigate();
+interface PayLoad {
+  type: string;
+  payload: {};
+}
+
+function CarouselFadeExample({ login, imgContent }: CarouselFadeExampleProps) {
+  const navigate = useNavigate();
+
+  const { video } = useSelector((state: RootState) => state.videoPlay);
+
+  // filteredRandomVideo 배열에서 무작위로 선택한 비디오를 사용할 수 있습니다.
+  //filteredRandomVideorm그냥 사용 x dispatch다시 필요
+
   return (
     <Carousel fade>
       <Carousel.Item className="poster">
+        {login ? (
+          <>
+            <img
+              className="d-blockw-100"
+              width={900}
+              height={500}
+              src={"/" + imgContent}
+              onClick={() => {
+                navigate("/video/movie");
+              }}
+            />
+          </>
+        ) : (
+          <img
+            className="d-blockw-100"
+            width={900}
+            height={500}
+            src={"/" + imgContent}
+            onClick={() => {
+              navigate("/video/movie");
+            }}
+          />
+        )}
+      </Carousel.Item>
+
+      <Carousel.Item>
         <img
-          className="d-blockw-100"
-          src="img/assets/Apes.png"
+          className="actorImg"
+          src={wiseSaying[num].img}
           onClick={() => {
-            navigate("/video/movie");
+            navigate("/wise");
           }}
         />
+        <div className="say">
+          <h5>{wiseSaying[num].content}</h5>
+          <h6>-{wiseSaying[num].actor}-</h6>
+        </div>
       </Carousel.Item>
       <Carousel.Item>
-        <img className="d-block w-100" alt={props.movieTrailer} />
-      </Carousel.Item>
-      <Carousel.Item>
-        <img className="d-block w-100" alt={props.movieInfo} />
+        <div className="App-video">
+          <video
+            className="video-Card-Body-content"
+            src={"/uploads\\videos\\"}
+            controls
+          ></video>
+        </div>
       </Carousel.Item>
     </Carousel>
   );
 }
 
-function ShapeExample() {
+function ShapeExample({ imgContent }: imgContentprops) {
   return (
     <Container>
       <Row>
-        <Col xs={6} md={4}>
-          <Image src="holder.js/171x180" roundedCircle />
+        <Col xs={3} md={2}>
+          <Image src={"/" + imgContent} roundedCircle width={32} height={32} />
         </Col>
       </Row>
     </Container>
