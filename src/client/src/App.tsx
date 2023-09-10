@@ -49,11 +49,6 @@ interface CarouselFadeExampleProps {
   videoIdBox: string[];
 }
 
-interface PayLoad {
-  type: string;
-  payload: {};
-}
-
 function App() {
   const dispatch: ThunkDispatch<
     RootState,
@@ -259,11 +254,6 @@ function NavScrollExample({ imgContent }: imgContentprops) {
       </Container>
     </Navbar>
   );
-}
-
-interface PayLoad {
-  type: string;
-  payload: {};
 }
 
 function CarouselFadeExample({ login, imgContent }: CarouselFadeExampleProps) {

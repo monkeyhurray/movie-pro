@@ -1,15 +1,77 @@
-.video-Card {
-  max-width: 500px;
+.d-flex-justify-content-around {
+  display: flex;
+  justify-content: space-around;
+  .video-Card {
+    max-width: 500px;
+    max-height: 400px;
+    flex: 1;
 
-  .video-Card-Body {
-    max-height: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    .video-Card-Body {
+      max-height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-    .video-Card-Body-content {
-      max-width: 100%;
-      max-height: 100%;
+      .video-Card-Body-content {
+        max-width: 100%;
+        max-height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+
+  .video-Content-Card {
+    max-width: 450px;
+    width: 450px;
+    max-height: 400px;
+    .video-Card-Content-Body {
+      max-width: 450px;
+      max-height: 400px;
+      margin-left: 10px;
+      flex: 1;
+
+      .video-Card-Body-title {
+        strong {
+          margin-right: 10px;
+          font-size: 30px;
+        }
+        &:not(strong) {
+          font-size: 30px;
+        }
+        margin-top: 20px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .video-Card-Body-text {
+        strong {
+          margin-right: 10px;
+          font-size: 25px;
+        }
+        &:not(strong) {
+          font-size: 25px;
+        }
+
+        justify-content: left;
+        text-align: left;
+
+        width: auto;
+      }
+      .modal-btn {
+        margin-top: 20px;
+        padding: 30px 50px;
+        font-size: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .btn {
+          padding: 7px 20px;
+          font-size: 23px;
+        }
+      }
     }
   }
 }

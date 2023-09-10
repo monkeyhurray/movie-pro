@@ -86,25 +86,27 @@ function CardExample() {
  <source type="video/mp4" />
 */
   return (
-    <div className="d-flex justify-content-around">
+    <div className="d-flex-justify-content-around">
       <Card className="video-Card">
         <Card.Body className="video-Card-Body">
           <video
             className="video-Card-Body-content"
             src={"/uploads\\videos\\" + items.fileNum}
             controls
-          ></video>
+          >
+            <source type="video/mp4" />
+          </video>
         </Card.Body>
       </Card>
 
-      <Card style={{ width: "18rem" }}>
-        <Card.Body>
-          <Card.Title>
+      <Card className="video-Content-Card">
+        <Card.Body className="video-Card-Content-Body">
+          <Card.Title className="video-Card-Body-title">
             <strong>Title:</strong>
             {items.movie}
             <br />
           </Card.Title>
-          <Card.Text>
+          <Card.Text className="video-Card-Body-text">
             <strong>Genre:</strong>
             {items.genre}
             <br />
@@ -115,7 +117,9 @@ function CardExample() {
             {items.cast}
             <br />
           </Card.Text>
-          <Example introduce={introduce} />
+          <div className="modal-btn">
+            <Example introduce={introduce} />
+          </div>
         </Card.Body>
       </Card>
     </div>
@@ -131,7 +135,7 @@ const Example = ({ introduce }: ExampleProps) => {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button className="btn" variant="primary" onClick={handleShow}>
         Introduce
       </Button>
 
