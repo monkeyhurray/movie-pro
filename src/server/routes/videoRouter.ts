@@ -11,7 +11,7 @@ const videoRouter: Router = express.Router();
 
 videoRouter.route("/movie").get(getMovie);
 
-videoRouter.route("/movie/:fileUrlId([0-9a-f]{24})").get(getSee);
+videoRouter.route("/movie/:id([0-9a-f]{24})").get(getSee);
 
 videoRouter
   .route("/upload")

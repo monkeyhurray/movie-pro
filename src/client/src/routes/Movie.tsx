@@ -179,6 +179,8 @@ function BasicExample({ fileUrlId }: MovideProps) {
     if (!isDuplicate) {
       setTableData((prevData) => [...prevData, newRow]);
     }
+
+    window.location.reload();
   };
 
   const handleRemoveRow = (id: number) => {
